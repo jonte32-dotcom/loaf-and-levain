@@ -3308,10 +3308,11 @@
     //    Paste the public product URL (e.g. "https://gumroad.com/l/sourdough-pro").
     gumroadProductURL: 'https://REPLACE_ME.gumroad.com/l/sourdough-pro',
 
-    // 3. CONVERTKIT EMAIL FORM — create form at https://convertkit.com
-    //    Open the form, click "Embed", choose HTML, copy the action URL.
-    //    Format: "https://app.convertkit.com/forms/XXXXXXX/subscriptions"
-    convertkitFormAction: 'https://app.convertkit.com/forms/REPLACE_ME/subscriptions',
+    // 3. EMAIL FORM (MailerLite) — create form at https://mailerlite.com
+    //    Form → Embed form → HTML code → copy the <form action="..."> URL.
+    //    Provider auto-detected: ConvertKit URLs use email_address field,
+    //    MailerLite URLs use fields[email] field.
+    convertkitFormAction: 'https://assets.mailerlite.com/jsonp/2328385/forms/186842178657453432/subscribe',
 
     // 4. BUY ME A COFFEE — set up at https://buymeacoffee.com
     //    Just put your handle (the URL slug after buymeacoffee.com/).
@@ -3512,14 +3513,22 @@
   async function submitLead(email) {
     const action = MONETIZATION_CONFIG.convertkitFormAction;
     if (!isConfigured(action)) {
-      // Should not reach here — UI is hidden when not configured
       return false;
     }
     const fd = new FormData();
-    fd.append('email_address', email);
+    // Auto-detect provider by URL pattern and use the right field name.
+    const isMailerlite = /mailerlite\.com|mlcdn\.com/.test(action);
+    if (isMailerlite) {
+      fd.append('fields[email]', email);
+      fd.append('ml-submit', '1');
+      fd.append('anticsrf', 'true');
+    } else {
+      // ConvertKit / generic
+      fd.append('email_address', email);
+      fd.append('email', email);
+    }
     try {
-      // ConvertKit's form endpoint accepts cross-origin POSTs in no-cors mode.
-      // The response is opaque, so we treat success as "no thrown error".
+      // Cross-origin POST in no-cors mode — response is opaque, success = no thrown error.
       await fetch(action, { method: 'POST', body: fd, mode: 'no-cors' });
       return true;
     } catch (e) {
