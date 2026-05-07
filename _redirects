@@ -1,1 +1,18 @@
-/  /sourdough-schedule.html  200
+# Block sensitive source paths — return 404 even if cached files linger
+/pro-pdf/*           /404           404
+/email-sequence/*    /404           404
+/marketing/*         /404           404
+/articles/*.md       /404           404
+/scripts/*           /404           404
+/content-roadmap.json /404          404
+/lead-magnet/*.md    /404           404
+/pinterest/*         /404           404
+/.github/*           /404           404
+/package.json        /404           404
+/package-lock.json   /404           404
+/.gitignore          /404           404
+/.deploy-trigger     /404           404
+/config.local.json   /404           404
+
+# Root → main calculator
+/                    /sourdough-schedule.html  200
