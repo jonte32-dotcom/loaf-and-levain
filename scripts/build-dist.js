@@ -27,6 +27,19 @@ function rmrf(p) {
   fs.rmSync(p, { recursive: true, force: true });
 }
 
+function copyDir(src, dest) {
+  if (!fs.existsSync(src)) return 0;
+  fs.mkdirSync(dest, { recursive: true });
+  let n = 0;
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    const s = path.join(src, entry.name);
+    const d = path.join(dest, entry.name);
+    if (entry.isDirectory()) n += copyDir(s, d);
+    else { fs.copyFileSync(s, d); n += 1; }
+  }
+  return n;
+}
+
 function main() {
   rmrf(DIST);
   fs.mkdirSync(DIST, { recursive: true });
@@ -42,7 +55,11 @@ function main() {
     console.log(`  ✓ ${file}`);
   }
 
-  console.log(`\nWrote ${copied} public file(s) to /${DIST}`);
+  // Copy edge functions (Pages Functions) — gives us 404 blocking ahead of cache
+  const fnCount = copyDir('functions', path.join(DIST, 'functions'));
+  if (fnCount > 0) console.log(`  ✓ functions/ (${fnCount} file)`);
+
+  console.log(`\nWrote ${copied + fnCount} public file(s) to /${DIST}`);
   console.log('Source files (pro-pdf/, email-sequence/, marketing/, scripts/, etc.)');
   console.log('stay in the repo but are NOT deployed to the CDN.');
 }
