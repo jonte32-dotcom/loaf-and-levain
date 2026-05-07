@@ -1,0 +1,24 @@
+{
+  "name": "loaf-and-levain",
+  "version": "1.0.0",
+  "description": "Sourdough Schedule Calculator — content factory + monetization",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "inject": "node scripts/inject-articles.js",
+    "gen-article": "node scripts/gen-article.js",
+    "configure": "node scripts/configure.js",
+    "build": "npm run inject",
+    "preview": "npx serve ."
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.40.0",
+    "marked": "^15.0.0"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

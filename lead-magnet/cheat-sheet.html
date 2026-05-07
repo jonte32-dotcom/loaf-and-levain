@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>The Sourdough Cheat Sheet — Loaf &amp; Levain</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400;9..144,500&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  @page { size: A4; margin: 12mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #FBF7EE; }
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    color: #1F1611;
+    line-height: 1.4;
+    padding: 18mm 16mm;
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    font-size: 9.5pt;
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 28pt;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    margin-bottom: 4pt;
+    font-variation-settings: "SOFT" 50;
+  }
+  h1 em { font-style: italic; color: #B85C38; }
+  .subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #B85C38;
+    margin-bottom: 16pt;
+    border-bottom: 1px solid #1F1611;
+    padding-bottom: 6pt;
+  }
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 13pt;
+    letter-spacing: -0.01em;
+    margin-top: 12pt;
+    margin-bottom: 6pt;
+    color: #1F1611;
+    position: relative;
+    padding-left: 10pt;
+  }
+  h2::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 5pt;
+    width: 4pt; height: 4pt;
+    background: #B85C38;
+    border-radius: 50%;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14pt 18pt;
+    margin-top: 8pt;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5pt;
+  }
+  th, td {
+    text-align: left;
+    padding: 3pt 6pt;
+    border-bottom: 1px solid #D9CFB9;
+  }
+  th {
+    background: #EBE0CB;
+    font-size: 7.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #4A3B2E;
+    font-weight: 600;
+  }
+  td:first-child { color: #1F1611; font-weight: 500; }
+  ul { padding-left: 12pt; }
+  ul li { margin-bottom: 2pt; font-size: 9pt; }
+  .formula {
+    background: #1F1611;
+    color: #FBF7EE;
+    padding: 10pt 14pt;
+    border-radius: 2pt;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10pt;
+    margin: 6pt 0;
+  }
+  .formula strong { color: #C9A24E; }
+  .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7pt;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: #B85C38;
+    color: #FBF7EE;
+    padding: 1pt 5pt;
+    border-radius: 1pt;
+    margin-left: 4pt;
+    vertical-align: middle;
+  }
+  .footer {
+    margin-top: 16pt;
+    padding-top: 8pt;
+    border-top: 1px solid #D9CFB9;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #8A7866;
+  }
+  .footer .url { color: #B85C38; }
+  .checklist li {
+    list-style: none;
+    padding-left: 14pt;
+    position: relative;
+  }
+  .checklist li::before {
+    content: "☐";
+    position: absolute;
+    left: 0; top: 0;
+    color: #B85C38;
+    font-size: 11pt;
+  }
+  .quick-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4pt 12pt;
+    font-size: 8.5pt;
+  }
+  .quick-row > div {
+    padding: 2pt 0;
+    border-bottom: 1px dotted #D9CFB9;
+  }
+  .quick-row strong { color: #1F1611; }
+  @media screen {
+    body { box-shadow: 0 0 24px rgba(0,0,0,0.1); margin: 24px auto; }
+  }
+</style>
+</head>
+<body>
+
+<h1>The <em>Sourdough</em> Cheat Sheet.</h1>
+<div class="subtitle">One page · Tape it inside your cabinet · loafandlevain.com</div>
+
+<div class="grid">
+
+  <!-- LEFT COLUMN -->
+  <div>
+    <h2>Hydration → water (per 500 g flour)</h2>
+    <table>
+      <tr><th>Hydration</th><th>Water</th><th>Best for</th></tr>
+      <tr><td>65%</td><td>325 g</td><td>Sandwich, beginner</td></tr>
+      <tr><td>70%</td><td>350 g</td><td>Easy country</td></tr>
+      <tr><td>75%</td><td>375 g</td><td>Classic country</td></tr>
+      <tr><td>78%</td><td>390 g</td><td>Open crumb</td></tr>
+      <tr><td>80%</td><td>400 g</td><td>Focaccia</td></tr>
+      <tr><td>85%</td><td>425 g</td><td>Ciabatta</td></tr>
+      <tr><td>100%</td><td>500 g</td><td>Pan de cristal</td></tr>
+    </table>
+    <p style="font-size:8pt;color:#8A7866;margin-top:4pt;font-style:italic;">+ 5–8% for whole grain blends.</p>
+
+    <h2>Bulk fermentation @ 20% inoculation</h2>
+    <table>
+      <tr><th>Room temp</th><th>Bulk time</th></tr>
+      <tr><td>16°C / 61°F</td><td>~11 h</td></tr>
+      <tr><td>18°C / 64°F</td><td>~9 h</td></tr>
+      <tr><td>20°C / 68°F</td><td>~7.5 h</td></tr>
+      <tr><td>22°C / 72°F</td><td>~6.2 h</td></tr>
+      <tr><td>24°C / 75°F</td><td>~5 h</td></tr>
+      <tr><td>26°C / 79°F</td><td>~4 h</td></tr>
+      <tr><td>28°C / 82°F</td><td>~3.3 h</td></tr>
+      <tr><td>30°C / 86°F</td><td>~2.7 h</td></tr>
+    </table>
+    <p style="font-size:8pt;color:#8A7866;margin-top:4pt;font-style:italic;">Halve inoculation → roughly double the time.</p>
+
+    <h2>Starter readiness <span class="tag">need 4 of 6</span></h2>
+    <ul class="checklist">
+      <li>At least doubled since feeding</li>
+      <li>Domed top (not flat or sunken)</li>
+      <li>Bubbles visible on sides</li>
+      <li>Smells like beer + yogurt</li>
+      <li>Stretchy, gel-like consistency</li>
+      <li>Floats in water (optional)</li>
+    </ul>
+  </div>
+
+  <!-- RIGHT COLUMN -->
+  <div>
+    <h2>Desired Dough Temperature (DDT)</h2>
+    <div class="formula">
+      Water = (<strong>Target × 4</strong>) − Flour − Room − Friction
+    </div>
+    <div class="quick-row">
+      <div><strong>Target</strong> 24–26°C ideal</div>
+      <div><strong>Friction</strong> 2–4°C hand</div>
+      <div><strong>Flour</strong> = room temp</div>
+      <div><strong>Friction</strong> 5–8°C mixer</div>
+    </div>
+
+    <h2>Bake schedule (Dutch oven 250°C)</h2>
+    <ol style="padding-left:14pt;font-size:8.5pt;line-height:1.5;">
+      <li>Preheat empty Dutch oven 60 min</li>
+      <li>Score, transfer, lid <strong>on</strong>, bake 20 min @ 250°C</li>
+      <li>Lid <strong>off</strong>, drop to 230°C, bake 22–28 min</li>
+      <li>Internal temp 96–99°C = done</li>
+      <li>Cool on rack 60 min before slicing</li>
+    </ol>
+
+    <h2>Stretch &amp; fold timing</h2>
+    <table>
+      <tr><th>Set</th><th>From bulk start</th><th>Style</th></tr>
+      <tr><td>1</td><td>0:30</td><td>Strong</td></tr>
+      <tr><td>2</td><td>1:00</td><td>Strong</td></tr>
+      <tr><td>3</td><td>1:30</td><td>Gentle</td></tr>
+      <tr><td>4</td><td>2:00</td><td>Gentle</td></tr>
+    </table>
+    <p style="font-size:8pt;color:#8A7866;margin-top:4pt;font-style:italic;">Stop folding when dough is smooth, jiggly, holds shape.</p>
+
+    <h2>Quick troubleshooting</h2>
+    <table>
+      <tr><th>Symptom</th><th>Likely cause</th></tr>
+      <tr><td>Gummy crumb</td><td>Cut warm OR underbaked</td></tr>
+      <tr><td>Dense crumb</td><td>Underproofed bulk</td></tr>
+      <tr><td>Flat loaf</td><td>Overproofed bulk</td></tr>
+      <tr><td>No oven spring</td><td>Cold Dutch oven</td></tr>
+      <tr><td>Pale crust</td><td>No steam, short bake</td></tr>
+      <tr><td>Wall holes</td><td>Tight final shape</td></tr>
+    </table>
+
+    <h2>Salt percentage</h2>
+    <div class="quick-row">
+      <div><strong>1.8%</strong> faster, less salt</div>
+      <div><strong>2.0%</strong> standard</div>
+      <div><strong>2.2%</strong> slower, keeps better</div>
+      <div></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <span>© Loaf &amp; Levain · <span class="url">loafandlevain.com</span></span>
+  <span>Free schedule calculator · v1</span>
+</div>
+
+</body>
+</html>

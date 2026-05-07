@@ -1,0 +1,41 @@
+name: Weekly content
+
+on:
+  schedule:
+    # Mondays at 08:00 UTC (set whenever — once per week is enough)
+    - cron: '0 8 * * 1'
+  workflow_dispatch:  # allows manual trigger from GitHub UI
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install
+        run: npm ci || npm install
+
+      - name: Generate next article
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/gen-article.js
+
+      - name: Inject into HTML
+        run: node scripts/inject-articles.js
+        env:
+          SITE_BASE: ${{ vars.SITE_BASE || 'https://example.com' }}
+
+      - name: Commit and push
+        run: |
+          git config user.name "Content Bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add articles sourdough-schedule.html sitemap.xml
+          git diff --staged --quiet || git commit -m "auto: weekly article + injection"
+          git push

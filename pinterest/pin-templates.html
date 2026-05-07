@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Pinterest Pin Templates — Loaf & Levain</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /*
+    Pinterest's preferred aspect ratio is 2:3 — 1000×1500px.
+    These pins render at that ratio. Open this file in browser,
+    use the browser's screenshot tool (or "View > Print" then save
+    each pin as PDF then convert), or use a screen capture set to
+    1000×1500 to export individual pins.
+
+    Easiest workflow: open file, scroll to a pin, take a 2:3 ratio
+    screenshot, upload to Pinterest. Faster than designing in Canva.
+  */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #2a2a2a;
+    padding: 40px;
+    font-family: 'Manrope', sans-serif;
+  }
+  .pin {
+    width: 500px;
+    height: 750px;
+    margin: 0 auto 40px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+
+  .pin h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-variation-settings: "SOFT" 50;
+  }
+  .pin h1 em { font-style: italic; }
+  .pin .url {
+    position: absolute;
+    bottom: 24px;
+    left: 32px; right: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .pin .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .pin .pin-num {
+    position: absolute;
+    top: 20px; right: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.4);
+    z-index: 5;
+  }
+
+  /* PIN 1 — bulk fermentation table */
+  .pin-1 {
+    background: linear-gradient(180deg, #F4ECDD 0%, #EBE0CB 100%);
+    color: #1F1611;
+    padding: 60px 36px;
+    display: flex; flex-direction: column;
+  }
+  .pin-1 .label { color: #B85C38; }
+  .pin-1 h1 { font-size: 50px; color: #1F1611; margin-bottom: 24px; }
+  .pin-1 h1 em { color: #B85C38; }
+  .pin-1 table {
+    width: 100%;
+    margin-top: 18px;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+  }
+  .pin-1 th, .pin-1 td {
+    padding: 8px 0;
+    text-align: left;
+    border-bottom: 1px solid #D9CFB9;
+  }
+  .pin-1 th { color: #8A7866; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; }
+  .pin-1 td:first-child { color: #B85C38; font-weight: 500; }
+  .pin-1 .url { color: #8A7866; }
+
+  /* PIN 2 — hydration */
+  .pin-2 {
+    background: #1F1611;
+    color: #FBF7EE;
+    padding: 60px 36px;
+    display: flex; flex-direction: column;
+  }
+  .pin-2 .label { color: #C9A24E; }
+  .pin-2 h1 { font-size: 56px; margin-bottom: 14px; }
+  .pin-2 h1 em { color: #C9A24E; }
+  .pin-2 .lede { font-size: 17px; color: rgba(251,247,238,0.7); line-height: 1.4; margin-bottom: 32px; }
+  .pin-2 .grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+  .pin-2 .grid div {
+    padding: 14px 16px;
+    border: 1px solid rgba(251,247,238,0.15);
+    border-radius: 3px;
+  }
+  .pin-2 .grid strong { color: #C9A24E; display: block; font-size: 22px; font-family: 'Fraunces', serif; font-weight: 400; }
+  .pin-2 .grid span { color: rgba(251,247,238,0.6); font-size: 11px; }
+  .pin-2 .url { color: #C9A24E; }
+
+  /* PIN 3 — gummy diagnosis */
+  .pin-3 {
+    background: #B85C38;
+    color: #FBF7EE;
+    padding: 60px 36px;
+    display: flex; flex-direction: column;
+  }
+  .pin-3 .label { color: #FBF7EE; opacity: 0.7; }
+  .pin-3 h1 { font-size: 60px; margin-bottom: 24px; }
+  .pin-3 h1 em { color: #1F1611; }
+  .pin-3 ul { padding-left: 0; list-style: none; margin-top: 16px; }
+  .pin-3 li {
+    padding: 12px 16px;
+    background: rgba(31,22,17,0.15);
+    border-radius: 3px;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    border-left: 3px solid #1F1611;
+  }
+  .pin-3 li strong { display: block; font-family: 'Fraunces', serif; font-weight: 500; font-size: 18px; margin-bottom: 2px; }
+  .pin-3 li span { font-size: 13px; opacity: 0.85; }
+  .pin-3 .url { color: rgba(251,247,238,0.7); }
+
+  /* PIN 4 — DDT formula */
+  .pin-4 {
+    background: linear-gradient(180deg, #FBF7EE 0%, #F4ECDD 100%);
+    color: #1F1611;
+    padding: 60px 36px;
+    display: flex; flex-direction: column;
+  }
+  .pin-4 .label { color: #B85C38; }
+  .pin-4 h1 { font-size: 48px; margin-bottom: 18px; }
+  .pin-4 h1 em { color: #B85C38; }
+  .pin-4 .formula {
+    background: #1F1611;
+    color: #FBF7EE;
+    padding: 28px 24px;
+    border-radius: 6px;
+    text-align: center;
+    margin: 24px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 17px;
+    line-height: 1.4;
+  }
+  .pin-4 .formula strong { color: #C9A24E; font-size: 22px; }
+  .pin-4 .breakdown {
+    font-size: 14px;
+    color: #4A3B2E;
+    line-height: 1.7;
+  }
+  .pin-4 .breakdown strong { color: #B85C38; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .pin-4 .url { color: #8A7866; }
+
+  /* PIN 5 — starter readiness */
+  .pin-5 {
+    background: #6F8060;
+    color: #FBF7EE;
+    padding: 60px 36px;
+    display: flex; flex-direction: column;
+  }
+  .pin-5 .label { color: rgba(251,247,238,0.6); }
+  .pin-5 h1 { font-size: 54px; margin-bottom: 14px; }
+  .pin-5 h1 em { color: #C9A24E; font-style: italic; }
+  .pin-5 .lede { font-size: 16px; color: rgba(251,247,238,0.7); line-height: 1.4; margin-bottom: 24px; }
+  .pin-5 ul { list-style: none; padding: 0; }
+  .pin-5 li {
+    padding: 12px 0 12px 38px;
+    position: relative;
+    border-bottom: 1px solid rgba(251,247,238,0.15);
+    font-size: 15px;
+  }
+  .pin-5 li::before {
+    content: "✓";
+    position: absolute;
+    left: 0; top: 10px;
+    width: 26px; height: 26px;
+    background: #C9A24E;
+    color: #1F1611;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .pin-5 .url { color: rgba(251,247,238,0.7); }
+
+  /* PIN 6 — flat statement */
+  .pin-6 {
+    background: #FBF7EE;
+    color: #1F1611;
+    padding: 80px 40px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center;
+  }
+  .pin-6 .label { color: #B85C38; }
+  .pin-6 h1 {
+    font-size: 64px;
+    margin-bottom: 20px;
+    line-height: 1;
+  }
+  .pin-6 h1 em { color: #B85C38; }
+  .pin-6 .lede {
+    font-size: 17px;
+    color: #4A3B2E;
+    line-height: 1.5;
+    max-width: 380px;
+  }
+  .pin-6 .cta {
+    margin-top: 36px;
+    background: #1F1611;
+    color: #FBF7EE;
+    padding: 14px 28px;
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .pin-6 .url { color: #8A7866; }
+
+  /* PIN 7 — schedule visual */
+  .pin-7 {
+    background: linear-gradient(135deg, #1F1611 0%, #2A1F18 100%);
+    color: #FBF7EE;
+    padding: 60px 36px;
+    display: flex; flex-direction: column;
+  }
+  .pin-7 .label { color: #B85C38; }
+  .pin-7 h1 { font-size: 48px; margin-bottom: 18px; }
+  .pin-7 h1 em { color: #B85C38; }
+  .pin-7 .timeline {
+    margin-top: 24px;
+    position: relative;
+    padding-left: 24px;
+  }
+  .pin-7 .timeline::before {
+    content: "";
+    position: absolute; left: 6px; top: 8px; bottom: 8px;
+    width: 1px; background: #B85C38;
+  }
+  .pin-7 .step {
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .pin-7 .step::before {
+    content: "";
+    position: absolute; left: -22px; top: 6px;
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: #FBF7EE;
+    border: 1.5px solid #B85C38;
+  }
+  .pin-7 .step-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #B85C38;
+    margin-bottom: 2px;
+  }
+  .pin-7 .step-title {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .pin-7 .url { color: rgba(251,247,238,0.6); }
+
+  /* PIN 8 — bold question */
+  .pin-8 {
+    background: #C9A24E;
+    color: #1F1611;
+    padding: 80px 40px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .pin-8 .label { color: #1F1611; opacity: 0.7; }
+  .pin-8 h1 { font-size: 70px; line-height: 0.95; }
+  .pin-8 h1 em { color: #B85C38; font-style: italic; }
+  .pin-8 .lede { font-size: 18px; color: #1F1611; line-height: 1.4; margin-top: 28px; max-width: 340px; }
+  .pin-8 .url { color: #1F1611; opacity: 0.7; }
+
+  /* PIN 9 — myth busting */
+  .pin-9 {
+    background: #FBF7EE;
+    color: #1F1611;
+    padding: 60px 36px;
+    display: flex; flex-direction: column;
+  }
+  .pin-9 .label { color: #B85C38; }
+  .pin-9 h1 { font-size: 50px; margin-bottom: 24px; }
+  .pin-9 h1 em { color: #B85C38; }
+  .pin-9 .myth {
+    background: #EBE0CB;
+    border-left: 3px solid #B85C38;
+    padding: 16px 20px;
+    border-radius: 3px;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .pin-9 .myth strong { display: block; font-family: 'Fraunces', serif; font-size: 17px; margin-bottom: 4px; color: #B85C38; }
+  .pin-9 .url { color: #8A7866; }
+
+  /* PIN 10 — clean cover */
+  .pin-10 {
+    background: linear-gradient(180deg, #B85C38 0%, #8E3F22 100%);
+    color: #FBF7EE;
+    padding: 80px 40px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center;
+  }
+  .pin-10 .label { color: rgba(251,247,238,0.6); }
+  .pin-10 h1 { font-size: 72px; margin-bottom: 16px; line-height: 0.95; }
+  .pin-10 h1 em { font-style: italic; color: #C9A24E; }
+  .pin-10 .lede {
+    font-size: 17px;
+    color: rgba(251,247,238,0.85);
+    line-height: 1.45;
+    max-width: 380px;
+    margin-top: 16px;
+  }
+  .pin-10 .badge {
+    margin-top: 32px;
+    background: rgba(251,247,238,0.12);
+    border: 1px solid rgba(251,247,238,0.25);
+    padding: 8px 16px;
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .pin-10 .url { color: rgba(251,247,238,0.7); }
+
+  .pin-name {
+    color: #FBF7EE;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 12px;
+    margin-top: 24px;
+  }
+</style>
+</head>
+<body>
+
+<p class="pin-name">Pin 1 — Bulk fermentation table</p>
+<div class="pin pin-1">
+  <span class="pin-num">01</span>
+  <span class="label">The Q10 rule</span>
+  <h1>Bulk time by <em>kitchen temp</em></h1>
+  <table>
+    <tr><th>Room temp</th><th>Bulk @ 20% inoc</th></tr>
+    <tr><td>16°C / 61°F</td><td>~11 hours</td></tr>
+    <tr><td>20°C / 68°F</td><td>~7.5 hours</td></tr>
+    <tr><td>22°C / 72°F</td><td>~6 hours</td></tr>
+    <tr><td>24°C / 75°F</td><td>~5 hours</td></tr>
+    <tr><td>26°C / 79°F</td><td>~4 hours</td></tr>
+    <tr><td>28°C / 82°F</td><td>~3.3 hours</td></tr>
+    <tr><td>30°C / 86°F</td><td>~2.7 hours</td></tr>
+  </table>
+  <span class="url">loafandlevain.com</span>
+</div>
+
+<p class="pin-name">Pin 2 — Hydration explained</p>
+<div class="pin pin-2">
+  <span class="pin-num">02</span>
+  <span class="label">Sourdough hydration</span>
+  <h1>Pick the <em>right</em> hydration.</h1>
+  <p class="lede">Higher = more open crumb. Also: stickier, harder to shape, more skill.</p>
+  <div class="grid">
+    <div><strong>65%</strong><span>Beginner / sandwich</span></div>
+    <div><strong>75%</strong><span>Classic country</span></div>
+    <div><strong>80%</strong><span>Open crumb push</span></div>
+    <div><strong>85%</strong><span>Ciabatta</span></div>
+  </div>
+  <span class="url">loafandlevain.com</span>
+</div>
+
+<p class="pin-name">Pin 3 — Gummy crumb diagnosis</p>
+<div class="pin pin-3">
+  <span class="pin-num">03</span>
+  <span class="label">Troubleshooting</span>
+  <h1>Why is my sourdough <em>gummy?</em></h1>
+  <ul>
+    <li><strong>1. You cut it warm</strong><span>Wait 1+ hour after bake</span></li>
+    <li><strong>2. Internal temp too low</strong><span>Aim for 96–99°C</span></li>
+    <li><strong>3. Underproofed bulk</strong><span>Extend 1–2 h or raise inoc</span></li>
+    <li><strong>4. Overproofed bulk</strong><span>Shorten or drop inoc 5%</span></li>
+    <li><strong>5. Not enough steam</strong><span>Use Dutch oven covered 20 min</span></li>
+  </ul>
+  <span class="url">Full guide: loafandlevain.com</span>
+</div>
+
+<p class="pin-name">Pin 4 — DDT formula</p>
+<div class="pin pin-4">
+  <span class="pin-num">04</span>
+  <span class="label">Pro baker secret</span>
+  <h1>Get the <em>perfect</em> dough temp.</h1>
+  <div class="formula">
+    Water = (<strong>Target × 4</strong>)<br>− Flour − Room − Friction
+  </div>
+  <div class="breakdown">
+    <strong>TARGET</strong> Aim 24–26°C<br>
+    <strong>FLOUR</strong> Usually = room temp<br>
+    <strong>ROOM</strong> Measure, not the thermostat<br>
+    <strong>FRICTION</strong> 2–4°C hand · 5–8°C mixer<br><br>
+    Solve for water. Use a thermometer to verify.
+  </div>
+  <span class="url">loafandlevain.com</span>
+</div>
+
+<p class="pin-name">Pin 5 — Starter readiness checklist</p>
+<div class="pin pin-5">
+  <span class="pin-num">05</span>
+  <span class="label">Starter check</span>
+  <h1>Is your starter <em>ready?</em></h1>
+  <p class="lede">4 of 6 = ready to mix. Skip the float test, watch the rise.</p>
+  <ul>
+    <li>At least doubled since feeding</li>
+    <li>Domed top, not flat</li>
+    <li>Bubbles visible on the sides</li>
+    <li>Smells like beer + yogurt</li>
+    <li>Stretchy gel consistency</li>
+    <li>Floats in water (optional)</li>
+  </ul>
+  <span class="url">loafandlevain.com</span>
+</div>
+
+<p class="pin-name">Pin 6 — Brand statement</p>
+<div class="pin pin-6">
+  <span class="pin-num">06</span>
+  <span class="label">Free planner</span>
+  <h1>Stop <em>guessing</em>.<br>Start <em>baking</em>.</h1>
+  <p class="lede">A free sourdough schedule calculator that knows your kitchen temperature isn't 22°C.</p>
+  <div class="cta">Try it →</div>
+  <span class="url">loafandlevain.com</span>
+</div>
+
+<p class="pin-name">Pin 7 — Schedule visual</p>
+<div class="pin pin-7">
+  <span class="pin-num">07</span>
+  <span class="label">Saturday country loaf</span>
+  <h1>A real <em>schedule</em>, real timestamps.</h1>
+  <div class="timeline">
+    <div class="step"><div class="step-time">14:00 Sat</div><div class="step-title">Feed levain</div></div>
+    <div class="step"><div class="step-time">20:00 Sat</div><div class="step-title">Mix flour + water</div></div>
+    <div class="step"><div class="step-time">20:30 Sat</div><div class="step-title">Add levain + salt</div></div>
+    <div class="step"><div class="step-time">21:10 Sat</div><div class="step-title">Folds × 4 (every 30 min)</div></div>
+    <div class="step"><div class="step-time">02:50 Sun</div><div class="step-title">Pre-shape + bench rest</div></div>
+    <div class="step"><div class="step-time">03:30 Sun</div><div class="step-title">Cold retard 12 h</div></div>
+    <div class="step"><div class="step-time">16:30 Sun</div><div class="step-title">Bake</div></div>
+  </div>
+  <span class="url">Get yours: loafandlevain.com</span>
+</div>
+
+<p class="pin-name">Pin 8 — Big question</p>
+<div class="pin pin-8">
+  <span class="pin-num">08</span>
+  <span class="label">Why bulk is wrong</span>
+  <h1>Your bread is <em>dense.</em><br>The reason isn't<br>what you think.</h1>
+  <p class="lede">90% of dense sourdough = underproofed bulk because you measured the room, not the dough.</p>
+  <span class="url">loafandlevain.com</span>
+</div>
+
+<p class="pin-name">Pin 9 — Myth busting</p>
+<div class="pin pin-9">
+  <span class="pin-num">09</span>
+  <span class="label">Sourdough myths</span>
+  <h1>3 things you <em>don't</em> need.</h1>
+  <div class="myth"><strong>The float test</strong>Volume + dome + bubbles is more reliable. Float can lie both ways.</div>
+  <div class="myth"><strong>Filtered water</strong>Tap is fine for dough. Only matters for new starter.</div>
+  <div class="myth"><strong>Specialty sourdough flour</strong>King Arthur Bread Flour does the job. Marketing ≠ better bread.</div>
+  <span class="url">loafandlevain.com</span>
+</div>
+
+<p class="pin-name">Pin 10 — Cover pin (Pro)</p>
+<div class="pin pin-10">
+  <span class="pin-num">10</span>
+  <span class="label">Pro</span>
+  <h1>Sourdough <em>Schedule</em> Pro.</h1>
+  <p class="lede">30 recipes. 3 climate-tuned schedules each. 12 troubleshooting flowcharts. Lifetime updates.</p>
+  <div class="badge">$19 · Launch price</div>
+  <span class="url">loafandlevain.com</span>
+</div>
+
+</body>
+</html>
