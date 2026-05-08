@@ -19,7 +19,8 @@ const PUBLIC_FILES = [
   'index.html',
   '_redirects',
   'sitemap.xml',
-  'robots.txt'
+  'robots.txt',
+  'cheat-sheet.pdf'
 ];
 
 function rmrf(p) {
