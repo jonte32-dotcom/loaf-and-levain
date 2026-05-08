@@ -1,6 +1,11 @@
 node_modules/
 dist/
 config.local.json
+form-detail.json
+forms.json
+camp-detail.json
+automation-detail.json
+.deploy-trigger
 .DS_Store
 .env
 .env.local
