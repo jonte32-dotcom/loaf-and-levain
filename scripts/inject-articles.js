@@ -14,7 +14,7 @@ import { marked } from 'marked';
 
 const HTML_FILE = 'sourdough-schedule.html';
 const ARTICLES_DIR = 'articles';
-const SITE_BASE = process.env.SITE_BASE || 'https://example.com';
+const SITE_BASE = process.env.SITE_BASE || 'https://loafandlevain.com';
 const START = '<!-- ARTICLES_AUTO_INJECT_START -->';
 const END = '<!-- ARTICLES_AUTO_INJECT_END -->';
 

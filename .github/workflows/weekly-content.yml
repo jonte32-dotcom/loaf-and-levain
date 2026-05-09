@@ -30,7 +30,7 @@ jobs:
       - name: Inject into HTML
         run: node scripts/inject-articles.js
         env:
-          SITE_BASE: ${{ vars.SITE_BASE || 'https://example.com' }}
+          SITE_BASE: ${{ vars.SITE_BASE || 'https://loafandlevain.com' }}
 
       - name: Commit and push
         run: |

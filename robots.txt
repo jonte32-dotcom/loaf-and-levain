@@ -12,4 +12,4 @@ Disallow: /
 User-agent: anthropic-ai
 Disallow: /
 
-Sitemap: https://example.com/sitemap.xml
+Sitemap: https://loafandlevain.com/sitemap.xml
