@@ -21,7 +21,8 @@ const PUBLIC_FILES = [
   '_redirects',
   'sitemap.xml',
   'robots.txt',
-  'cheat-sheet.pdf'
+  'cheat-sheet.pdf',
+  'og-image.jpg'
 ];
 
 function rmrf(p) {
