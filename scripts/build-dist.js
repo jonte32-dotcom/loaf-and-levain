@@ -17,6 +17,7 @@ const DIST = 'dist';
 const PUBLIC_FILES = [
   'sourdough-schedule.html',
   'index.html',
+  'privacy.html',
   '_redirects',
   'sitemap.xml',
   'robots.txt',
