@@ -7,7 +7,7 @@
 
 {{ subscriber.first_name | default: "Hi" }},
 
-Following up on the panettone story — here's exactly what's in [Sourdough Schedule Pro](https://YOUR-GUMROAD-URL).
+Following up on the panettone story — here's exactly what's in [Sourdough Schedule Pro](https://loaflevain.gumroad.com/l/sourdough-pro).
 
 **30 recipes**, each with three timing tables (cold kitchen, standard, hot):
 
@@ -28,7 +28,7 @@ It's a 60+ page PDF. Pay once, lifetime updates. New recipes added quarterly.
 
 **Price: $19** during launch. ($29 regular price after launch — I haven't decided yet when the price goes up.)
 
-[**Get the PDF →**](https://YOUR-GUMROAD-URL)
+[**Get the PDF →**](https://loaflevain.gumroad.com/l/sourdough-pro)
 
 That's it. No hard sell. Either it's a fit for where you are with sourdough, or it isn't. The free calculator and the cheat sheet you already have will get you a long way regardless.
 

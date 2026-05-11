@@ -9,7 +9,7 @@
 
 Last note from me on this, then back to baking content.
 
-[Sourdough Schedule Pro](https://YOUR-GUMROAD-URL) is live at the launch price of **$19**. Sometime in the next few weeks I'm raising it to $29 — just to anchor it where it should be. If you've been thinking about it, this is the moment.
+[Sourdough Schedule Pro](https://loaflevain.gumroad.com/l/sourdough-pro) is live at the launch price of **$19**. Sometime in the next few weeks I'm raising it to $29 — just to anchor it where it should be. If you've been thinking about it, this is the moment.
 
 Two reasons people I've talked to actually buy it:
 
@@ -25,7 +25,7 @@ If you fall into either "don't buy" category, no problem. Stay on the list — t
 
 If the timing is right and the price is right:
 
-[**Get Sourdough Schedule Pro →**](https://YOUR-GUMROAD-URL)
+[**Get Sourdough Schedule Pro →**](https://loaflevain.gumroad.com/l/sourdough-pro)
 
 That's the last time you'll hear about it from me in this series.
 

@@ -19,7 +19,7 @@ The recipe wasn't wrong. The schedule was wrong **for my kitchen.** Every step n
 
 That bake cost me about $30 in ingredients and a weekend of work. The schedule for it — properly tuned for a 17°C kitchen — would have taken me 30 minutes to build if I'd had the right tools.
 
-That's why I'm building [Sourdough Schedule Pro](https://YOUR-GUMROAD-URL). Every recipe in it has three timing tables: cold kitchen, standard kitchen, hot kitchen. No more guessing. No more $30 paperweights.
+That's why I'm building [Sourdough Schedule Pro](https://loaflevain.gumroad.com/l/sourdough-pro). Every recipe in it has three timing tables: cold kitchen, standard kitchen, hot kitchen. No more guessing. No more $30 paperweights.
 
 It's $19. One ruined panettone pays for it 1.5 times over.
 
