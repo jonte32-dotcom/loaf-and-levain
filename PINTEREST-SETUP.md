@@ -41,14 +41,28 @@ For our 10 pins, we'll mostly use "Sourdough Tutorials" or "Sourdough Troublesho
    - **Scopes:** check `boards:read`, `pins:read`, `pins:write`
 7. **Submit for Trial Access** — Pinterest reviews and usually approves within minutes for trial.
 
-## Step 4 — Get Access Token (10 min)
+## Step 4 — Get Access Token (BLOCKED on Trial tier)
 
-After app approval:
+⚠️ **As of 2026-05-11, Pinterest no longer issues `pins:write` tokens on Trial access.**
+The "Generate access tokens" button in the dev console only produces *Production Limited* tokens that:
 
-1. Pinterest Dev console → your app → **"Generate access token"**
-2. Choose scopes: `boards:read`, `pins:read`, `pins:write`
-3. Click **Generate** → copy token
-4. The token is a long string starting with `pina_AAAA...`
+- Expire after **24 hours** (not 30 days)
+- Only include read scopes (`pins:read`, `boards:read`, `user_accounts:read`, `ads:read`, `catalogs:read`)
+- Cannot create pins (no `pins:write`)
+
+To get `pins:write` you must **Upgrade to Standard access**, which requires:
+
+1. A **video demo** of the app in action (.mp4, <2 GB)
+2. Filled-out review form (use case, volume, scopes)
+3. Manual review by Pinterest (1–7+ days)
+
+**Recommendation for this project:** the upgrade overhead is not worth it for ~3 pins/week.
+Use manual posting (see bottom of this doc) until volume justifies the demo recording.
+
+If you do upgrade, the resulting flow:
+
+1. After Standard approval, OAuth your Pinterest user against your app → get long-lived access + refresh token
+2. The token is a long string starting with `pina_AAAA...`
 
 ## Step 5 — Find Board ID
 
@@ -97,14 +111,15 @@ After this, the cron runs automatically every other day (`0 14 */2 * *` — 14:0
 
 After 10 pins post (~3 weeks), generate more via `node scripts/gen-pinterest-pins.js` (with new content templates) or manually upload variations.
 
-## Manual posting (if Pinterest API not yet approved)
+## Manual posting (current default — Trial tier blocks auto-post)
 
-While waiting for Pinterest Dev approval:
+This is the active workflow until Standard access is granted.
 
 1. Open `dist-pins/` folder
 2. Drag-drop pin-01.jpg → pin-10.jpg into Pinterest's manual upload UI
 3. Use titles/descriptions from `pinterest/descriptions.md`
 4. Post 1 pin every other day manually
+5. After pin-10, ask Claude to generate pin-11 → pin-20
 
 ## Troubleshooting
 
