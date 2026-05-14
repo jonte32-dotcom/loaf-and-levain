@@ -21,6 +21,7 @@ const PUBLIC_FILES = [
   '_redirects',
   'sitemap.xml',
   'robots.txt',
+  'ads.txt',
   'cheat-sheet.pdf',
   'og-image.jpg'
 ];
