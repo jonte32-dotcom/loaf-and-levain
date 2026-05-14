@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Sourdough Schedule Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..700,0..100,0..1&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  @page {
+    size: A4;
+    margin: 22mm 18mm 24mm 18mm;
+    @bottom-center {
+      content: "Loaf & Levain · Sourdough Schedule Pro";
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9pt;
+      color: #8A7866;
+    }
+    @bottom-right {
+      content: counter(page);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10pt;
+      color: #4A3B2E;
+    }
+  }
+  @page :first {
+    margin: 0;
+    @bottom-center { content: ""; }
+    @bottom-right { content: ""; }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: #FBF7EE;
+    color: #1F1611;
+    font-family: 'Manrope', system-ui, sans-serif;
+    line-height: 1.55;
+    font-size: 10.5pt;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* COVER PAGE */
+  .cover {
+    width: 100%;
+    height: 297mm;
+    padding: 30mm 24mm;
+    background: linear-gradient(180deg, #F4ECDD 0%, #EBE0CB 100%);
+    position: relative;
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .cover::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.18;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.12, 0 0 0 0 0.08, 0 0 0 0 0.06, 0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    pointer-events: none;
+  }
+  .cover-top, .cover-mid, .cover-bot { position: relative; z-index: 1; }
+  .cover-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #B85C38;
+  }
+  .cover-eyebrow::after {
+    content: "";
+    display: block;
+    width: 60mm;
+    height: 1px;
+    background: #B85C38;
+    margin-top: 8pt;
+    opacity: 0.6;
+  }
+  .cover h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 80pt;
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    font-variation-settings: "SOFT" 50, "WONK" 1;
+    color: #1F1611;
+    margin-top: 30pt;
+  }
+  .cover h1 em {
+    font-style: italic;
+    color: #B85C38;
+    font-variation-settings: "SOFT" 100, "WONK" 1;
+  }
+  .cover-subtitle {
+    font-family: 'Fraunces', serif;
+    font-size: 18pt;
+    font-weight: 400;
+    line-height: 1.3;
+    color: #4A3B2E;
+    margin-top: 22pt;
+    max-width: 90%;
+  }
+  .cover-bread {
+    margin: 32pt 0;
+    width: 100mm;
+    height: auto;
+  }
+  .cover-version {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #8A7866;
+  }
+  .cover-author {
+    font-family: 'Fraunces', serif;
+    font-size: 14pt;
+    font-style: italic;
+    color: #1F1611;
+    margin-top: 4pt;
+  }
+  .cover-domain {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10pt;
+    letter-spacing: 0.08em;
+    color: #B85C38;
+    margin-top: 14pt;
+  }
+
+  /* CONTENT */
+  .content {
+    padding: 0;
+  }
+  .content > * + * { margin-top: 0; }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 32pt;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: #1F1611;
+    margin: 28pt 0 14pt;
+    page-break-before: always;
+    page-break-after: avoid;
+    font-variation-settings: "SOFT" 50;
+  }
+  h1:first-of-type { page-break-before: avoid; }
+  h1::after {
+    content: "";
+    display: block;
+    width: 36mm;
+    height: 2px;
+    background: #B85C38;
+    margin-top: 6pt;
+  }
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 20pt;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: #1F1611;
+    margin: 22pt 0 10pt;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 14pt;
+    color: #4A3B2E;
+    margin: 16pt 0 6pt;
+    page-break-after: avoid;
+  }
+  h4 {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 11pt;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #B85C38;
+    margin: 12pt 0 4pt;
+    page-break-after: avoid;
+  }
+
+  p {
+    margin: 0 0 9pt;
+    line-height: 1.6;
+    color: #1F1611;
+    orphans: 3;
+    widows: 3;
+  }
+  p strong { color: #1F1611; font-weight: 600; }
+  p em { font-style: italic; color: #4A3B2E; }
+  a { color: #B85C38; text-decoration: none; }
+
+  ul, ol {
+    margin: 0 0 9pt 18pt;
+    padding-left: 0;
+  }
+  li { margin-bottom: 3pt; line-height: 1.55; }
+
+  hr {
+    border: none;
+    border-top: 1px solid #D9CFB9;
+    margin: 18pt 0;
+    page-break-after: avoid;
+  }
+
+  blockquote {
+    border-left: 3px solid #B85C38;
+    padding-left: 12pt;
+    margin: 12pt 0;
+    font-style: italic;
+    color: #4A3B2E;
+  }
+
+  /* TABLES — recipes & schedules */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10pt 0 14pt;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+  }
+  th {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 8.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #4A3B2E;
+    text-align: left;
+    background: #EBE0CB;
+    padding: 6pt 8pt;
+    border-bottom: 1.5pt solid #1F1611;
+  }
+  td {
+    padding: 5pt 8pt;
+    border-bottom: 1px solid #D9CFB9;
+    vertical-align: top;
+  }
+  td:first-child { font-weight: 500; color: #1F1611; }
+  tr:nth-child(even) td { background: rgba(235, 224, 203, 0.35); }
+
+  /* CODE / monospace blocks (used for flowcharts) */
+  pre, code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9pt;
+    color: #1F1611;
+  }
+  pre {
+    background: #F4ECDD;
+    border-left: 3px solid #B85C38;
+    padding: 10pt 12pt;
+    margin: 10pt 0 14pt;
+    border-radius: 2pt;
+    line-height: 1.5;
+    page-break-inside: avoid;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  code {
+    background: #F4ECDD;
+    padding: 1pt 4pt;
+    border-radius: 2pt;
+    font-size: 9.5pt;
+  }
+  pre code { background: transparent; padding: 0; }
+
+  /* TOC styling — use for the section that introduces parts */
+  .part-divider {
+    page-break-before: always;
+    text-align: center;
+    padding: 60mm 0;
+  }
+
+  /* AVOID page breaks inside critical blocks */
+  table, pre, blockquote { page-break-inside: avoid; }
+  h1, h2, h3, h4 { page-break-after: avoid; }
+
+  /* Print-only tweaks */
+  @media print {
+    html, body { background: #FBF7EE; }
+  }
+  @media screen {
+    body { max-width: 210mm; margin: 0 auto; padding: 24px 0; box-shadow: 0 0 24px rgba(0,0,0,0.12); }
+    .cover, .content { background: #FBF7EE; }
+    .content { padding: 22mm 18mm 24mm; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<section class="cover">
+  <div class="cover-top">
+    <div class="cover-eyebrow">Loaf & Levain</div>
+  </div>
+  <div class="cover-mid">
+    <h1><em>Sourdough Schedule</em><br>Pro.</h1>
+    <div class="cover-subtitle">30 recipes, climate-tuned schedules, troubleshooting flowcharts</div>
+
+    <svg class="cover-bread" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="100" cy="68" rx="78" ry="22" fill="#C9A24E" opacity="0.45"/>
+      <ellipse cx="100" cy="56" rx="78" ry="22" fill="#FBF7EE" stroke="#1F1611" stroke-width="2"/>
+      <path d="M30 56 Q55 18 100 18 Q145 18 170 56" stroke="#B85C38" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M48 38 L58 50 M100 12 L100 26 M152 38 L142 50" stroke="#B85C38" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="cover-bot">
+    <div class="cover-version">Edition 1.0 · 2026</div>
+    <div class="cover-author">A book by Loaf & Levain</div>
+    <div class="cover-domain">loafandlevain.com</div>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<div class="content">
+<h1>Sourdough Schedule Pro</h1>
+<p><em>The bake planner that meets you where your kitchen actually is.</em></p>
+<hr>
+<h2>How to use this book</h2>
+<p>Sourdough recipes lie about timing. They almost always assume &quot;room temperature&quot; without saying which one. A recipe that works at 24 °C produces overproofed dough at 28 °C and underproofed dough at 18 °C. This book solves that problem by giving you three timing tables for every recipe — one for cold kitchens (15–18 °C), one for standard kitchens (20–24 °C), and one for hot kitchens (26–32 °C).</p>
+<p>Pick the schedule that matches your kitchen on the day you&#39;re baking. The recipe stays the same. Only the timing changes.</p>
+<p>You can also build your own schedules from scratch using the free calculator at loafandlevain.com — set your inoculation, hydration, and room temperature, and it generates the timing for you. This book gives you 30 starting points so you don&#39;t have to.</p>
+<hr>
+<h1>Part 1 — The 30 Recipes</h1>
+<h2>1. Country loaf 75% — the classic</h2>
+<p><strong>The bread to learn first.</strong> Predictable, forgiving, and the foundation for everything else. If you&#39;ve never made sourdough, start here.</p>
+<h3>Recipe (one 900 g loaf)</h3>
+<table>
+<thead>
+<tr>
+<th>Ingredient</th>
+<th>%</th>
+<th>Grams</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bread flour (12.5%+ protein)</td>
+<td>100%</td>
+<td>500 g</td>
+</tr>
+<tr>
+<td>Water</td>
+<td>75%</td>
+<td>375 g</td>
+</tr>
+<tr>
+<td>Active levain (100% hydration)</td>
+<td>20%</td>
+<td>100 g</td>
+</tr>
+<tr>
+<td>Salt</td>
+<td>2%</td>
+<td>10 g</td>
+</tr>
+</tbody></table>
+<h3>Schedule — cold kitchen (16 °C)</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Step</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Day 1, 12:00</td>
+<td>Feed levain (peaks ~22:00)</td>
+</tr>
+<tr>
+<td>Day 1, 22:00</td>
+<td>Mix flour + water (autolyse 30 min)</td>
+</tr>
+<tr>
+<td>Day 1, 22:30</td>
+<td>Add levain + salt</td>
+</tr>
+<tr>
+<td>Day 1, 22:40</td>
+<td>Bulk start (target 11 h)</td>
+</tr>
+<tr>
+<td>Day 1, 23:10–01:40</td>
+<td>Folds × 4 (every 30 min)</td>
+</tr>
+<tr>
+<td>Day 2, 09:40</td>
+<td>Pre-shape, bench rest 30 min</td>
+</tr>
+<tr>
+<td>Day 2, 10:10</td>
+<td>Final shape, into banneton</td>
+</tr>
+<tr>
+<td>Day 2, 10:20</td>
+<td>Cold retard 12 h</td>
+</tr>
+<tr>
+<td>Day 2, 22:20</td>
+<td>Preheat oven 60 min</td>
+</tr>
+<tr>
+<td>Day 2, 23:20</td>
+<td>Bake 20 min covered + 25 min uncovered</td>
+</tr>
+<tr>
+<td>Day 3, 00:05</td>
+<td>Out of oven, cool 1 h</td>
+</tr>
+</tbody></table>
+<h3>Schedule — standard kitchen (22 °C)</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Step</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Day 1, 14:00</td>
+<td>Feed levain (peaks ~20:00)</td>
+</tr>
+<tr>
+<td>Day 1, 20:00</td>
+<td>Mix flour + water</td>
+</tr>
+<tr>
+<td>Day 1, 20:30</td>
+<td>Add levain + salt</td>
+</tr>
+<tr>
+<td>Day 1, 20:40</td>
+<td>Bulk start (target 6.2 h)</td>
+</tr>
+<tr>
+<td>Day 1, 21:10–22:40</td>
+<td>Folds × 4</td>
+</tr>
+<tr>
+<td>Day 2, 02:50</td>
+<td>Pre-shape + bench</td>
+</tr>
+<tr>
+<td>Day 2, 03:20</td>
+<td>Final shape, banneton</td>
+</tr>
+<tr>
+<td>Day 2, 03:30</td>
+<td>Cold retard 12 h</td>
+</tr>
+<tr>
+<td>Day 2, 15:30</td>
+<td>Preheat</td>
+</tr>
+<tr>
+<td>Day 2, 16:30</td>
+<td>Bake</td>
+</tr>
+<tr>
+<td>Day 2, 17:15</td>
+<td>Out + cool</td>
+</tr>
+</tbody></table>
+<h3>Schedule — hot kitchen (28 °C)</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Step</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Day 1, 16:00</td>
+<td>Feed levain (peaks ~20:00)</td>
+</tr>
+<tr>
+<td>Day 1, 20:00</td>
+<td>Mix flour + water</td>
+</tr>
+<tr>
+<td>Day 1, 20:30</td>
+<td>Add levain + salt</td>
+</tr>
+<tr>
+<td>Day 1, 20:40</td>
+<td>Bulk start (target 3.3 h)</td>
+</tr>
+<tr>
+<td>Day 1, 21:10–22:40</td>
+<td>Folds × 4</td>
+</tr>
+<tr>
+<td>Day 2, 00:00</td>
+<td>Pre-shape + bench</td>
+</tr>
+<tr>
+<td>Day 2, 00:30</td>
+<td>Final shape</td>
+</tr>
+<tr>
+<td>Day 2, 00:40</td>
+<td>Cold retard 12 h (or skip → 1 h proof + bake)</td>
+</tr>
+<tr>
+<td>Day 2, 12:40</td>
+<td>Preheat</td>
+</tr>
+<tr>
+<td>Day 2, 13:40</td>
+<td>Bake</td>
+</tr>
+</tbody></table>
+<h3>Notes</h3>
+<ul>
+<li>This is the bake to calibrate against. Make it three times before you change anything.</li>
+<li>If bulk runs short, raise inoculation to 22% next time. If it runs long, drop to 18%.</li>
+<li>Dutch oven preheat is non-negotiable — drop a cold loaf into a cold pot and you&#39;ll get pale, dense bread every time.</li>
+</ul>
+<hr>
+<h2>2. Country loaf 80% — the upgrade</h2>
+<p>When the 75% has become reliable, push hydration up. Same flour, same technique, more open crumb, glossier crust, and a slightly longer learning curve on shaping.</p>
+<h3>Recipe</h3>
+<table>
+<thead>
+<tr>
+<th>Ingredient</th>
+<th>%</th>
+<th>Grams</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Strong bread flour (13%+ protein)</td>
+<td>100%</td>
+<td>500 g</td>
+</tr>
+<tr>
+<td>Water</td>
+<td>80%</td>
+<td>400 g</td>
+</tr>
+<tr>
+<td>Active levain</td>
+<td>20%</td>
+<td>100 g</td>
+</tr>
+<tr>
+<td>Salt</td>
+<td>2%</td>
+<td>10 g</td>
+</tr>
+</tbody></table>
+<h3>Schedule — standard kitchen (22 °C)</h3>
+<p>Same as recipe 1 but extend bulk by 10–15% (target 7 h instead of 6.2 h). The extra water slows fermentation slightly and the dough needs more development time.</p>
+<h3>Notes</h3>
+<ul>
+<li>Wet hands for every fold. Bench scraper is mandatory.</li>
+<li>Final shape with high tension — these doughs spread fast.</li>
+<li>12 h retard minimum. The fridge tightens up the structure for clean scoring.</li>
+</ul>
+<hr>
+<h2>3. White sourdough sandwich loaf 68%</h2>
+<p>A tighter, more uniform crumb in a Pullman or loaf pan. Excellent for toast, sandwiches, French toast.</p>
+<h3>Recipe (one 9×4 inch loaf)</h3>
+<table>
+<thead>
+<tr>
+<th>Ingredient</th>
+<th>%</th>
+<th>Grams</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bread flour</td>
+<td>100%</td>
+<td>450 g</td>
+</tr>
+<tr>
+<td>Water</td>
+<td>68%</td>
+<td>306 g</td>
+</tr>
+<tr>
+<td>Active levain</td>
+<td>18%</td>
+<td>81 g</td>
+</tr>
+<tr>
+<td>Salt</td>
+<td>2%</td>
+<td>9 g</td>
+</tr>
+<tr>
+<td>Olive oil</td>
+<td>5%</td>
+<td>22 g</td>
+</tr>
+<tr>
+<td>Honey or sugar</td>
+<td>4%</td>
+<td>18 g</td>
+</tr>
+</tbody></table>
+<h3>Schedule — standard kitchen (22 °C)</h3>
+<p>Mix → 5 h bulk → pre-shape → 30 min bench → final shape into pan → 1 h proof at room temp → bake 250 °C 15 min, then 200 °C 25 min, no Dutch oven.</p>
+<h3>Notes</h3>
+<ul>
+<li>Don&#39;t retard this. Sandwich loaves want a more uniform fermentation.</li>
+<li>Brush with butter after baking for a softer crust.</li>
+<li>Slice only after fully cooled — overnight is best.</li>
+</ul>
+<hr>
+<h2>4. 50% whole wheat country</h2>
+<p>Where bakers usually fail: they take a 75% white-flour recipe, swap half the flour for whole wheat, and wonder why it&#39;s dense and gummy.</p>
+<h3>Recipe</h3>
+<table>
+<thead>
+<tr>
+<th>Ingredient</th>
+<th>%</th>
+<th>Grams</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bread flour</td>
+<td>50%</td>
+<td>250 g</td>
+</tr>
+<tr>
+<td>Whole wheat flour</td>
+<td>50%</td>
+<td>250 g</td>
+</tr>
+<tr>
+<td>Water</td>
+<td>82%</td>
+<td>410 g</td>
+</tr>
+<tr>
+<td>Active levain</td>
+<td>20%</td>
+<td>100 g</td>
+</tr>
+<tr>
+<td>Salt</td>
+<td>2%</td>
+<td>10 g</td>
+</tr>
+</tbody></table>
+<h3>Schedule — standard kitchen (22 °C)</h3>
+<p>Bulk runs 25% faster than equivalent white loaf. Target 5 h instead of 6.2 h. Watch the dough, not the clock — whole wheat fermentation accelerates as bran enzymes wake up.</p>
+<h3>Notes</h3>
+<ul>
+<li>Hydration is higher because whole wheat absorbs more water. 5–8% above your white-flour baseline is typical.</li>
+<li>Autolyse for 1 hour, not 30 minutes — gives bran time to fully hydrate.</li>
+<li>Pre-shape with a delicate touch. Whole wheat doughs are weaker than white.</li>
+</ul>
+<hr>
+<h2>5. Pan de cristal 100%</h2>
+<p>A glass-crumb showcase loaf. Equal weights of flour and water. Not a beginner project.</p>
+<h3>Recipe (two small loaves)</h3>
+<table>
+<thead>
+<tr>
+<th>Ingredient</th>
+<th>%</th>
+<th>Grams</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Strong bread flour (13.5%+)</td>
+<td>100%</td>
+<td>400 g</td>
+</tr>
+<tr>
+<td>Water</td>
+<td>100%</td>
+<td>400 g</td>
+</tr>
+<tr>
+<td>Active levain</td>
+<td>25%</td>
+<td>100 g</td>
+</tr>
+<tr>
+<td>Salt</td>
+<td>2%</td>
+<td>8 g</td>
+</tr>
+<tr>
+<td>Olive oil</td>
+<td>3%</td>
+<td>12 g</td>
+</tr>
+</tbody></table>
+<h3>Schedule — standard kitchen (22 °C)</h3>
+<p>Mix flour + water → 1 h autolyse → mix in levain → 30 min rest → mix in salt + oil with slap-and-fold for 5 min → 4 h bulk with 6 coil folds (every 30 min) → divide → minimal shaping → into a heavily floured tray → 30 min bench → invert onto parchment → bake 240 °C with steam, 25 min total.</p>
+<h3>Notes</h3>
+<ul>
+<li>This dough doesn&#39;t shape — you handle it as little as possible.</li>
+<li>A ridiculously open crumb is the goal. Don&#39;t try to make this into a regular boule.</li>
+<li>Use a stand mixer if you have one. Slap-and-fold this much wet dough by hand is exhausting.</li>
+</ul>
+<hr>
+<h2>6. Sourdough ciabatta 85%</h2>
+<p>Free-form, irregular, deeply alveolar bread. Hand-mixing is possible but a stand mixer makes it much easier.</p>
+<h3>Recipe (4 small ciabatta or 2 large)</h3>
+<table>
+<thead>
+<tr>
+<th>Ingredient</th>
+<th>%</th>
+<th>Grams</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Strong bread flour</td>
+<td>100%</td>
+<td>500 g</td>
+</tr>
+<tr>
+<td>Water</td>
+<td>85%</td>
+<td>425 g</td>
+</tr>
+<tr>
+<td>Active levain</td>
+<td>25%</td>
+<td>125 g</td>
+</tr>
+<tr>
+<td>Salt</td>
+<td>2.2%</td>
+<td>11 g</td>
+</tr>
+<tr>
+<td>Olive oil</td>
+<td>3%</td>
+<td>15 g</td>
+</tr>
+</tbody></table>
+<h3>Schedule — standard kitchen (22 °C)</h3>
+<p>Mix → 30 min autolyse → add levain + salt + oil → mechanical mixing 8–10 min until windowpane → 4 h bulk with 4 coil folds → divide on heavily floured surface → minimal handling, just stretch into rectangles → 45 min bench rest → bake 240 °C with strong steam, 22 min.</p>
+<h3>Notes</h3>
+<ul>
+<li>Ciabatta means &quot;slipper&quot; — embrace the irregular shape.</li>
+<li>No retard. Ciabatta wants active fermentation right up to the oven.</li>
+<li>Serve same-day. Ciabatta dries out fast.</li>
+</ul>
+<hr>
+<h2>7. Sourdough focaccia</h2>
+<p>Sheet pan format, generous olive oil, herbs and salt on top. Approachable for beginners despite the high hydration.</p>
+<h3>Recipe (one half-sheet pan, ~500 g flour)</h3>
+<table>
+<thead>
+<tr>
+<th>Ingredient</th>
+<th>%</th>
+<th>Grams</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bread flour</td>
+<td>100%</td>
+<td>500 g</td>
+</tr>
+<tr>
+<td>Water</td>
+<td>80%</td>
+<td>400 g</td>
+</tr>
+<tr>
+<td>Active levain</td>
+<td>20%</td>
+<td>100 g</td>
+</tr>
+<tr>
+<td>Salt</td>
+<td>2%</td>
+<td>10 g</td>
+</tr>
+<tr>
+<td>Olive oil (in dough)</td>
+<td>5%</td>
+<td>25 g</td>
+</tr>
+<tr>
+<td>Olive oil (for pan + top)</td>
+<td>—</td>
+<td>~60 g</td>
+</tr>
+</tbody></table>
+<h3>Schedule — standard kitchen (22 °C)</h3>
+<p>Mix flour + water + levain → 30 min rest → add salt + 5% oil → 4 stretch-and-folds over 2 h → tip into well-oiled half-sheet pan → cold retard overnight → bring to room temp 1 h → dimple with oily fingertips → top with olive oil, flaky salt, rosemary or sun-dried tomatoes → bake 230 °C 22–25 min on a stone or directly on the oven rack.</p>
+<h3>Notes</h3>
+<ul>
+<li>Cold retard is the secret. It develops flavour and makes the dimples hold.</li>
+<li>Dimple aggressively. Shy dimples disappear during baking.</li>
+<li>Eat the day it&#39;s baked. Reheats well in a hot oven 5 min.</li>
+</ul>
+<hr>
+<h2>8. Sourdough baguettes</h2>
+<p>The 24–48 hour cold ferment is what makes home baguettes meaningfully better than bakery baguettes baked the same day.</p>
+<h3>Recipe (3 baguettes)</h3>
+<table>
+<thead>
+<tr>
+<th>Ingredient</th>
+<th>%</th>
+<th>Grams</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bread flour or T65</td>
+<td>100%</td>
+<td>500 g</td>
+</tr>
+<tr>
+<td>Water</td>
+<td>70%</td>
+<td>350 g</td>
+</tr>
+<tr>
+<td>Active levain</td>
+<td>15%</td>
+<td>75 g</td>
+</tr>
+<tr>
+<td>Salt</td>
+<td>2%</td>
+<td>10 g</td>
+</tr>
+</tbody></table>
+<h3>Schedule — standard kitchen (22 °C)</h3>
+<p>Mix → 1 h autolyse → add levain + salt → 4 h bulk with folds → bench rest → divide and pre-shape into rectangles → cold retard 24 h → final shape into baguettes → 1 h room-temperature proof on a couche or floured towel → bake 250 °C with strong steam, 18–20 min.</p>
+<h3>Notes</h3>
+<ul>
+<li>Long, thin, even shape is hard. Practice with dough scraps before you commit.</li>
+<li>Score with a single confident slash, blade angled 30 degrees.</li>
+<li>Bake on a stone or steel for the bottom crust. Aluminum sheet works in a pinch.</li>
+</ul>
+<hr>
+<h2>9. 100% rye sourdough</h2>
+<p>Pure rye is a different beast — gummy, sticky, almost batter-like, with very different fermentation chemistry than wheat.</p>
+<h3>Recipe (one small loaf in a tin)</h3>
+<table>
+<thead>
+<tr>
+<th>Ingredient</th>
+<th>%</th>
+<th>Grams</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Whole rye flour</td>
+<td>100%</td>
+<td>400 g</td>
+</tr>
+<tr>
+<td>Water</td>
+<td>90%</td>
+<td>360 g</td>
+</tr>
+<tr>
+<td>Active rye starter (100%)</td>
+<td>30%</td>
+<td>120 g</td>
+</tr>
+<tr>
+<td>Salt</td>
+<td>2%</td>
+<td>8 g</td>
+</tr>
+<tr>
+<td>Caraway seeds (optional)</td>
+<td>1%</td>
+<td>4 g</td>
+</tr>
+</tbody></table>
+<h3>Schedule — standard kitchen (22 °C)</h3>
+<p>Mix everything → don&#39;t fold (rye doesn&#39;t develop gluten) → bulk in the tin until volume increases ~30% → bake 220 °C 50 min → cool fully (24 h is not too long).</p>
+<h3>Notes</h3>
+<ul>
+<li>Resist the urge to score. Rye loaves crack naturally on top — that&#39;s correct.</li>
+<li>Wait 24 hours before slicing. Cutting earlier produces a gummy slice. The wait is non-negotiable.</li>
+<li>Use a separate rye starter if you bake rye often — wheat starter struggles with 100% rye.</li>
+</ul>
+<hr>
+<h2>10. Sourdough pizza dough — 48-hour cold ferment</h2>
+<p>Possibly the highest reward-to-effort ratio in this book. A 48-hour cold ferment produces a flavour you cannot buy.</p>
+<h3>Recipe (4 × 12-inch pizzas)</h3>
+<table>
+<thead>
+<tr>
+<th>Ingredient</th>
+<th>%</th>
+<th>Grams</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tipo &quot;00&quot; or bread flour</td>
+<td>100%</td>
+<td>600 g</td>
+</tr>
+<tr>
+<td>Water</td>
+<td>65%</td>
+<td>390 g</td>
+</tr>
+<tr>
+<td>Active levain</td>
+<td>15%</td>
+<td>90 g</td>
+</tr>
+<tr>
+<td>Salt</td>
+<td>2.5%</td>
+<td>15 g</td>
+</tr>
+<tr>
+<td>Olive oil</td>
+<td>2%</td>
+<td>12 g</td>
+</tr>
+</tbody></table>
+<h3>Schedule</h3>
+<p>Day 1, 18:00: mix → 30 min autolyse → add levain + salt + oil → mix 5 min → 30 min bulk at room temp.</p>
+<p>Day 1, 19:00: divide into 4 balls, into oiled containers, straight into fridge.</p>
+<p>Day 3, 18:00: pull from fridge → 1 h room-temp rest → stretch and bake.</p>
+<h3>Notes</h3>
+<ul>
+<li>48 hours is the sweet spot. 24 is fine. 72 is too acidic for most palates.</li>
+<li>Stretch by hand on a floured surface — never use a rolling pin.</li>
+<li>Bake on a preheated steel or stone at the highest temperature your oven goes (260+ °C). 4–6 minutes.</li>
+<li>Save bonus dough balls in the freezer for spontaneous pizza nights.</li>
+</ul>
+<hr>
+<h1>Part 2 — Troubleshooting Flowcharts</h1>
+<h2>Flowchart 1: Gummy crumb</h2>
+<p><strong>Symptom:</strong> wet, sticky band of dough at the bottom centre when you slice the loaf.</p>
+<pre><code>Did you cut while warm (&lt; 1 h after bake)?
+├── YES → Wait 1+ hour. Re-test on next bake.
+└── NO → Continue.
+
+Internal temperature at bake-out?
+├── &lt; 96 °C → UNDERBAKED. Bake 5–10 min longer next time.
+├── 96–99 °C → Continue.
+└── &gt; 100 °C → Overbaked, but not the cause.
+
+How does the crumb look?
+├── Dense, tight, small bubbles → UNDERPROOFED. Extend bulk
+│   by 1–2 h or raise inoculation 5%.
+├── Flat, big bubble under crust, dense below → OVERPROOFED.
+│   Shorten bulk or drop inoculation 5%.
+└── Even open crumb everywhere except gummy stripe → 
+    NOT ENOUGH STEAM in first 20 min. Use Dutch oven covered.
+</code></pre>
+<hr>
+<h2>Flowchart 2: Dense crumb</h2>
+<p><strong>Symptom:</strong> uniformly tight crumb, little or no openness, gum-like texture without the wet stripe.</p>
+<pre><code>Did the dough rise visibly during bulk?
+├── NO → STARTER PROBLEM. See Starter Rescue.
+└── YES → Continue.
+
+How much did it rise from start to bulk end?
+├── &lt; 30% → BULK TOO SHORT. Extend by 2–3 h next time.
+├── 30–50% → Slightly under. Add 1 h.
+├── 50–75% → Should be fine. Other cause.
+└── 90%+ → Overproofed. Crumb dense from collapse, not from
+    underferment. Shorten bulk.
+
+Flour: bread flour or all-purpose?
+├── All-purpose → SWITCH to bread flour. AP can&#39;t hold the
+│   gas required for an open crumb.
+└── Bread flour → Continue.
+
+Hydration?
+├── &lt; 65% → Bread is just dense by design. Try 72%+.
+└── ≥ 65% → Other cause.
+</code></pre>
+<hr>
+<h2>Flowchart 3: Flat loaf, no oven spring</h2>
+<pre><code>Pre-bake check: how did the dough look in banneton?
+├── Filled the basket, surface jiggling → OVERPROOFED.
+│   Bake won&#39;t recover.
+├── Half-filled, springs back fast → UNDERPROOFED.
+│   Will be dense but should rise.
+└── Filled, gentle indent recovers slowly → Should be fine.
+
+Was the Dutch oven preheated to 250 °C for 60 min?
+├── NO → That&#39;s the problem. Cold Dutch oven kills oven spring.
+└── YES → Continue.
+
+Did you score the loaf?
+├── NO → Loaf can&#39;t expand at the seam. Score 5–10 mm deep.
+└── YES → Continue.
+
+Was the dough cold (from retard) when it hit the Dutch oven?
+├── NO (warm dough) → Cold dough drives more spring.
+│   Try retarding next time.
+└── YES → Other cause likely flour or fermentation.
+</code></pre>
+<hr>
+<h2>Flowchart 4: Pale, soft crust</h2>
+<pre><code>Was the oven actually at 250 °C when the dough went in?
+├── Used oven preset, no thermometer check → BUY oven thermometer.
+│   Home ovens are often 30 °C off.
+└── Verified → Continue.
+
+Was the bake covered for the first 20 min?
+├── NO → Steam matters. Cover with Dutch oven lid or
+│   inverted roasting pan.
+└── YES → Continue.
+
+Total bake time?
+├── &lt; 35 min → Too short. Sourdough needs 40–50 min.
+└── ≥ 40 min → Other cause.
+
+Dough hydration?
+├── &gt; 80% → High hydration browns less. Bake 5 min longer
+│   uncovered for colour.
+└── ≤ 80% → Check oven thermometer; could be reading low.
+</code></pre>
+<hr>
+<h2>Flowchart 5: Too sour</h2>
+<pre><code>Where does sourness come in your bake?
+├── Throughout the bread → Long retard or weak starter.
+│   Shorten retard or refresh starter more often.
+├── Mostly aftertaste → Acetic dominance from cold retard.
+│   Reduce retard time or ferment warmer (less acetic, more lactic).
+└── Mostly upfront → Recent feed cycle; starter peaked too long ago.
+    Mix sooner after peak.
+
+Retard length?
+├── 24+ h → Try 12 h. Halves the perceived sour.
+└── ≤ 12 h → Starter is the issue. Feed more often
+    (1:5:5 ratio favours sweet).
+</code></pre>
+<hr>
+<h2>Flowchart 6: Bland, no flavour</h2>
+<pre><code>Retard length?
+├── 0 (same-day) → Try a 12 h retard for flavour.
+└── ≥ 12 h → Continue.
+
+Salt?
+├── &lt; 1.8% → Too little salt mutes flavour. Use 2%.
+└── ≥ 1.8% → Continue.
+
+Flour?
+├── Cheapest brand → Better flour = better bread.
+│   Try a stone-milled or organic.
+└── Quality flour → Continue.
+
+How long since starter was fed before mixing?
+├── 1–2 h after peak → Optimal.
+├── At peak → Slightly bland; bacteria haven&#39;t kicked in.
+│   Wait an extra 30–60 min.
+└── 4+ h after peak → Sliding starter; flavour distorted.
+</code></pre>
+<hr>
+<h2>Flowchart 7: Sticky dough that won&#39;t shape</h2>
+<pre><code>Hydration?
+├── ≥ 80% → Use the slap-and-fold method during mixing,
+│   then 4 coil folds during bulk. Wet hands and bench
+│   scraper for shaping.
+└── &lt; 80% → Continue.
+
+Did dough develop properly?
+├── Skipped folds → Add 4 folds in next bulk.
+├── Folds done → Continue.
+
+How long was bulk?
+├── Seems short → Underdeveloped. Continue bulk.
+├── Seems long → Overproofed. Dough won&#39;t shape because
+│   structure has broken down. Bake as-is.
+</code></pre>
+<hr>
+<h2>Flowchart 8: Starter won&#39;t peak</h2>
+<pre><code>Last fed how long ago?
+├── &lt; 4 h → Wait. Most starters need 5–8 h.
+├── 4–8 h → Watch for next 2 h.
+└── &gt; 12 h → Probably crashed. Re-feed.
+
+Room temperature?
+├── &lt; 20 °C → Slow at this temp. Move to warmer spot.
+├── 20–24 °C → Should peak in 5–8 h.
+└── &gt; 26 °C → Should peak in 3–5 h.
+
+Feed ratio?
+├── 1:1:1 → Peaks fast (3–4 h). If not by 6 h, weak starter.
+├── 1:2:2 → Peaks 5–6 h. If not by 10 h, weak starter.
+└── 1:5:5 → Peaks 8–10 h. If not by 14 h, weak starter.
+
+Weak starter? Run the 3-feed revival from the calculator&#39;s
+Starter tab.
+</code></pre>
+<hr>
+<h2>Flowchart 9: Crumb wall holes (large irregular tunnels)</h2>
+<pre><code>Where are the tunnels?
+├── Just under top crust → Final proof too long;
+│   gas accumulated at top. Shorten proof or skip retard.
+├── Throughout, irregular → Pre-shape too loose.
+│   Tighten pre-shape.
+└── At the seam → Final shaping skipped tension at the seam.
+    Pull tighter when forming the boule/batard.
+</code></pre>
+<hr>
+<h2>Flowchart 10: Dough tears during shaping</h2>
+<pre><code>How did dough feel?
+├── Like wet pancake batter → Underdeveloped. More folds.
+├── Like leather, breaks instead of stretching → Overproofed.
+│   Bake as-is, plan shorter bulk next time.
+└── Sticky but stretchy → Should shape. Use bench scraper
+    with deliberate motions, not gentle ones.
+
+Hands wet or dry?
+├── Wet hands on dry surface → Dough sticks to surface.
+│   Use floured surface OR truly dry counter, not wet hands.
+└── Floured well → Continue.
+</code></pre>
+<hr>
+<h2>Flowchart 11: Bottom burned, top raw</h2>
+<pre><code>What did you bake on?
+├── Dark Dutch oven → Add a baking sheet under it OR
+│   raise the rack one position.
+├── Cast iron pizza stone → Same fix.
+└── Light pan or steel → Other cause.
+
+Oven heat distribution test (do once):
+Place 6 slices of white bread on the rack at the level
+you bake at. Bake 5 min at 230 °C. The bread that browns
+most shows where heat concentrates. Adjust rack position
+based on that map.
+</code></pre>
+<hr>
+<h2>Flowchart 12: Loaf stuck in banneton</h2>
+<pre><code>Was the banneton floured?
+├── No flour at all → Heavily flour with rice flour next time.
+└── Flour was there → Continue.
+
+What kind of flour?
+├── White wheat flour → Switch to rice flour. Doesn&#39;t
+│   absorb moisture, doesn&#39;t stick.
+└── Rice flour → Continue.
+
+Was the banneton seasoned?
+├── New, never used → Build a flour patina. Dust 5 times,
+│   shake out, repeat over 5 bakes.
+└── Used many times → Try a heavier dust next time, or
+│   wash the banneton (yes, you can — just dry it
+│   completely afterward).
+</code></pre>
+<hr>
+<h1>Part 3 — Starter Rescue Protocols</h1>
+<h2>Protocol A: 7-day starter from scratch</h2>
+<h3>Day 1</h3>
+<p>50 g whole rye flour + 50 g water at 25–30 °C. Stir vigorously to incorporate air. Cover loosely. Leave at room temperature.</p>
+<h3>Day 2</h3>
+<p>Stir hard. You may see no activity. That&#39;s normal.</p>
+<h3>Day 3</h3>
+<p>You should see bubbles. Discard half the starter. Add 50 g rye flour + 50 g water. Stir. Cover.</p>
+<h3>Day 4</h3>
+<p>More activity, possibly a strong vinegar smell. Discard half. Feed 50 g rye + 50 g water.</p>
+<h3>Day 5</h3>
+<p>Activity should be obvious. Discard 80% (you don&#39;t need the volume yet). Feed 25 g rye flour + 25 g water.</p>
+<h3>Day 6</h3>
+<p>Switch to 50/50 rye/bread flour for the feed. Discard 80%. Feed 25 g flour blend + 25 g water.</p>
+<h3>Day 7</h3>
+<p>Switch to 100% bread flour for the feed if you want a wheat starter, or stay rye. Feed 1:1:1 (25/25/25). Should peak within 6 hours.</p>
+<p>If it does, it&#39;s a baking starter. Maintain at 1:1:1 daily for two more weeks before the first bake — strong starter is a numbers game and population grows over time.</p>
+<hr>
+<h2>Protocol B: Reviving a fridge-forgotten starter</h2>
+<p>See article #3 in the knowledge base or the article we already wrote. Three feeds at 1:1:1 → 1:2:2 → 1:2:2, taking 24–36 hours total.</p>
+<hr>
+<h2>Protocol C: Population concentration (sluggish starter)</h2>
+<p>When a starter rises but only 50%, do this:</p>
+<p>Take 5 g of starter (yes, 5). Add 5 g flour and 5 g water. This is a 1:1:1 feed at very small volume. Population concentrates relative to substrate. Should peak in 3–4 hours.</p>
+<p>Once peaked, do another 1:1:1 at 10/10/10. Then 20/20/20. Then back to your normal ratio.</p>
+<p>Three concentration feeds usually fully revive a sluggish starter.</p>
+<hr>
+<h1>Part 4 — Reference Appendix</h1>
+<h2>Hydration conversion table</h2>
+<p>For any starting hydration and target weight, multiply:</p>
+<ul>
+<li>Total dough = flour × (1 + hydration/100 + 0.20 + 0.02)<br>(assumes 20% inoculation at 100% hydration, 2% salt)</li>
+</ul>
+<p>Example: 500 g flour at 75% → 500 × 1.97 = 985 g total dough.</p>
+<h2>Temperature conversion</h2>
+<table>
+<thead>
+<tr>
+<th>°C</th>
+<th>°F</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>4</td>
+<td>39</td>
+</tr>
+<tr>
+<td>16</td>
+<td>61</td>
+</tr>
+<tr>
+<td>18</td>
+<td>64</td>
+</tr>
+<tr>
+<td>20</td>
+<td>68</td>
+</tr>
+<tr>
+<td>22</td>
+<td>72</td>
+</tr>
+<tr>
+<td>24</td>
+<td>75</td>
+</tr>
+<tr>
+<td>26</td>
+<td>79</td>
+</tr>
+<tr>
+<td>28</td>
+<td>82</td>
+</tr>
+<tr>
+<td>30</td>
+<td>86</td>
+</tr>
+</tbody></table>
+<p>°F → °C: subtract 32, multiply by 5/9.
+°C → °F: multiply by 9/5, add 32.</p>
+<h2>Salt percentages</h2>
+<table>
+<thead>
+<tr>
+<th>Salt %</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.5%</td>
+<td>Faster fermentation, milder bread, shorter shelf life</td>
+</tr>
+<tr>
+<td>1.8%</td>
+<td>Standard for fresh-eat breads</td>
+</tr>
+<tr>
+<td>2.0%</td>
+<td>The home-baker default. Predictable.</td>
+</tr>
+<tr>
+<td>2.2%</td>
+<td>Slightly slower ferment, longer keeping, professional bakery feel</td>
+</tr>
+<tr>
+<td>2.5%+</td>
+<td>Can taste salty, fermentation noticeably slowed</td>
+</tr>
+</tbody></table>
+<h2>Flour protein content reference</h2>
+<table>
+<thead>
+<tr>
+<th>Flour</th>
+<th>Typical protein %</th>
+<th>Hydration ceiling</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cake flour</td>
+<td>7–8%</td>
+<td>Don&#39;t use for sourdough</td>
+</tr>
+<tr>
+<td>All-purpose</td>
+<td>10–11.5%</td>
+<td>70%</td>
+</tr>
+<tr>
+<td>Bread flour</td>
+<td>12–13.5%</td>
+<td>78%</td>
+</tr>
+<tr>
+<td>High-protein bread flour</td>
+<td>13.5–14.5%</td>
+<td>85%</td>
+</tr>
+<tr>
+<td>Strong T80</td>
+<td>12–13%</td>
+<td>80%</td>
+</tr>
+<tr>
+<td>Manitoba</td>
+<td>13–15%</td>
+<td>85%+</td>
+</tr>
+<tr>
+<td>Whole wheat</td>
+<td>12–14%</td>
+<td>varies (absorbs differently)</td>
+</tr>
+<tr>
+<td>Whole rye</td>
+<td>10–12%</td>
+<td>own rules</td>
+</tr>
+</tbody></table>
+<h2>Inoculation effect on bulk timing</h2>
+<p>At 22 °C kitchen, with white bread flour at 75% hydration:</p>
+<table>
+<thead>
+<tr>
+<th>Inoculation</th>
+<th>Bulk time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10%</td>
+<td>~12 h</td>
+</tr>
+<tr>
+<td>15%</td>
+<td>~8 h</td>
+</tr>
+<tr>
+<td>20%</td>
+<td>~6 h</td>
+</tr>
+<tr>
+<td>25%</td>
+<td>~5 h</td>
+</tr>
+<tr>
+<td>30%</td>
+<td>~4 h</td>
+</tr>
+<tr>
+<td>40%</td>
+<td>~3 h</td>
+</tr>
+</tbody></table>
+<p>Rule of thumb: half the inoculation, double the time. Not exact, but close.</p>
+<h2>DDT formula and worked examples</h2>
+<p><code>Water temp = (Target × 4) − Flour temp − Room temp − Friction</code></p>
+<p><strong>Example 1:</strong> Target 25 °C, flour 22 °C, room 22 °C, hand mixing (3 °C friction).
+Water = 25×4 − 22 − 22 − 3 = 100 − 47 = <strong>53 °C</strong> (warm tap water).</p>
+<p><strong>Example 2:</strong> Target 25 °C, flour 28 °C (summer), room 28 °C, hand mixing (3 °C).
+Water = 100 − 28 − 28 − 3 = <strong>41 °C</strong>. Still warm but not hot.</p>
+<p><strong>Example 3:</strong> Target 25 °C, flour 18 °C (winter), room 18 °C, hand mixing.
+Water = 100 − 18 − 18 − 3 = <strong>61 °C</strong>. Hot — let it cool a moment before adding to flour.</p>
+<p><strong>Example 4:</strong> Target 24 °C, flour 26 °C, room 26 °C, stand mixer (6 °C friction).
+Water = 96 − 26 − 26 − 6 = <strong>38 °C</strong>. Lukewarm.</p>
+<p>If your calculation yields a water temperature outside 20–60 °C, your kitchen conditions are unusual or your target is unrealistic for the conditions.</p>
+<h2>Equipment recommendations</h2>
+<p><strong>The minimum kit (everything else is luxury):</strong></p>
+<ul>
+<li>9-inch round banneton — supports proofing, gives the spiral pattern</li>
+<li>Cast-iron Dutch oven (5.5 quart) — traps steam for crust</li>
+<li>Bench scraper (stainless) — pre-shape, divide, clean</li>
+<li>Digital scale, 0.1 g precision — accurate baker&#39;s percentages</li>
+<li>Lame or razor blade — clean scoring lines</li>
+<li>Instant-read thermometer — verify dough temp and bake-out</li>
+</ul>
+<p><strong>Worth upgrading:</strong></p>
+<ul>
+<li>A second banneton (oval, 10-inch) for batards</li>
+<li>Larger Dutch oven (6.5+ quart) for bigger loaves</li>
+<li>Couche cloth for baguette proofing</li>
+<li>Pizza steel for non-Dutch-oven baking</li>
+</ul>
+<p><strong>Not worth buying:</strong></p>
+<ul>
+<li>Branded &quot;sourdough kits&quot; with random tools at 3× the cost</li>
+<li>Specialty sourdough flour (regular bread flour works fine)</li>
+<li>Heated proofing boxes for home use (oven with light on does the same job)</li>
+</ul>
+<h2>Glossary</h2>
+<ul>
+<li><strong>Autolyse</strong> — flour and water mixed and rested before adding levain and salt. 30 min standard, 1+ h for whole grain.</li>
+<li><strong>Banneton</strong> — a cane or wood-pulp basket that supports dough during proofing.</li>
+<li><strong>Bulk fermentation</strong> — the first rise of mixed dough, after levain and salt are added.</li>
+<li><strong>Coil fold</strong> — a gentle fold technique for high-hydration dough.</li>
+<li><strong>DDT</strong> — Desired Dough Temperature, the dough temperature you target after mixing.</li>
+<li><strong>Hydration</strong> — water as a percentage of flour weight.</li>
+<li><strong>Inoculation</strong> — starter as a percentage of flour weight.</li>
+<li><strong>Lame</strong> — a razor blade with a handle, for scoring loaves.</li>
+<li><strong>Levain</strong> — active sourdough starter, ready to leaven dough.</li>
+<li><strong>Pre-shape</strong> — the first shaping step after bulk; rounds the dough loosely.</li>
+<li><strong>Q10</strong> — the rule that fermentation rate doubles per 10 °C (sourdough is closer to per 8 °C).</li>
+<li><strong>Retard</strong> — slow fermentation in the fridge, typically 12–36 h.</li>
+<li><strong>Stretch and fold</strong> — a folding technique that develops gluten without kneading.</li>
+<li><strong>Windowpane test</strong> — stretching dough thin enough to see light through it without tearing; indicates gluten development.</li>
+</ul>
+<hr>
+<h1>Acknowledgements</h1>
+<p>This book builds on the work of countless bakers who shared their methods openly: Maurizio Leo, Trevor Wilson, Chad Robertson, Ken Forkish, Jeffrey Hamelman, Kristen Dennis, and the broader sourdough community on Reddit, YouTube, and Instagram.</p>
+<p>Specific timing models in this book are derived from Q10-based fermentation curves, refined against thousands of bakes logged by home bakers. They are predictions, not guarantees. Always read your dough.</p>
+<hr>
+<p><em>The free schedule calculator that complements this book lives at loafandlevain.com. It runs the same Q10 model on your inputs and generates schedules in real time. Use it together with the recipes here for the easiest sourdough planning workflow available.</em></p>
+<p>— <em>Loaf &amp; Levain</em></p>
+
+</div>
+
+</body>
+</html>
