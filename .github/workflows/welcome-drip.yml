@@ -1,0 +1,23 @@
+name: Welcome drip
+
+on:
+  schedule:
+    # Every 6 hours. Drip steps trigger on age + step thresholds, so frequency
+    # only affects how quickly a sub advances after their delay window opens.
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  drip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run welcome drip
+        env:
+          MAILERLITE_TOKEN: ${{ secrets.MAILERLITE_TOKEN }}
+        run: node scripts/welcome-drip.js
