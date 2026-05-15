@@ -176,10 +176,10 @@ function getStep(sub) {
 }
 
 async function ensureField() {
-  const res = await api('GET', '/subscribers/fields?limit=100');
+  const res = await api('GET', '/fields?limit=100');
   const existing = (res.data || []).find(f => f.key === STEP_FIELD);
   if (existing) return existing.id;
-  const created = await api('POST', '/subscribers/fields', {
+  const created = await api('POST', '/fields', {
     type: 'number',
     name: STEP_FIELD
   });
