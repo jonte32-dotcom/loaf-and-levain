@@ -14,6 +14,7 @@ import { marked } from 'marked';
 
 const HTML_FILE = 'sourdough-schedule.html';
 const ARTICLES_DIR = 'articles';
+const ROADMAP_FILE = 'content-roadmap.json';
 const SITE_BASE = process.env.SITE_BASE || 'https://loafandlevain.com';
 const START = '<!-- ARTICLES_AUTO_INJECT_START -->';
 const END = '<!-- ARTICLES_AUTO_INJECT_END -->';
@@ -24,8 +25,19 @@ function slugify(s) {
   return s.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').slice(0, 60);
 }
 
+function loadRoadmapSlugs() {
+  if (!fs.existsSync(ROADMAP_FILE)) return new Map();
+  const roadmap = JSON.parse(fs.readFileSync(ROADMAP_FILE, 'utf8'));
+  return new Map(roadmap.map(t => [t.slug, t]));
+}
+
+function fileSlug(filename) {
+  return filename.replace(/^\d+-/, '').replace(/\.md$/, '');
+}
+
 function readArticles() {
   if (!fs.existsSync(ARTICLES_DIR)) return [];
+  const roadmapSlugs = loadRoadmapSlugs();
   return fs.readdirSync(ARTICLES_DIR)
     .filter(f => f.endsWith('.md'))
     .sort()
@@ -34,7 +46,10 @@ function readArticles() {
       const titleMatch = raw.match(/^#\s+(.+)$/m);
       const title = titleMatch ? titleMatch[1] : f.replace(/^\d+-/, '').replace(/\.md$/, '');
       const body = raw.replace(/^#\s+.+$/m, '').trim();
-      const slug = slugify(title);
+      // Stable slug from filename → matches content-roadmap.json + Pinterest descriptions.
+      // Falls back to slugified title if filename doesn't match roadmap.
+      const fSlug = fileSlug(f);
+      const slug = roadmapSlugs.has(fSlug) ? fSlug : slugify(title);
       return { file: f, title, body, slug };
     });
 }

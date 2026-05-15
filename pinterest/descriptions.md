@@ -132,7 +132,7 @@ Three timing tables for every recipe — cold kitchen (15–18°C), standard (20
 
 **Hashtags:** #sourdough #sourdoughrecipes #sourdoughpro #breadbaking #sourdoughebook #naturalleaven
 
-**Link:** https://YOUR-GUMROAD-URL
+**Link:** https://loaflevain.gumroad.com/l/sourdough-pro
 
 ---
 
