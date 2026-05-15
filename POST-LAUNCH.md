@@ -21,11 +21,11 @@ revenue. None of it requires me — just discipline.
   - Add to GitHub Secrets: `PINTEREST_TOKEN`, `PINTEREST_BOARD_ID`
   - Pinterest cron auto-posts 1 pin every other day from then on
 - [ ] **Stripe finalisering for BMC** — slutför payout-onboarding via https://buymeacoffee.com → Settings → Payouts (15 min, needs personnummer + bank IBAN + ID photo)
-- [ ] **Check MailerLite Subscribers daily** — when new subscriber appears, run:
-  ```bash
-  cd C:\Users\Aras_\Desktop\Dough
-  node scripts/send-welcome-campaign.js
-  ```
+- [ ] **Welcome drip is automatic** — `scripts/welcome-drip.js` runs every 6 hours
+  via `.github/workflows/welcome-drip.yml`. No manual action needed once
+  `MAILERLITE_TOKEN` is added as a GitHub Secret. The script handles all 5
+  mails (delays: 0/2/5/9/14 days) per subscriber via temp-group pattern.
+  Manual trigger: GitHub Actions tab → "Welcome drip" → Run workflow.
 
 ## Within 2 weeks
 
@@ -85,7 +85,7 @@ This is when you decide:
 
 | Script | When | Purpose |
 |---|---|---|
-| `node scripts/send-welcome-campaign.js` | When new subscriber added | Sends cheat sheet PDF |
+| `node scripts/welcome-drip.js` | Auto via cron every 6h | Drives 5-step welcome sequence per subscriber |
 | `node scripts/inject-articles.js` | After manually adding article | Updates HTML with all articles |
 | `node scripts/gen-pinterest-pins.js` | When you want new pin batch | Regenerates 10 pin JPGs |
 | `node scripts/configure.js` | When you change MONETIZATION_CONFIG values | Updates HTML in place |
