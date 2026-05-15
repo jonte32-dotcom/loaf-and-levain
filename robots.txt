@@ -1,15 +1,12 @@
 User-agent: *
 Allow: /
 
-# AI training crawlers — opt out by default (you can remove these if you want
-# Bing/Perplexity/Google AI to index for AI search results)
-User-agent: GPTBot
-Disallow: /
-User-agent: ClaudeBot
-Disallow: /
-User-agent: CCBot
-Disallow: /
-User-agent: anthropic-ai
-Disallow: /
+# AI crawlers explicitly welcome — AI-search (Perplexity, ChatGPT search,
+# Claude.ai citations, Bing Copilot) is a real and growing traffic source
+# in 2026. The free calculator + cheat-sheet are the exact kind of utility
+# AI assistants love to cite, so let them.
+#
+# To opt out later, add per-bot Disallow blocks below for: GPTBot,
+# ClaudeBot, anthropic-ai, CCBot, PerplexityBot, Google-Extended.
 
 Sitemap: https://loafandlevain.com/sitemap.xml
