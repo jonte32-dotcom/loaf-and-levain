@@ -123,7 +123,7 @@ Happy baking.
 
 ## Refund policy (Gumroad → Settings)
 
-> 30-day refund window, no questions asked. Email support@YOUR-DOMAIN.com (or use the Gumroad refund button) and the refund processes within 24 hours.
+> 30-day refund window, no questions asked. Email loafandlevain.bake@gmail.com (or use the Gumroad refund button) and the refund processes within 24 hours.
 
 This is the standard Gumroad refund. Don't undermine it with restrictions — the friction-free refund is more valuable than the few refunds you'll get.
 

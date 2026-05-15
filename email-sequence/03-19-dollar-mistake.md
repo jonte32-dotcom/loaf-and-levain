@@ -25,7 +25,7 @@ It's $19. One ruined panettone pays for it 1.5 times over.
 
 I'll send you the details on what's inside in a couple days. No pressure to buy — but if you've ever had a sourdough disaster you couldn't trace back, this might be why.
 
-— [Your name]
+— Loaf & Levain
 
 ---
 

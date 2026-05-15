@@ -1,7 +1,7 @@
 # Email 01 — Welcome (immediate)
 
 **Subject:** Your sourdough cheat sheet (+ a heads-up)
-**From:** [Your name] at Loaf & Levain
+**From:** Loaf & Levain
 **Send:** Immediately on signup
 
 ---
@@ -20,7 +20,7 @@ If you want to stress-test the cheat sheet against your own kitchen, the free ca
 
 Happy baking.
 
-— [Your name]
+— Loaf & Levain
 
 ---
 

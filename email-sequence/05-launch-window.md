@@ -31,7 +31,7 @@ That's the last time you'll hear about it from me in this series.
 
 Thanks for reading these — really. I know inbox space is precious.
 
-— [Your name]
+— Loaf & Levain
 
 ---
 

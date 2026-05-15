@@ -25,7 +25,7 @@ If you don't own an instant-read thermometer yet, that's the one upgrade I'd mak
 
 Talk soon.
 
-— [Your name]
+— Loaf & Levain
 
 ---
 

@@ -32,7 +32,7 @@ It's a 60+ page PDF. Pay once, lifetime updates. New recipes added quarterly.
 
 That's it. No hard sell. Either it's a fit for where you are with sourdough, or it isn't. The free calculator and the cheat sheet you already have will get you a long way regardless.
 
-— [Your name]
+— Loaf & Levain
 
 ---
 
