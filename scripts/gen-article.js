@@ -42,10 +42,14 @@ Style:
 - Specific numbers, temperatures, ratios, times — not vague advice.
 - Acknowledge tradeoffs and edge cases. Don't oversimplify.
 - Mention the on-page calculator naturally where it actually helps. Don't shoehorn.
+- Use H2 (##) and H3 (###) generously to break up long sections — improves both readability and featured-snippet eligibility.
+- Include a comparison table (markdown table) where the topic naturally has 3+ variants to compare.
+- Include an FAQ section with 4–6 likely reader questions toward the end (## Common questions, then ### each question).
 - End with concrete next steps the reader can take today.
 
-Length: 700–900 words.
-Format: pure markdown, starting with the title as a # heading. Use ## and ### for subsections. No frontmatter, no metadata block.`;
+Length: 1500–2000 words. Long enough to rank against established sourdough sites in 2026, short enough that every paragraph earns its place. No filler, no padding, no recap section.
+
+Format: pure markdown, starting with the title as a # heading. No frontmatter, no metadata block.`;
 
 async function main() {
   const roadmap = JSON.parse(fs.readFileSync(ROADMAP_FILE, 'utf8'));
@@ -60,7 +64,7 @@ async function main() {
   const client = new Anthropic();
   const msg = await client.messages.create({
     model: MODEL,
-    max_tokens: 3500,
+    max_tokens: 6000,
     system: SYSTEM,
     messages: [{
       role: 'user',
