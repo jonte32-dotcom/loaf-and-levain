@@ -3,6 +3,8 @@
 A complete sourdough planning workspace with built-in monetization stack
 and an autonomous content factory. One static HTML file + a few scripts.
 
+> Last audit: 2026-05-15 — see [`STATUS-2026-05-15.md`](STATUS-2026-05-15.md)
+
 ## What's in this repo
 
 ```
