@@ -191,7 +191,8 @@ async function listAllSubs() {
   const subs = [];
   let cursor = null;
   for (let i = 0; i < 20; i++) {
-    const qs = `filter[groups]=${CHEAT_SHEET_GROUP_ID}&filter[status]=active&limit=100${cursor ? `&cursor=${cursor}` : ''}`;
+    // MailerLite API: filter key is singular `group` (plural `groups` → HTTP 400).
+    const qs = `filter[group]=${CHEAT_SHEET_GROUP_ID}&filter[status]=active&limit=100${cursor ? `&cursor=${cursor}` : ''}`;
     const res = await api('GET', `/subscribers?${qs}`);
     subs.push(...(res.data || []));
     cursor = res?.meta?.next_cursor || null;
