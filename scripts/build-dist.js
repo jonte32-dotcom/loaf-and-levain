@@ -23,7 +23,8 @@ const PUBLIC_FILES = [
   'robots.txt',
   'ads.txt',
   'cheat-sheet.pdf',
-  'og-image.jpg'
+  'og-image.jpg',
+  'googlebd595b152ab8942b.html' // Google Search Console verification (URL-prefix property)
 ];
 
 function rmrf(p) {
