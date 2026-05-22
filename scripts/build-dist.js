@@ -63,7 +63,13 @@ function main() {
   const fnCount = copyDir('functions', path.join(DIST, 'functions'));
   if (fnCount > 0) console.log(`  ✓ functions/ (${fnCount} file)`);
 
-  console.log(`\nWrote ${copied + fnCount} public file(s) to /${DIST}`);
+  // Copy generated standalone pages (knowledge base, articles, about, contact)
+  // produced by inject-articles.js. These give Google real, indexable URLs:
+  //   /sourdough/  /sourdough/<slug>/  /about  /contact
+  const pageCount = copyDir('articles-build', DIST);
+  if (pageCount > 0) console.log(`  ✓ articles-build/ → / (${pageCount} pages)`);
+
+  console.log(`\nWrote ${copied + fnCount + pageCount} public file(s) to /${DIST}`);
   console.log('Source files (pro-pdf/, email-sequence/, marketing/, scripts/, etc.)');
   console.log('stay in the repo but are NOT deployed to the CDN.');
 }

@@ -2,9 +2,25 @@
 /**
  * inject-articles.js
  * --------------------------------------------------------------------
- * Reads every markdown file in /articles, converts to HTML, and injects
- * them into sourdough-schedule.html between the AUTO_INJECT markers.
- * Also generates sitemap.xml with anchor links to each article.
+ * Reads every markdown file in /articles and produces, for each one, a
+ * STANDALONE, indexable HTML page at its own real URL:
+ *
+ *     https://loafandlevain.com/sourdough/<slug>/
+ *
+ * It also builds a knowledge-base index page at /sourdough/, rewrites the
+ * calculator's in-page "knowledge base" block into a card grid that LINKS
+ * OUT to those standalone pages (no duplicated article bodies), and emits a
+ * sitemap.xml listing every real URL (no fragment anchors).
+ *
+ * Why: AdSense flagged the site "Low value content" because all 12 articles
+ * were injected into a single page as #fragment anchors. Google does not
+ * index fragments as separate pages, so the crawler saw a 3-page site. Real
+ * per-article URLs turn that into 14+ indexable content pages.
+ *
+ * Output (staging dir, copied into /dist by build-dist.js):
+ *   articles-build/sourdough/index.html          ← knowledge-base index
+ *   articles-build/sourdough/<slug>/index.html   ← one per article
+ *   sitemap.xml                                  ← real URLs only
  *
  * Run: npm run inject
  */
@@ -14,30 +30,47 @@ import { marked } from 'marked';
 
 const HTML_FILE = 'sourdough-schedule.html';
 const ARTICLES_DIR = 'articles';
-const ROADMAP_FILE = 'content-roadmap.json';
-const SITE_BASE = process.env.SITE_BASE || 'https://loafandlevain.com';
+const BUILD_DIR = 'articles-build';
+const KB_DIR = path.join(BUILD_DIR, 'sourdough');
+const SITE_BASE = (process.env.SITE_BASE || 'https://loafandlevain.com').replace(/\/$/, '');
+const ADSENSE_CLIENT = 'ca-pub-8093269710555728';
+const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'loafandlevain.bake@gmail.com';
 const START = '<!-- ARTICLES_AUTO_INJECT_START -->';
 const END = '<!-- ARTICLES_AUTO_INJECT_END -->';
 
-marked.setOptions({ headerIds: true, mangle: false, gfm: true });
+marked.setOptions({ headerIds: false, mangle: false, gfm: true });
 
-function slugify(s) {
-  return s.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').slice(0, 60);
-}
-
-function loadRoadmapSlugs() {
-  if (!fs.existsSync(ROADMAP_FILE)) return new Map();
-  const roadmap = JSON.parse(fs.readFileSync(ROADMAP_FILE, 'utf8'));
-  return new Map(roadmap.map(t => [t.slug, t]));
-}
+// ---------- helpers ----------
 
 function fileSlug(filename) {
+  // 08-fix-dense-sourdough.md -> fix-dense-sourdough
   return filename.replace(/^\d+-/, '').replace(/\.md$/, '');
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function escapeAttr(s) {
+  return escapeHtml(s).replace(/'/g, '&#39;');
+}
+
+// First paragraph of the body, as plain text, trimmed to a meta-description length.
+function excerpt(body, max = 155) {
+  const firstPara = body.split(/\n\s*\n/).find(p => p.trim() && !p.trim().startsWith('#')) || '';
+  const plain = firstPara
+    .replace(/[#*_`>]/g, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (plain.length <= max) return plain;
+  return plain.slice(0, max - 1).replace(/\s+\S*$/, '') + '…';
 }
 
 function readArticles() {
   if (!fs.existsSync(ARTICLES_DIR)) return [];
-  const roadmapSlugs = loadRoadmapSlugs();
   return fs.readdirSync(ARTICLES_DIR)
     .filter(f => f.endsWith('.md'))
     .sort()
@@ -46,77 +79,418 @@ function readArticles() {
       const titleMatch = raw.match(/^#\s+(.+)$/m);
       const title = titleMatch ? titleMatch[1] : f.replace(/^\d+-/, '').replace(/\.md$/, '');
       const body = raw.replace(/^#\s+.+$/m, '').trim();
-      // Stable slug from filename → matches content-roadmap.json + Pinterest descriptions.
-      // Falls back to slugified title if filename doesn't match roadmap.
-      const fSlug = fileSlug(f);
-      const slug = roadmapSlugs.has(fSlug) ? fSlug : slugify(title);
-      return { file: f, title, body, slug };
+      return { file: f, title, body, slug: fileSlug(f), summary: excerpt(body) };
     });
 }
 
-function articleToHTML(a) {
-  // Convert markdown body. Promote H2 in MD to H3 in our content section
-  // (because the section already uses H2 for top-level groups).
-  let html = marked.parse(a.body);
-  html = html.replace(/<h1\b/g, '<h3').replace(/<\/h1>/g, '</h3>');
-  html = html.replace(/<h2\b/g, '<h4').replace(/<\/h2>/g, '</h4>');
-  html = html.replace(/<h3\b/g, '<h4').replace(/<\/h3>/g, '</h4>');
+// ---------- shared page chrome ----------
 
-  return `
-<article class="kb-article" id="${a.slug}">
-  <h2 class="kb-title"><a href="#${a.slug}">${escapeHtml(a.title)}</a></h2>
-  <div class="kb-body">
-    ${html}
+const SITE_CSS = `
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --cream:#F4ECDD;--cream-deep:#EBE0CB;--paper:#FBF7EE;
+    --ink:#1F1611;--ink-soft:#4A3B2E;--ink-mute:#8A7866;
+    --crust:#B85C38;--crust-deep:#8E3F22;--gold:#C9A24E;--sage:#6F8060;
+    --line:#D9CFB9;--line-soft:#E8DFC9;
+    --serif:'Fraunces','Times New Roman',serif;
+    --sans:'Manrope',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --shadow:0 1px 2px rgba(31,22,17,.04),0 8px 24px -12px rgba(31,22,17,.12);
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);background:var(--cream);color:var(--ink);line-height:1.7;
+    font-weight:400;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;min-height:100vh;
+    background-image:radial-gradient(at 12% 8%,rgba(184,92,56,.06)0%,transparent 50%),
+      radial-gradient(at 88% 92%,rgba(201,162,78,.07)0%,transparent 55%)}
+  .wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:0 24px}
+  ::selection{background:var(--crust);color:var(--paper)}
+  a{color:var(--crust-deep)}
+  /* header */
+  header.site{display:flex;justify-content:space-between;align-items:center;
+    padding:28px 0;border-bottom:1px solid var(--line);margin-bottom:48px;flex-wrap:wrap;gap:16px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+  .brand svg{width:30px;height:30px}
+  .brand-name{font-family:var(--serif);font-weight:600;font-size:20px;letter-spacing:-.01em}
+  .brand-name span{color:var(--crust)}
+  nav.site a{font-size:14px;font-weight:500;color:var(--ink-soft);text-decoration:none;margin-left:22px}
+  nav.site a:hover{color:var(--crust-deep)}
+  /* article */
+  main{padding-bottom:64px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--crust);margin-bottom:14px}
+  .back{display:inline-block;font-size:13px;color:var(--ink-mute);text-decoration:none;margin-bottom:24px}
+  .back:hover{color:var(--crust-deep)}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(30px,5vw,46px);line-height:1.12;
+    letter-spacing:-.02em;margin-bottom:28px}
+  .article-body{font-size:17px;color:var(--ink-soft)}
+  .article-body h2{font-family:var(--serif);font-weight:600;color:var(--ink);font-size:26px;
+    margin:40px 0 14px;letter-spacing:-.01em}
+  .article-body h3,.article-body h4{font-family:var(--serif);font-weight:600;color:var(--ink);
+    font-size:20px;margin:30px 0 10px}
+  .article-body p{margin:0 0 18px}
+  .article-body ul,.article-body ol{margin:0 0 18px;padding-left:24px}
+  .article-body li{margin-bottom:8px}
+  .article-body strong{color:var(--ink);font-weight:600}
+  .article-body code{font-family:var(--mono);font-size:.88em;background:var(--cream-deep);
+    padding:2px 6px;border-radius:4px}
+  .article-body blockquote{border-left:3px solid var(--gold);padding-left:18px;margin:0 0 18px;
+    color:var(--ink-mute);font-style:italic}
+  .article-body a{color:var(--crust-deep);text-decoration:underline;text-underline-offset:2px}
+  /* cards / related */
+  .cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));margin:8px 0 0}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;
+    box-shadow:var(--shadow);text-decoration:none;color:var(--ink);display:flex;flex-direction:column;
+    transition:transform .15s ease,box-shadow .15s ease}
+  .card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(31,22,17,.10),0 20px 40px -16px rgba(31,22,17,.20)}
+  .card h3{font-family:var(--serif);font-weight:600;font-size:18px;line-height:1.25;margin-bottom:8px}
+  .card p{font-size:14px;color:var(--ink-mute);margin:0 0 14px;flex:1}
+  .card .more{font-size:13px;font-weight:600;color:var(--crust)}
+  section.related{margin-top:56px;padding-top:40px;border-top:1px solid var(--line)}
+  section.related>h2{font-family:var(--serif);font-weight:600;font-size:22px;margin-bottom:20px}
+  /* cta */
+  .cta{margin-top:48px;background:var(--ink);color:var(--paper);border-radius:16px;padding:32px;text-align:center}
+  .cta h2{font-family:var(--serif);font-weight:600;font-size:24px;margin-bottom:8px;color:var(--paper)}
+  .cta p{color:#D8CDBD;font-size:15px;margin-bottom:20px}
+  .cta a{display:inline-block;background:var(--crust);color:#fff;text-decoration:none;font-weight:600;
+    font-size:15px;padding:13px 26px;border-radius:10px}
+  .cta a:hover{background:var(--crust-deep)}
+  /* footer */
+  footer.site{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    padding:28px 0 48px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-mute)}
+  footer.site a{color:var(--ink-mute);text-decoration:none;margin-left:18px}
+  footer.site a:hover{color:var(--crust-deep)}
+  .lede{font-size:18px;color:var(--ink-soft);margin-bottom:36px;max-width:60ch}
+`;
+
+const FAVICON = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cellipse cx='16' cy='20' rx='13' ry='9' fill='%23C9A24E' opacity='0.4'/%3E%3Cellipse cx='16' cy='18' rx='13' ry='9' fill='%23F4ECDD' stroke='%231F1611' stroke-width='1.4'/%3E%3Cpath d='M7 18 Q11 11 16 11 Q21 11 25 18' stroke='%23B85C38' stroke-width='1.1' fill='none'/%3E%3Cpath d='M9 14 L11 16 M16 9 L16 12 M23 14 L21 16' stroke='%23B85C38' stroke-width='1.1'/%3E%3C/svg%3E`;
+
+const BRAND_SVG = `<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true"><ellipse cx="16" cy="20" rx="13" ry="9" fill="#C9A24E" opacity="0.3"/><ellipse cx="16" cy="18" rx="13" ry="9" stroke="#1F1611" stroke-width="1.2"/><path d="M7 18 Q11 11 16 11 Q21 11 25 18" stroke="#B85C38" stroke-width="0.9" fill="none"/><path d="M9 14 L11 16 M16 9 L16 12 M23 14 L21 16" stroke="#B85C38" stroke-width="0.9"/></svg>`;
+
+function pageHead({ title, description, canonical, ogType = 'article' }) {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}" crossorigin="anonymous"></script>
+<script defer data-domain="loafandlevain.com" src="https://plausible.io/js/script.outbound-links.js"></script>
+<script>window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}</script>
+<title>${escapeHtml(title)}</title>
+<meta name="description" content="${escapeAttr(description)}" />
+<meta name="theme-color" content="#1F1611" />
+<meta name="color-scheme" content="light" />
+<meta name="robots" content="index,follow" />
+<link rel="canonical" href="${canonical}" />
+<meta property="og:type" content="${ogType}" />
+<meta property="og:title" content="${escapeAttr(title)}" />
+<meta property="og:description" content="${escapeAttr(description)}" />
+<meta property="og:url" content="${canonical}" />
+<meta property="og:site_name" content="Loaf &amp; Levain" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:image" content="${SITE_BASE}/og-image.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="${escapeAttr(title)}" />
+<meta name="twitter:description" content="${escapeAttr(description)}" />
+<meta name="twitter:image" content="${SITE_BASE}/og-image.jpg" />
+<link rel="icon" type="image/svg+xml" href="${FAVICON}" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>${SITE_CSS}</style>`;
+}
+
+function siteHeader() {
+  return `<header class="site">
+  <a class="brand" href="/sourdough/">${BRAND_SVG}<span class="brand-name">Loaf<span>&amp;</span>Levain</span></a>
+  <nav class="site">
+    <a href="/sourdough/">Knowledge base</a>
+    <a href="/">Calculator</a>
+    <a href="/about">About</a>
+  </nav>
+</header>`;
+}
+
+function siteFooter() {
+  return `<footer class="site">
+  <span>© Loaf &amp; Levain · Sourdough for bakers who measure</span>
+  <span><a href="/sourdough/">Knowledge base</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy.html">Privacy</a></span>
+</footer>`;
+}
+
+function calculatorCTA() {
+  return `<div class="cta">
+  <h2>Plan your next bake</h2>
+  <p>Free schedule calculator — calibrated to your kitchen temperature, hydration, and starter.</p>
+  <a href="/">Open the calculator →</a>
+</div>`;
+}
+
+function relatedList(current, all, n = 4) {
+  const others = all.filter(a => a.slug !== current.slug).slice(0, n);
+  const cards = others.map(a => `
+    <a class="card" href="/sourdough/${a.slug}/">
+      <h3>${escapeHtml(a.title)}</h3>
+      <p>${escapeHtml(a.summary)}</p>
+      <span class="more">Read →</span>
+    </a>`).join('');
+  return `<section class="related">
+  <h2>More from the knowledge base</h2>
+  <div class="cards">${cards}</div>
+</section>`;
+}
+
+function articleJsonLd(a, canonical) {
+  return `<script type="application/ld+json">${JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: a.title,
+    description: a.summary,
+    author: { '@type': 'Organization', name: 'Loaf & Levain' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Loaf & Levain',
+      logo: { '@type': 'ImageObject', url: `${SITE_BASE}/og-image.jpg` }
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+    image: `${SITE_BASE}/og-image.jpg`
+  })}</script>`;
+}
+
+// ---------- standalone article page ----------
+
+function renderArticlePage(a, all) {
+  const canonical = `${SITE_BASE}/sourdough/${a.slug}/`;
+  let bodyHtml = marked.parse(a.body);
+  // Demote heading levels: H1 in source already stripped; map H2→H2 stays, but
+  // ensure no stray H1 in body collides with the page H1.
+  bodyHtml = bodyHtml.replace(/<h1\b/g, '<h2').replace(/<\/h1>/g, '</h2>');
+
+  return `${pageHead({ title: `${a.title} — Loaf & Levain`, description: a.summary, canonical, ogType: 'article' })}
+${articleJsonLd(a, canonical)}
+</head>
+<body>
+<div class="wrap">
+${siteHeader()}
+<main>
+  <a class="back" href="/sourdough/">← Knowledge base</a>
+  <div class="eyebrow">Sourdough knowledge base</div>
+  <article>
+    <h1>${escapeHtml(a.title)}</h1>
+    <div class="article-body">
+${bodyHtml}
+    </div>
+  </article>
+  ${calculatorCTA()}
+  ${relatedList(a, all)}
+</main>
+${siteFooter()}
+</div>
+</body>
+</html>`;
+}
+
+// ---------- knowledge-base index page ----------
+
+function renderIndexPage(all) {
+  const canonical = `${SITE_BASE}/sourdough/`;
+  const cards = all.map(a => `
+    <a class="card" href="/sourdough/${a.slug}/">
+      <h3>${escapeHtml(a.title)}</h3>
+      <p>${escapeHtml(a.summary)}</p>
+      <span class="more">Read →</span>
+    </a>`).join('');
+
+  const itemList = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Sourdough Knowledge Base',
+    description: 'In-depth guides on sourdough fermentation, hydration, starters, and troubleshooting.',
+    url: canonical,
+    hasPart: all.map(a => ({ '@type': 'Article', headline: a.title, url: `${SITE_BASE}/sourdough/${a.slug}/` }))
+  };
+
+  return `${pageHead({
+    title: 'Sourdough Knowledge Base — Loaf & Levain',
+    description: 'In-depth, tested guides on sourdough fermentation, hydration, starters, scoring, and troubleshooting. From the makers of the free bake schedule calculator.',
+    canonical,
+    ogType: 'website'
+  })}
+<script type="application/ld+json">${JSON.stringify(itemList)}</script>
+</head>
+<body>
+<div class="wrap">
+${siteHeader()}
+<main>
+  <div class="eyebrow">Knowledge base</div>
+  <h1>Sourdough, explained properly.</h1>
+  <p class="lede">Tested, in-depth guides on fermentation, hydration, starters, scoring, and the things that actually go wrong. Written by bakers who measure, not guess.</p>
+  <div class="cards">${cards}</div>
+  ${calculatorCTA()}
+</main>
+${siteFooter()}
+</div>
+</body>
+</html>`;
+}
+
+// ---------- static editorial pages: About + Contact ----------
+
+function renderStaticPage({ slug, title, lede, bodyHtml }) {
+  const canonical = `${SITE_BASE}/${slug}`;
+  return `${pageHead({ title: `${title} — Loaf & Levain`, description: lede, canonical, ogType: 'website' })}
+</head>
+<body>
+<div class="wrap">
+${siteHeader()}
+<main>
+  <div class="eyebrow">${escapeHtml(title)}</div>
+  <h1>${escapeHtml(title)}</h1>
+  <p class="lede">${escapeHtml(lede)}</p>
+  <div class="article-body">
+${bodyHtml}
   </div>
-</article>`;
+</main>
+${siteFooter()}
+</div>
+</body>
+</html>`;
 }
 
-function escapeHtml(s) {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+function aboutPage() {
+  const body = `
+<p>Loaf &amp; Levain is an independent sourdough resource built around one idea: baking gets easier when you measure instead of guess. The free <a href="/">schedule calculator</a> predicts fermentation timing from your kitchen temperature, hydration, and starter strength — and the <a href="/sourdough/">knowledge base</a> explains the why behind every number.</p>
+<h2>Who writes this</h2>
+<p>The guides are written and edited by home bakers who have logged hundreds of bakes across cold winter kitchens and humid summer ones. Every recommendation — bulk percentages, hydration targets, retard windows — is something we have tested in a real oven, not copied from another blog.</p>
+<h2>What we cover</h2>
+<p>Fermentation science, starter maintenance and rescue, hydration, shaping and scoring, and the long list of things that go wrong (and how to diagnose them). If a guide gives a number, it also tells you how to know whether that number is right for <em>your</em> dough.</p>
+<h2>How it's funded</h2>
+<p>The calculator and all knowledge-base articles are free. The site is supported by display advertising and an optional one-time Pro upgrade. We don't gate the core content behind a paywall, and we don't publish recipes we haven't baked.</p>
+<h2>Get in touch</h2>
+<p>Questions, corrections, or a bake that's misbehaving? Reach us on the <a href="/contact">contact page</a>.</p>`;
+  return renderStaticPage({
+    slug: 'about',
+    title: 'About',
+    lede: 'An independent sourdough resource for bakers who measure, not guess — the free schedule calculator and a tested knowledge base.',
+    bodyHtml: body
+  });
 }
 
-function injectInto(html, articlesHtml) {
+function contactPage() {
+  const body = `
+<p>We read every message. Whether you've found an error in a guide, have a sourdough problem the calculator didn't solve, or want to suggest a topic for the knowledge base, we'd like to hear from you.</p>
+<h2>Email</h2>
+<p>The fastest way to reach us is by email: <a href="mailto:${escapeAttr(CONTACT_EMAIL)}">${escapeHtml(CONTACT_EMAIL)}</a>. We aim to reply within a few days.</p>
+<h2>What to include</h2>
+<p>If you're troubleshooting a bake, it helps to tell us your flour, hydration, kitchen temperature, and what the crumb looked like. The more detail, the more useful the answer.</p>
+<h2>Press &amp; partnerships</h2>
+<p>For press enquiries or partnership ideas, use the same address with "Press" or "Partnership" in the subject line.</p>`;
+  return renderStaticPage({
+    slug: 'contact',
+    title: 'Contact',
+    lede: 'Questions, corrections, or a bake that’s misbehaving? Here’s how to reach Loaf & Levain.',
+    bodyHtml: body
+  });
+}
+
+// ---------- in-page calculator block (links out, no duplicated bodies) ----------
+
+function renderInPageBlock(all) {
+  const cards = all.slice(0, 6).map(a => `
+    <a class="kb-card" href="/sourdough/${a.slug}/">
+      <span class="kb-card-title">${escapeHtml(a.title)}</span>
+      <span class="kb-card-sum">${escapeHtml(a.summary)}</span>
+      <span class="kb-card-more">Read →</span>
+    </a>`).join('');
+
+  return `\n<section class="knowledge-base" aria-label="Knowledge base">
+  <h2 class="kb-section-head" style="margin-top:56px;">From the <em>knowledge base</em>.</h2>
+  <p style="color:var(--ink-mute);font-size:15px;margin:-8px 0 24px;">Tested guides on fermentation, hydration, starters, and troubleshooting.</p>
+  <style>
+    .kb-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+    .kb-card{display:flex;flex-direction:column;gap:8px;background:var(--paper);border:1px solid var(--line);
+      border-radius:14px;padding:20px;text-decoration:none;color:var(--ink);box-shadow:var(--shadow);
+      transition:transform .15s ease,box-shadow .15s ease}
+    .kb-card:hover{transform:translateY(-2px)}
+    .kb-card-title{font-family:var(--serif);font-weight:600;font-size:17px;line-height:1.25}
+    .kb-card-sum{font-size:13px;color:var(--ink-mute);flex:1}
+    .kb-card-more{font-size:13px;font-weight:600;color:var(--crust)}
+  </style>
+  <div class="kb-grid">${cards}</div>
+  <p style="margin-top:24px;font-size:15px;"><a href="/sourdough/" style="color:var(--crust-deep);font-weight:600;">Browse the full knowledge base →</a></p>
+</section>\n      `;
+}
+
+function injectInto(html, block) {
   const startIdx = html.indexOf(START);
   const endIdx = html.indexOf(END);
   if (startIdx < 0 || endIdx < 0) {
     throw new Error(`Markers not found in ${HTML_FILE}. Add ${START} and ${END}.`);
   }
-  const before = html.slice(0, startIdx + START.length);
-  const after = html.slice(endIdx);
-  const wrapped = `\n<section class="knowledge-base" aria-label="Knowledge base">\n  <h2 class="kb-section-head" style="margin-top:56px;">From the <em>knowledge base</em>.</h2>\n${articlesHtml}\n</section>\n      `;
-  return before + wrapped + after;
+  return html.slice(0, startIdx + START.length) + block + html.slice(endIdx);
 }
 
-function generateSitemap(articles) {
+// ---------- sitemap ----------
+
+function generateSitemap(all) {
   const today = new Date().toISOString().slice(0, 10);
-  const entries = [
-    `<url><loc>${SITE_BASE}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
-    ...articles.map(a =>
-      `<url><loc>${SITE_BASE}/#${a.slug}</loc><lastmod>${today}</lastmod><priority>0.7</priority></url>`
-    )
+  const urls = [
+    { loc: `${SITE_BASE}/`, priority: '1.0', changefreq: 'weekly' },
+    { loc: `${SITE_BASE}/sourdough/`, priority: '0.9', changefreq: 'weekly' },
+    ...all.map(a => ({ loc: `${SITE_BASE}/sourdough/${a.slug}/`, priority: '0.8', changefreq: 'monthly' })),
+    { loc: `${SITE_BASE}/about`, priority: '0.4', changefreq: 'yearly' },
+    { loc: `${SITE_BASE}/contact`, priority: '0.4', changefreq: 'yearly' },
+    { loc: `${SITE_BASE}/privacy.html`, priority: '0.3', changefreq: 'yearly' }
   ];
+  const entries = urls.map(u =>
+    `<url><loc>${u.loc}</loc><lastmod>${today}</lastmod><changefreq>${u.changefreq}</changefreq><priority>${u.priority}</priority></url>`
+  );
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${entries.join('\n')}
 </urlset>`;
 }
 
+// ---------- main ----------
+
+function rmrf(p) { if (fs.existsSync(p)) fs.rmSync(p, { recursive: true, force: true }); }
+
 function main() {
   const articles = readArticles();
   console.log(`Found ${articles.length} articles in /${ARTICLES_DIR}`);
   if (articles.length === 0) {
-    console.log('No articles to inject. Add markdown files to /articles or run npm run gen-article.');
+    console.log('No articles. Add markdown to /articles or run npm run gen-article.');
     return;
   }
 
-  const articlesHtml = articles.map(articleToHTML).join('\n');
-  const html = fs.readFileSync(HTML_FILE, 'utf8');
-  const updated = injectInto(html, articlesHtml);
-  fs.writeFileSync(HTML_FILE, updated);
-  console.log(`✓ Injected ${articles.length} articles into ${HTML_FILE}`);
+  // 1. Fresh staging dir with standalone pages + KB index.
+  rmrf(BUILD_DIR);
+  fs.mkdirSync(KB_DIR, { recursive: true });
+  fs.writeFileSync(path.join(KB_DIR, 'index.html'), renderIndexPage(articles));
+  for (const a of articles) {
+    const dir = path.join(KB_DIR, a.slug);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'index.html'), renderArticlePage(a, articles));
+  }
+  console.log(`✓ Wrote ${articles.length} standalone pages + index to /${KB_DIR}`);
 
+  // 1b. Editorial trust pages (AdSense expects About + Contact).
+  for (const [slug, render] of [['about', aboutPage], ['contact', contactPage]]) {
+    const dir = path.join(BUILD_DIR, slug);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'index.html'), render());
+  }
+  console.log('✓ Wrote /about and /contact');
+
+  // 2. Rewrite the calculator's in-page block to link out (no duplicated bodies).
+  const html = fs.readFileSync(HTML_FILE, 'utf8');
+  fs.writeFileSync(HTML_FILE, injectInto(html, renderInPageBlock(articles)));
+  console.log(`✓ Rewrote in-page knowledge-base block in ${HTML_FILE}`);
+
+  // 3. Sitemap with real URLs only.
   fs.writeFileSync('sitemap.xml', generateSitemap(articles));
-  console.log(`✓ Wrote sitemap.xml (${articles.length + 1} entries)`);
+  console.log(`✓ Wrote sitemap.xml (${articles.length + 5} URLs, no fragments)`);
 }
 
 main();
