@@ -2,8 +2,10 @@ name: Weekly content
 
 on:
   schedule:
-    # Mondays at 08:00 UTC (set whenever — once per week is enough)
-    - cron: '0 8 * * 1'
+    # Mondays ~08:23 UTC. Off-the-hour minute on purpose: cron jobs at minute 0
+    # hit GitHub's busiest queue and get delayed by hours; an odd minute runs far
+    # more punctually. (Was '0 8 * * 1' — fired but consistently ~9h late.)
+    - cron: '23 8 * * 1'
   workflow_dispatch:  # allows manual trigger from GitHub UI
 
 jobs:
