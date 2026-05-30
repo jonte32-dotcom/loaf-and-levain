@@ -9,7 +9,8 @@
     "gen-article": "node scripts/gen-article.js",
     "configure": "node scripts/configure.js",
     "build": "npm run inject && node scripts/build-dist.js",
-    "preview": "npx serve dist"
+    "preview": "npx serve dist",
+    "test": "node --test"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.40.0",
