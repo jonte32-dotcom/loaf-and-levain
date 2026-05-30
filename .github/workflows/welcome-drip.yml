@@ -7,9 +7,18 @@ on:
     - cron: '0 */6 * * *'
   workflow_dispatch:
 
+# Never let two drip runs overlap (a manual dispatch during the 6h cron, or a slow
+# paginated run). Overlap let two runs read the same stale welcome_step and double-send.
+concurrency:
+  group: welcome-drip
+  cancel-in-progress: false
+
 jobs:
   drip:
     runs-on: ubuntu-latest
+    # Least privilege: this job only calls MailerLite, it never writes to git.
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v5
 

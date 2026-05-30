@@ -25,19 +25,28 @@ jobs:
         run: npm ci || npm install
 
       - name: Generate next article
+        id: gen
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/gen-article.js
 
+      # Only inject + commit when a NEW article was actually written. When the roadmap is
+      # exhausted gen-article sets created=false, so we don't churn sitemap lastmod or push
+      # empty commits — and a silent "roadmap empty" state is visible in the run summary.
       - name: Inject into HTML
+        if: steps.gen.outputs.created == 'true'
         run: node scripts/inject-articles.js
         env:
           SITE_BASE: ${{ vars.SITE_BASE || 'https://loafandlevain.com' }}
 
       - name: Commit and push
+        if: steps.gen.outputs.created == 'true'
         run: |
           git config user.name "Content Bot"
           git config user.email "bot@users.noreply.github.com"
           git add articles sourdough-schedule.html sitemap.xml
-          git diff --staged --quiet || git commit -m "auto: weekly article + injection"
-          git push
+          # Secret-guard: never let the bot push an accidentally-injected key.
+          if git diff --staged | grep -qE 'sk-ant-[A-Za-z0-9_-]{20}|eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}|Bearer [A-Za-z0-9._-]{20,}'; then
+            echo "::error::Possible secret in staged diff — refusing to commit."; exit 1;
+          fi
+          git diff --staged --quiet || { git commit -m "auto: weekly article + injection"; git pull --rebase origin main; git push; }
