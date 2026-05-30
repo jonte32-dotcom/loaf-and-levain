@@ -19,6 +19,7 @@ const PUBLIC_FILES = [
   'index.html',
   'privacy.html',
   '_redirects',
+  '_headers',
   'sitemap.xml',
   'robots.txt',
   'ads.txt',

@@ -14,5 +14,14 @@
 /.deploy-trigger     /404           404
 /config.local.json   /404           404
 
+# Paid / source assets — keep them off the public CDN under a root deploy
+/Sourdough%20Schedule%20Pro.pdf  /404  404
+/Sourdough-Cheat-Sheet.pdf       /404  404
+/sourdough-pro-cover.jpg         /404  404
+/forms.json              /404  404
+/form-detail.json        /404  404
+/camp-detail.json        /404  404
+/automation-detail.json  /404  404
+
 # Root → main calculator
 /                    /sourdough-schedule.html  200
