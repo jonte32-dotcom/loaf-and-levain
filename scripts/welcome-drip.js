@@ -143,16 +143,33 @@ const STEPS = [
   }
 ];
 
-async function api(method, path, body) {
-  const res = await fetch(`${BASE}${path}`, {
-    method,
-    headers: {
-      'Authorization': `Bearer ${TOKEN}`,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-    body: body ? JSON.stringify(body) : undefined
-  });
+const apiSleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const apiBackoff = (attempt) => 1000 * 2 ** (attempt - 1);
+
+async function api(method, path, body, attempt = 1) {
+  let res;
+  try {
+    res = await fetch(`${BASE}${path}`, {
+      method,
+      headers: {
+        'Authorization': `Bearer ${TOKEN}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: body ? JSON.stringify(body) : undefined
+    });
+  } catch (err) {
+    // Network error before any response — the request never reached MailerLite, safe to retry.
+    if (attempt < 4) { await apiSleep(apiBackoff(attempt)); return api(method, path, body, attempt + 1); }
+    throw err;
+  }
+  // 429 (rate limited) and 502/503/504 (gateway) mean the request was NOT processed — safe to
+  // retry without risk of a double send. 500 is deliberately excluded (ambiguous after a POST).
+  if ((res.status === 429 || res.status === 502 || res.status === 503 || res.status === 504) && attempt < 4) {
+    const ra = Number(res.headers.get('retry-after'));
+    await apiSleep(ra > 0 ? ra * 1000 : apiBackoff(attempt));
+    return api(method, path, body, attempt + 1);
+  }
   const text = await res.text();
   if (!res.ok) throw new Error(`${method} ${path} → ${res.status}: ${text.slice(0, 400)}`);
   return text ? JSON.parse(text) : null;
@@ -229,47 +246,60 @@ async function processStep(step, subs) {
   const grp = await api('POST', '/groups', { name: tempName });
   const tempId = grp.data.id;
 
+  // 2. Add eligible subs to temp group
+  for (const sub of eligible) {
+    await api('POST', `/subscribers/${sub.id}/groups/${tempId}`, null);
+  }
+
+  // 3. Bump step BEFORE send (so re-runs skip these subs even if send fails after this point)
+  for (const sub of eligible) {
+    try { await setStep(sub.id, step.n); }
+    catch (e) { console.log(`  warn: could not set step for ${sub.email}: ${e.message.slice(0, 100)}`); }
+  }
+
+  // 4. Create + schedule campaign targeted at temp group
+  const camp = await api('POST', '/campaigns', {
+    name: `Welcome drip step ${step.n} — ${new Date().toISOString().slice(0, 10)}`,
+    language_id: 9,
+    type: 'regular',
+    emails: [{
+      subject: step.subject,
+      from_name: FROM_NAME,
+      from: FROM,
+      content: HTML_SHELL(step.preheader, step.body())
+    }],
+    groups: [tempId]
+  });
+
+  await api('POST', `/campaigns/${camp.data.id}/schedule`, { delivery: 'instant' });
+  console.log(`  ✓ Sent step ${step.n} to ${eligible.length} sub(s)`);
+  // The temp group is intentionally NOT deleted here. Deleting it immediately after an async
+  // "instant" send can race MailerLite materialising the recipient list and drop recipients.
+  // cleanupStaleGroups() sweeps drip-step groups older than a day at the start of the next run.
+}
+
+// Sweep yesterday's temp drip groups. They're left behind on purpose (see processStep) to
+// avoid racing MailerLite's async send; a group name encodes its creation timestamp.
+async function cleanupStaleGroups() {
   try {
-    // 2. Add eligible subs to temp group
-    for (const sub of eligible) {
-      await api('POST', `/subscribers/${sub.id}/groups/${tempId}`, null);
+    const res = await api('GET', '/groups?limit=100');
+    const now = new Date().getTime();
+    const ONE_DAY = 24 * 60 * 60 * 1000;
+    for (const g of (res.data || [])) {
+      const m = /^drip-step\d+-(\d+)$/.exec(g.name || '');
+      if (m && now - Number(m[1]) > ONE_DAY) {
+        try { await api('DELETE', `/groups/${g.id}`); console.log(`  cleaned stale group ${g.name}`); }
+        catch (e) { console.log(`  warn: could not delete ${g.name}: ${e.message.slice(0, 80)}`); }
+      }
     }
-
-    // 3. Bump step BEFORE send (so re-runs skip these subs even if send fails after this point)
-    for (const sub of eligible) {
-      try { await setStep(sub.id, step.n); }
-      catch (e) { console.log(`  warn: could not set step for ${sub.email}: ${e.message.slice(0, 100)}`); }
-    }
-
-    // 4. Create + schedule campaign targeted at temp group
-    const camp = await api('POST', '/campaigns', {
-      name: `Welcome drip step ${step.n} — ${new Date().toISOString().slice(0, 10)}`,
-      language_id: 9,
-      type: 'regular',
-      emails: [{
-        subject: step.subject,
-        from_name: FROM_NAME,
-        from: FROM,
-        content: HTML_SHELL(step.preheader, step.body())
-      }],
-      groups: [tempId]
-    });
-
-    await api('POST', `/campaigns/${camp.data.id}/schedule`, { delivery: 'instant' });
-    console.log(`  ✓ Sent step ${step.n} to ${eligible.length} sub(s)`);
-  } finally {
-    // 5. Best-effort cleanup. If this fails, the orphan temp group is harmless
-    //    (no auto-add, no future sends targeted at it).
-    try {
-      await api('DELETE', `/groups/${tempId}`);
-    } catch (e) {
-      console.log(`  warn: failed to delete temp group ${tempId}: ${e.message.slice(0, 100)}`);
-    }
+  } catch (e) {
+    console.log(`  warn: stale-group sweep failed: ${e.message.slice(0, 80)}`);
   }
 }
 
 async function main() {
   await ensureField();
+  await cleanupStaleGroups();
   const subs = await listAllSubs();
   console.log(`Active Cheat Sheet subs: ${subs.length}`);
   if (subs.length === 0) { console.log('Nothing to do.'); return; }

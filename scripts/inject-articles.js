@@ -57,6 +57,16 @@ function escapeAttr(s) {
   return escapeHtml(s).replace(/'/g, '&#39;');
 }
 
+// articles/ is trusted input (our own Claude-generated markdown), but this is cheap
+// defence-in-depth: strip active/embedded tags, inline event handlers and javascript:
+// URLs so a stray bit of raw HTML can never inject script into a page that runs AdSense.
+function sanitizeHtml(html) {
+  return String(html)
+    .replace(/<\/?(?:script|style|iframe|object|embed|form|base|meta|link)\b[^>]*>/gi, '')
+    .replace(/\son\w+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+    .replace(/((?:href|src))\s*=\s*(["'])\s*javascript:[^"']*\2/gi, '$1="#"');
+}
+
 // First paragraph of the body, as plain text, trimmed to a meta-description length.
 function excerpt(body, max = 155) {
   const firstPara = body.split(/\n\s*\n/).find(p => p.trim() && !p.trim().startsWith('#')) || '';
@@ -73,7 +83,8 @@ function readArticles() {
   if (!fs.existsSync(ARTICLES_DIR)) return [];
   return fs.readdirSync(ARTICLES_DIR)
     .filter(f => f.endsWith('.md'))
-    .sort()
+    // Sort numerically on the NN- prefix so 100- doesn't sort before 11- past 99 articles.
+    .sort((a, b) => (parseInt(a, 10) || 0) - (parseInt(b, 10) || 0))
     .map(f => {
       const raw = fs.readFileSync(path.join(ARTICLES_DIR, f), 'utf8').trim();
       const titleMatch = raw.match(/^#\s+(.+)$/m);
@@ -262,7 +273,7 @@ function articleJsonLd(a, canonical) {
 
 function renderArticlePage(a, all) {
   const canonical = `${SITE_BASE}/sourdough/${a.slug}/`;
-  let bodyHtml = marked.parse(a.body);
+  let bodyHtml = sanitizeHtml(marked.parse(a.body));
   // Demote heading levels: H1 in source already stripped; map H2→H2 stays, but
   // ensure no stray H1 in body collides with the page H1.
   bodyHtml = bodyHtml.replace(/<h1\b/g, '<h2').replace(/<\/h1>/g, '</h2>');

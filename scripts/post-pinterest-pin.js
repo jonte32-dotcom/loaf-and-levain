@@ -96,6 +96,24 @@ function writeState(state) {
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
 }
 
+// Single source of truth for pin copy: dist-pins/metadata.json (title/description/hashtags/
+// link, keyed by file). Falls back to the inline PIN_DESCRIPTIONS table (by NN id) if absent.
+function loadMeta(pinFile) {
+  try {
+    const all = JSON.parse(fs.readFileSync(path.join(PINS_DIR, 'metadata.json'), 'utf8'));
+    const m = all.find(x => x.file === pinFile);
+    if (m && m.title && m.description) {
+      return {
+        title: m.title,
+        description: m.hashtags ? `${m.description}\n\n${m.hashtags}` : m.description,
+        link: m.link
+      };
+    }
+  } catch { /* fall through to the inline table */ }
+  const id = (pinFile.match(/\d+/) || [])[0];
+  return id ? PIN_DESCRIPTIONS[id] : null;
+}
+
 async function postPin(pinFile, meta) {
   const imagePath = path.join(PINS_DIR, pinFile);
   if (!fs.existsSync(imagePath)) throw new Error(`Image not found: ${imagePath}`);
@@ -104,7 +122,10 @@ async function postPin(pinFile, meta) {
   const imageBuffer = fs.readFileSync(imagePath);
   const base64 = imageBuffer.toString('base64');
 
-  const link = meta.link ? `${SITE_BASE}/${meta.link.startsWith('#') ? '' : ''}${meta.link}` : SITE_BASE;
+  // metadata.json stores absolute URLs; the inline fallback stores hash/relative fragments.
+  const link = !meta.link ? SITE_BASE
+    : /^https?:\/\//.test(meta.link) ? meta.link
+    : `${SITE_BASE}/${meta.link}`;
 
   const body = {
     title: meta.title.slice(0, 100),
@@ -141,8 +162,7 @@ async function main() {
     return;
   }
 
-  const id = next.match(/\d+/)[0];
-  const meta = PIN_DESCRIPTIONS[id];
+  const meta = loadMeta(next);
   if (!meta) {
     console.error(`No metadata for ${next}`);
     process.exit(1);

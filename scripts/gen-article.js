@@ -12,9 +12,16 @@ import fs from 'node:fs';
 import path from 'node:path';
 import Anthropic from '@anthropic-ai/sdk';
 
-const MODEL = 'claude-opus-4-7';
+// Model id is read from an env var so it can be rotated without a code change when
+// Anthropic retires a model. Set repo variable ANTHROPIC_MODEL to override the default.
+const MODEL = process.env.ANTHROPIC_MODEL || 'claude-opus-4-7';
 const ROADMAP_FILE = 'content-roadmap.json';
 const ARTICLES_DIR = 'articles';
+
+// Expose a step output so the CI workflow can skip inject/commit when nothing was written.
+function setOutput(key, val) {
+  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `${key}=${val}\n`);
+}
 
 function existingSlugs() {
   if (!fs.existsSync(ARTICLES_DIR)) return new Set();
@@ -51,18 +58,39 @@ Length: 1500–2000 words. Long enough to rank against established sourdough sit
 
 Format: pure markdown, starting with the title as a # heading. No frontmatter, no metadata block.`;
 
+// Retry transient Anthropic API failures (429 rate limit, 5xx, 529 overloaded) with
+// exponential backoff so a single hiccup doesn't skip the whole week's article.
+async function withRetry(fn, { tries = 4, baseMs = 2000 } = {}) {
+  let lastErr;
+  for (let attempt = 1; attempt <= tries; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastErr = err;
+      const status = err && err.status;
+      const transient = status === 429 || status === 500 || status === 502 || status === 503 || status === 529;
+      if (attempt === tries || !transient) break;
+      const wait = baseMs * 2 ** (attempt - 1);
+      console.warn(`Claude API attempt ${attempt}/${tries} failed (status ${status}); retrying in ${wait}ms…`);
+      await new Promise((r) => setTimeout(r, wait));
+    }
+  }
+  throw lastErr;
+}
+
 async function main() {
   const roadmap = JSON.parse(fs.readFileSync(ROADMAP_FILE, 'utf8'));
   const written = existingSlugs();
   const next = roadmap.find(t => !written.has(t.slug));
   if (!next) {
     console.log('Roadmap exhausted. Add more topics to content-roadmap.json.');
+    setOutput('created', 'false');
     return;
   }
 
   console.log(`Generating: ${next.title}`);
   const client = new Anthropic();
-  const msg = await client.messages.create({
+  const msg = await withRetry(() => client.messages.create({
     model: MODEL,
     max_tokens: 6000,
     system: SYSTEM,
@@ -77,7 +105,7 @@ Goal: rank in Google for the target keyword and genuinely help readers.
 
 Output the article as pure markdown, starting with # ${next.title}.`
     }]
-  });
+  }));
 
   const content = msg.content.map(b => b.text || '').join('').trim();
   if (!content) throw new Error('Empty response from Claude');
@@ -85,8 +113,13 @@ Output the article as pure markdown, starting with # ${next.title}.`
   const num = String(nextNumber()).padStart(2, '0');
   const filename = `${num}-${next.slug}.md`;
   fs.mkdirSync(ARTICLES_DIR, { recursive: true });
-  fs.writeFileSync(path.join(ARTICLES_DIR, filename), content);
+  // Atomic write: a crash mid-write must not leave a half-written .md that inject then ships.
+  const finalPath = path.join(ARTICLES_DIR, filename);
+  const tmpPath = `${finalPath}.tmp`;
+  fs.writeFileSync(tmpPath, content);
+  fs.renameSync(tmpPath, finalPath);
   console.log(`✓ Wrote ${filename} (${content.length} chars)`);
+  setOutput('created', 'true');
 }
 
 main().catch(e => { console.error(e); process.exit(1); });
