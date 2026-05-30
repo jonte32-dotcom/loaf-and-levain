@@ -22,7 +22,7 @@ These are approximate, calibrated for a healthy starter at 22 °C kitchen temper
 | 1:5:5 | 8–10 h | Long overnight; or for low-acid starter |
 | 1:10:10 | 12–16 h | Very weak starter food; less common |
 
-Halve the kitchen temperature relative to the rule and roughly double these times. At 16 °C, a 1:2:2 takes 10–12 hours instead of 5–6.
+Drop the kitchen temperature about 6–8 °C below the rule and these times roughly double. At 16 °C, a 1:2:2 takes 10–12 hours instead of 5–6.
 
 ## When to use a 1:1:1
 

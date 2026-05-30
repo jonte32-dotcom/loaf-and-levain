@@ -50,7 +50,7 @@ Most recipes for very high-hydration loaves (85%+ ciabatta, pan de cristal) spec
 
 ## What if you skip folds entirely
 
-Skipping folds in a 75% hydration country loaf produces a loaf that's flat, dense, and structurally weak. You can taste the bread tested it but the crumb won't be open and the shape won't hold. The fermentation works fine — but without organised gluten, the gas escapes laterally instead of expanding the crumb upward.
+Skipping folds in a 75% hydration country loaf produces a loaf that's flat, dense, and structurally weak. You can feel and taste that the dough was under-developed: the crumb won't be open and the shape won't hold. The fermentation works fine — but without organised gluten, the gas escapes laterally instead of expanding the crumb upward.
 
 For very low-hydration doughs (under 65%) you can sometimes get away with no folds because the dough is so stiff it has structure on its own. For sourdough, fold.
 

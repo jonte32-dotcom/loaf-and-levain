@@ -52,7 +52,7 @@
 
 ## DDT (Desired Dough Temperature) formula
 
-`Water temp = (Target × 4) − Flour temp − Room temp − Friction`
+`Water temp = (Target × 3) − Flour temp − Room temp − Friction`
 
 - **Target:** 24–26°C is the sweet spot
 - **Flour temp:** measure (often = room temp)
