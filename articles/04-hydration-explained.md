@@ -83,7 +83,7 @@ Practical translation:
 - **Bread flour (12–13.5%):** comfortable up to 78%, possible to 82% with technique
 - **Strong bread flour / T80 (13–14%):** comfortable up to 85%, possible higher
 - **Whole wheat (any):** add 5–8% to whatever the recipe says
-- **Rye (significant percentage):** different rules entirely — keep hydration lower than you'd expect and plan for a denser, stickier dough that ferments faster
+- **Rye (significant percentage):** different rules entirely — keep hydration lower than you'd expect and plan for a denser, stickier dough that ferments faster. See the [rye sourdough guide](/sourdough/rye-sourdough-rules/) for the full breakdown.
 
 ## Use the calculator to convert
 
