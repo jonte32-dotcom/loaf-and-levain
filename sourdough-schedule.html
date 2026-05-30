@@ -19,8 +19,9 @@
 <meta name="description" content="The complete sourdough planning workspace. Build a schedule, plan your starter feeds, calculate baker's percentages, and track your bake live with desktop notifications. Calibrated for room temperature, hydration, inoculation, and cold retard." />
 <meta name="keywords" content="sourdough schedule, sourdough calculator, bulk fermentation calculator, baker's percentages, starter feeding calculator, DDT calculator, sourdough timeline" />
 <meta name="theme-color" content="#1F1611" />
-<meta name="color-scheme" content="light" />
+<meta name="color-scheme" content="light dark" />
 <meta name="robots" content="index,follow" />
+<link rel="canonical" href="https://loafandlevain.com/" />
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
@@ -82,6 +83,22 @@
   "featureList": "Schedule calculator, starter feeding planner, baker's percentages, DDT calculator, live bake tracker, desktop notifications, calendar export"
 }
 </script>
+<!-- Structured data: FAQ schema (mirrors the visible Common questions section) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"How accurate is this schedule?","acceptedAnswer":{"@type":"Answer","text":"Treat it as a planning estimate, not a stopwatch. Real fermentation depends on starter strength, flour protein, actual dough temperature (often warmer than ambient) and humidity. Use it to plan your day, then judge bulk by visual cues: 50–75% rise, jiggle, visible dome."}},
+    {"@type":"Question","name":"Why is bulk longer at lower temperatures?","acceptedAnswer":{"@type":"Answer","text":"Yeast and bacterial enzymes work faster as temperature rises. The calculator uses a Q10 of roughly 2.2, so the rate increases about 2.2× for every 8°C — a touch more than a doubling. At 16°C bulk takes a bit over twice as long as at 24°C."}},
+    {"@type":"Question","name":"What does an active and peaked starter mean?","acceptedAnswer":{"@type":"Answer","text":"A peaked starter has at least doubled, shows a domed surface with visible bubbles, and floats in water. Use within an hour or two of peak. A recently fed starter still needs four to six hours to ripen; cold starter from the fridge needs to warm up and feed first."}},
+    {"@type":"Question","name":"Can I skip the cold retard?","acceptedAnswer":{"@type":"Answer","text":"Yes. Set retard to zero and the calculator plans a same-day bake with final proof at room temperature, typically 1–2 hours after final shaping. You lose some flavour complexity but gain flexibility on baking day."}},
+    {"@type":"Question","name":"What is the difference between feed counts?","acceptedAnswer":{"@type":"Answer","text":"One feed works when your starter is already active or recently fed. Two feeds is standard for a starter taken from the fridge — a refresh feed wakes it, then a build feed makes the volume you need. Three feeds is for starters stored more than a week that need extra revival cycles."}},
+    {"@type":"Question","name":"What hydration should I start with?","acceptedAnswer":{"@type":"Answer","text":"For your first ten loaves stay around 70–75% with bread flour. Higher hydration (80%+) demands stronger flour and better technique. Whole wheat absorbs more — bump hydration 5–8% if you add 20%+ whole grain."}},
+    {"@type":"Question","name":"How does Live Bake mode work?","acceptedAnswer":{"@type":"Answer","text":"Generate a schedule, then click Start Bake. The Live tab tracks elapsed time, shows your current step with a countdown, and previews what is next. The browser tab title flashes when a step is due. Everything is saved locally — no account, no server."}}
+  ]
+}
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -96,7 +113,7 @@
     --paper: #FBF7EE;
     --ink: #1F1611;
     --ink-soft: #4A3B2E;
-    --ink-mute: #8A7866;
+    --ink-mute: #6E5D4C;
     --crust: #B85C38;
     --crust-deep: #8E3F22;
     --crust-light: #DD8A65;
@@ -110,6 +127,28 @@
     --serif: 'Fraunces', 'Times New Roman', serif;
     --sans: 'Manrope', system-ui, sans-serif;
     --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  /* Dark mode: re-map the tokens; every rule already uses var(--token) so nothing else changes. */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --cream: #1A1511;
+      --cream-deep: #221C16;
+      --paper: #241D17;
+      --ink: #F2E9DA;
+      --ink-soft: #D8C9B4;
+      --ink-mute: #A8967F;
+      --crust: #D9805C;
+      --crust-deep: #E0916E;
+      --crust-light: #B05C38;
+      --line: #3A3026;
+      --line-soft: #2E261D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+      --shadow-lg: 0 4px 12px rgba(0,0,0,0.35), 0 24px 48px -16px rgba(0,0,0,0.6);
+    }
+    body { background-image:
+      radial-gradient(at 12% 8%, rgba(217,128,92,0.08) 0%, transparent 50%),
+      radial-gradient(at 88% 92%, rgba(201,162,78,0.06) 0%, transparent 55%); }
   }
 
   html { scroll-behavior: smooth; }
@@ -655,6 +694,7 @@
     border: 1px solid var(--line);
     border-radius: 2px;
     padding: 8px 14px;
+    min-height: 44px;
     font-family: var(--mono);
     font-size: 11px;
     text-transform: uppercase;
@@ -1130,7 +1170,7 @@
     background: var(--paper);
     border: 1px solid var(--line);
     border-radius: 2px;
-    width: 32px; height: 32px;
+    width: 44px; height: 44px;
     display: inline-flex; align-items: center; justify-content: center;
     cursor: pointer;
     color: var(--ink-soft);
@@ -1707,7 +1747,7 @@
     font-size: 22px;
     color: var(--ink-mute);
     cursor: pointer;
-    width: 32px; height: 32px;
+    width: 44px; height: 44px;
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     line-height: 1;
@@ -2081,15 +2121,23 @@
   </svg>
 </header>
 
-<nav class="tabs" id="tabs">
-  <a href="#schedule" data-tab="schedule" class="active"><span class="tab-num">01</span> Schedule</a>
-  <a href="#starter" data-tab="starter"><span class="tab-num">02</span> Starter</a>
-  <a href="#recipe" data-tab="recipe"><span class="tab-num">03</span> Recipe Lab</a>
-  <a href="#live" data-tab="live" class="live-tab"><span class="pulse"></span><span class="tab-num">04</span> Live Bake</a>
+<noscript>
+  <div style="max-width:680px;margin:24px auto;padding:18px 22px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink-soft);font-size:15px;line-height:1.6;">
+    <strong>This calculator needs JavaScript</strong> to build your bake schedule. You can still read our
+    <a href="/sourdough/" style="color:var(--crust-deep,#8E3F22);text-decoration:underline;">free sourdough guides</a> —
+    bulk fermentation by temperature, hydration, starters and troubleshooting — without it.
+  </div>
+</noscript>
+
+<nav class="tabs" id="tabs" role="tablist" aria-label="Calculator sections">
+  <a href="#schedule" data-tab="schedule" class="active" role="tab" id="tab-schedule" aria-controls="panel-schedule" aria-selected="true" tabindex="0"><span class="tab-num">01</span> Schedule</a>
+  <a href="#starter" data-tab="starter" role="tab" id="tab-starter" aria-controls="panel-starter" aria-selected="false" tabindex="-1"><span class="tab-num">02</span> Starter</a>
+  <a href="#recipe" data-tab="recipe" role="tab" id="tab-recipe" aria-controls="panel-recipe" aria-selected="false" tabindex="-1"><span class="tab-num">03</span> Recipe Lab</a>
+  <a href="#live" data-tab="live" class="live-tab" role="tab" id="tab-live" aria-controls="panel-live" aria-selected="false" tabindex="-1"><span class="pulse"></span><span class="tab-num">04</span> Live Bake</a>
 </nav>
 
 <!-- ============ SCHEDULE TAB ============ -->
-<div class="tab-panel active" id="panel-schedule">
+<div class="tab-panel active" id="panel-schedule" role="tabpanel" aria-labelledby="tab-schedule" tabindex="0">
   <div class="work-grid">
 
     <aside class="form-panel">
@@ -2126,10 +2174,17 @@
         <fieldset class="group">
           <div class="group-label">Recipe</div>
           <div class="field">
-            <label for="flour">Total flour</label>
+            <label for="flour">Flour / loaf</label>
             <span class="input-wrap">
               <input type="number" id="flour" value="500" min="100" max="3000" step="50" />
               <span class="input-suffix">g</span>
+            </span>
+          </div>
+          <div class="field">
+            <label for="loaves">Loaves</label>
+            <span class="input-wrap">
+              <input type="number" id="loaves" value="1" min="1" max="12" step="1" inputmode="numeric" />
+              <span class="input-suffix">×</span>
             </span>
           </div>
           <div class="field">
@@ -2209,7 +2264,7 @@
 </div>
 
 <!-- ============ STARTER TAB ============ -->
-<div class="tab-panel" id="panel-starter">
+<div class="tab-panel" id="panel-starter" role="tabpanel" aria-labelledby="tab-starter" tabindex="0">
   <div class="work-grid">
     <aside class="form-panel">
       <div class="panel-title">Feed your starter</div>
@@ -2291,7 +2346,7 @@
 </div>
 
 <!-- ============ RECIPE LAB TAB ============ -->
-<div class="tab-panel" id="panel-recipe">
+<div class="tab-panel" id="panel-recipe" role="tabpanel" aria-labelledby="tab-recipe" tabindex="0">
   <div class="work-grid">
     <aside class="form-panel">
       <div class="panel-title">Recipe lab</div>
@@ -2444,7 +2499,7 @@
 </div>
 
 <!-- ============ LIVE TAB ============ -->
-<div class="tab-panel" id="panel-live">
+<div class="tab-panel" id="panel-live" role="tabpanel" aria-labelledby="tab-live" tabindex="0">
   <section id="live-results">
     <div class="empty">
       <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2515,7 +2570,7 @@
       <h3 id="ddt">The DDT formula</h3>
       <p>
         Desired Dough Temperature is a professional baker's tool for landing dough at a target temperature
-        immediately after mixing. The formula is simple: target × 4 minus the sum of flour temp, room temp,
+        immediately after mixing. The formula is simple: target × 3 minus the sum of flour temp, room temp,
         and friction (estimated 2–4°C for hand mixing, 5–8°C for stand mixers). Solve for water temp. The
         Recipe Lab does this in real time so you can stop guessing whether your kitchen is warm enough.
       </p>
@@ -2623,8 +2678,8 @@
         <summary>Why is bulk longer at lower temperatures?</summary>
         <p>
           Yeast and bacterial enzymes work faster as temperature rises. The calculator uses a Q10 of roughly
-          2.2, meaning fermentation rate doubles every 8°C. At 16°C bulk takes roughly twice as long as at 24°C
-          with everything else equal.
+          2.2, so the fermentation rate increases about 2.2× for every 8°C — a touch more than a doubling. At 16°C
+          bulk takes a bit over twice as long as at 24°C, with everything else equal.
         </p>
       </details>
 
@@ -2684,7 +2739,7 @@
   <div class="bmc-icon" aria-hidden="true">☕</div>
   <div class="bmc-copy">
     <strong>Enjoying the planner?</strong>
-    <span>It's free, no ads, no tracking. A small tip keeps it that way.</span>
+    <span>It's free and we keep the ads light. A small tip helps keep it that way.</span>
   </div>
   <a href="#" id="bmc-link" target="_blank" rel="noopener">Buy me a coffee</a>
 </div>
@@ -2695,6 +2750,7 @@
 
 <footer>
   <span>© Loaf &amp; Levain · Sourdough Schedule Calculator</span>
+  <span class="footer-links"><a href="/sourdough/" style="color:var(--crust-deep,#8E3F22);text-decoration:underline">Knowledge base</a> · <a href="/about" style="color:var(--crust-deep,#8E3F22);text-decoration:underline">About</a> · <a href="/contact" style="color:var(--crust-deep,#8E3F22);text-decoration:underline">Contact</a> · <a href="/privacy.html" style="color:var(--crust-deep,#8E3F22);text-decoration:underline">Privacy</a></span>
   <span>Built for home bakers · v2.1</span>
 </footer>
 
@@ -2712,6 +2768,10 @@
       <input type="email" id="lead-email" placeholder="your@email.com" required autocomplete="email" aria-label="Email address" />
       <button type="submit" id="lead-submit">Send it</button>
     </form>
+    <label class="lead-consent" style="display:flex;align-items:flex-start;gap:8px;margin:12px 0 0;font-size:12px;color:var(--ink-mute);line-height:1.4;cursor:pointer;text-align:left;">
+      <input type="checkbox" id="lead-consent" style="margin-top:2px;flex:none;" />
+      <span>I agree to receive the cheat sheet and occasional bake tips by email, and accept the <a href="/privacy.html" target="_blank" rel="noopener" style="color:var(--crust-deep,#8E3F22);text-decoration:underline;">privacy policy</a>. Unsubscribe anytime.</span>
+    </label>
     <div class="lead-microcopy">
       One email a month with new presets &amp; bake tips. No spam, unsubscribe anytime.
     </div>
@@ -2937,12 +2997,25 @@
   }
 
   /* ================ MODALS ================ */
+  let lastFocusedEl = null;
+  function trapFocus(e) {
+    if (e.key !== 'Tab') return;
+    const m = document.querySelector('.modal-backdrop.show');
+    if (!m) return;
+    const f = m.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])');
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
   function openModal(id) {
     const m = $(id);
     if (!m) return;
+    lastFocusedEl = document.activeElement;
     m.removeAttribute('hidden');
     requestAnimationFrame(() => m.classList.add('show'));
     document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', trapFocus);
     const closeBtn = m.querySelector('.modal-close');
     if (closeBtn) closeBtn.focus();
   }
@@ -2950,9 +3023,12 @@
     const m = $(id);
     if (!m) return;
     m.classList.remove('show');
+    document.removeEventListener('keydown', trapFocus);
     setTimeout(() => {
       m.setAttribute('hidden', '');
       document.body.style.overflow = '';
+      // Return focus to whatever opened the modal (WCAG 2.4.3).
+      if (lastFocusedEl && typeof lastFocusedEl.focus === 'function') { lastFocusedEl.focus(); lastFocusedEl = null; }
     }, 300);
   }
   function bindModalClose(id) {
@@ -3053,6 +3129,11 @@
         showToast('Please enter a valid email');
         return;
       }
+      const consent = $('lead-consent');
+      if (consent && !consent.checked) {
+        showToast('Please accept the privacy policy to continue');
+        return;
+      }
       const btn = $('lead-submit');
       btn.disabled = true;
       btn.textContent = 'Sending…';
@@ -3065,7 +3146,7 @@
         const success = $('lead-success');
         if (success) success.hidden = false;
         setTimeout(() => closeModal('lead-modal'), 2400);
-        track('lead_captured', { email_hash: btoa(email).slice(0, 8) });
+        track('lead_captured', {});
       } else {
         btn.disabled = false;
         btn.textContent = 'Send it';
@@ -3113,11 +3194,9 @@
     const client = MONETIZATION_CONFIG.adsenseClient;
     if (!isConfigured(client) || adsenseLoaded) return;
     adsenseLoaded = true;
-    const s = document.createElement('script');
-    s.async = true;
-    s.crossOrigin = 'anonymous';
-    s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(client)}`;
-    document.head.appendChild(s);
+    // adsbygoogle.js is already loaded statically in <head> (line 9). Injecting a second
+    // loader here caused duplicate ad requests / AdSense policy warnings — so we only reveal
+    // the slot elements and push, we do NOT append another loader script.
     // Reveal slots
     Object.entries({ 'ad-slot-content': 'inContent', 'ad-slot-mid': 'midContent' }).forEach(([elId, slotKey]) => {
       const el = $(elId);
@@ -3157,6 +3236,7 @@
   }
 
   /* ================ STATE ================ */
+  const STATE_SCHEMA_VERSION = 1;
   const state = {
     unit: 'C',
     schedule: null,
@@ -3179,6 +3259,7 @@
   function saveState() {
     try {
       const data = {
+        schemaVersion: STATE_SCHEMA_VERSION,
         unit: state.unit,
         notifEnabled: state.notifEnabled,
         tickerHidden: state.tickerHidden,
@@ -3196,6 +3277,13 @@
       const raw = localStorage.getItem('loafLevainState');
       if (!raw) return;
       const data = JSON.parse(raw);
+      // Future-proofing: discard a saved blob whose schema version doesn't match rather than
+      // misinterpret it. Legacy (unversioned) data shares today's shape, so it still loads;
+      // only a real future mismatch triggers a clean reset.
+      if (data.schemaVersion !== undefined && data.schemaVersion !== STATE_SCHEMA_VERSION) {
+        localStorage.removeItem('loafLevainState');
+        return;
+      }
       if (data.unit) {
         state.unit = data.unit;
         document.querySelectorAll('#unit-toggle button').forEach(b => {
@@ -3219,7 +3307,7 @@
 
   function collectFormValues() {
     const v = {};
-    ['flour','hydration','salt','inoculation','temp','retard','anchor-time','starter-state','preset',
+    ['flour','loaves','hydration','salt','inoculation','temp','retard','anchor-time','starter-state','preset',
      'target-amount','reserve','feed-count','final-ratio','starter-temp','starter-target-time',
      'r-flour','r-hydration','r-salt','r-levain','b-white','b-ww','b-rye','b-spelt',
      'i-name','i-pct','ddt-target','ddt-flour','ddt-room','ddt-friction'].forEach(id => {
@@ -3372,15 +3460,26 @@
   }
 
   /* ================ TAB ROUTING ================ */
-  document.querySelectorAll('nav.tabs a').forEach(a => {
+  document.querySelectorAll('nav.tabs a').forEach((a, i, tabs) => {
     a.addEventListener('click', e => {
       e.preventDefault();
       switchTab(a.dataset.tab);
     });
+    a.addEventListener('keydown', e => {
+      let t = null;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') t = tabs[(i + 1) % tabs.length];
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') t = tabs[(i - 1 + tabs.length) % tabs.length];
+      else if (e.key === 'Home') t = tabs[0];
+      else if (e.key === 'End') t = tabs[tabs.length - 1];
+      if (t) { e.preventDefault(); switchTab(t.dataset.tab); t.focus(); }
+    });
   });
   function switchTab(name) {
     document.querySelectorAll('nav.tabs a').forEach(a => {
-      a.classList.toggle('active', a.dataset.tab === name);
+      const on = a.dataset.tab === name;
+      a.classList.toggle('active', on);
+      a.setAttribute('aria-selected', on ? 'true' : 'false');
+      a.setAttribute('tabindex', on ? '0' : '-1');
     });
     document.querySelectorAll('.tab-panel').forEach(p => {
       p.classList.toggle('active', p.id === `panel-${name}`);
@@ -3443,11 +3542,15 @@
 
   /* ================ SCHEDULE BUILDER ================ */
   function buildSchedule(inputs) {
-    const { flour, hydration, salt, inoc, tempC, starterState, retardH, anchorTime, mode } = inputs;
-    const water = Math.round(flour * hydration / 100);
-    const saltG = Math.round(flour * salt / 100 * 10) / 10;
-    const starterG = Math.round(flour * inoc / 100);
-    const total = flour + water + saltG + starterG;
+    const { flour, hydration, salt, inoc, tempC, starterState, retardH, anchorTime, mode, loaves = 1 } = inputs;
+    // `flour` is per loaf. Scale ingredients pro-rata (NOT the times — fermentation depends on
+    // temperature and inoculation, not on batch mass), then report per-loaf dough weight.
+    const flourTotal = Math.round(flour * loaves);
+    const water = Math.round(flourTotal * hydration / 100);
+    const saltG = Math.round(flourTotal * salt / 100 * 10) / 10;
+    const starterG = Math.round(flourTotal * inoc / 100);
+    const total = flourTotal + water + saltG + starterG;
+    const perLoafDough = Math.round(total / loaves);
 
     const starterAheadH = starterPrep(starterState, tempC);
     const autolyseH = 0.5;
@@ -3535,7 +3638,9 @@
     });
     steps.push({
       time: bulkEnd, title: 'Bulk complete · pre-shape',
-      desc: 'Turn dough onto unfloured counter. Pre-shape into a round with light tension. Bench rest.',
+      desc: loaves > 1
+        ? `Turn dough out and divide into ${loaves} equal pieces (~${perLoafDough} g each). Pre-shape each into a round with light tension. Bench rest.`
+        : 'Turn dough onto unfloured counter. Pre-shape into a round with light tension. Bench rest.',
       duration: fmtDuration(benchRestH),
       cls: ''
     });
@@ -3588,7 +3693,7 @@
     steps.sort((a, b) => a.time - b.time);
     const totalH = (bakeOut - feedStarter) / 3600000;
     return {
-      recipe: { flour, water, saltG, starterG, total, hydration, salt, inoc },
+      recipe: { flour: flourTotal, water, saltG, starterG, total, hydration, salt, inoc, loaves, perLoafDough },
       timing: { bulkH, totalH, retardH, tempC },
       steps,
       anchor: feedStarter
@@ -3597,11 +3702,21 @@
 
   function renderSchedule(schedule) {
     const { recipe, timing, steps, anchor } = schedule;
+    // Domain sanity checks — nudge the baker when inputs drift outside normal ranges.
+    const roomC = Math.round(tempFromC(timing.tempC));
+    const warn = [];
+    if (recipe.salt < 1.8) warn.push(`Salt is ${recipe.salt}% — under ~1.8% gives a slack, bland dough. Most recipes use 1.8–2.2% of flour.`);
+    else if (recipe.salt > 2.2) warn.push(`Salt is ${recipe.salt}% — over ~2.2% noticeably slows fermentation. The bulk estimate assumes a typical ~2%.`);
+    if (recipe.hydration > 85) warn.push(`${recipe.hydration}% hydration with mostly white flour is expert territory — expect a slack, hard-to-shape dough.`);
+    if (timing.tempC >= 28) warn.push(`At ${roomC}${tempLabel()} the dough ferments fast and overproofs easily — watch it closely, or use cold retard / less starter.`);
+    else if (timing.tempC <= 18) warn.push(`At ${roomC}${tempLabel()} fermentation is slow — find a warmer spot or expect a long bulk.`);
+    const warningsHtml = warn.length ? `<div class="bake-warnings" style="margin:0 0 24px;display:flex;flex-direction:column;gap:8px;">${warn.map(w => `<div style="background:rgba(184,92,56,0.08);border:1px solid var(--crust);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--crust-deep);line-height:1.5;">${w}</div>`).join('')}</div>` : '';
     const summaryHtml = `
       <div class="summary-grid">
         <div class="summary-cell">
           <div class="key">Total dough</div>
           <div class="val">${recipe.total}<small>g</small></div>
+          ${recipe.loaves > 1 ? `<div style="font-size:11px;color:var(--ink-mute);margin-top:2px;">${recipe.loaves} × ~${recipe.perLoafDough} g</div>` : ''}
         </div>
         <div class="summary-cell">
           <div class="key">Bulk time</div>
@@ -3615,12 +3730,13 @@
           <div class="key">Total elapsed</div>
           <div class="val">${fmtDuration(timing.totalH)}</div>
         </div>
-      </div>`;
+      </div>
+      ${warningsHtml}`;
     const recipeHtml = `
       <div class="recipe-card">
         <div class="recipe-card-head">
           <h3>The dough</h3>
-          <span class="total">${recipe.hydration}% hydration · ${recipe.inoc}% levain</span>
+          <span class="total">${recipe.hydration}% hydration · ${recipe.inoc}% levain${recipe.loaves > 1 ? ` · ${recipe.loaves} loaves` : ''}</span>
         </div>
         <div class="recipe-table">
           <div class="recipe-row"><span class="num">01</span><span class="name">Bread flour</span><span class="pct">100%</span><span class="grams">${recipe.flour} g</span></div>
@@ -3732,26 +3848,59 @@
     `;
   }
 
+  // Clipboard with a graceful fallback for http / in-app webviews / older browsers where
+  // navigator.clipboard is undefined (the copy buttons used to fail silently there).
+  function copyText(text, okMsg) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => showToast(okMsg || 'Copied to clipboard'), () => fallbackCopy(text, okMsg));
+    } else {
+      fallbackCopy(text, okMsg);
+    }
+  }
+  function fallbackCopy(text, okMsg) {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand && document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast(ok ? (okMsg || 'Copied to clipboard') : 'Press Ctrl/Cmd+C to copy');
+    } catch (e) {
+      showToast('Could not copy automatically');
+    }
+  }
   function copyScheduleText(schedule) {
     const { recipe, timing, steps, anchor } = schedule;
     const lines = steps.map(s =>
       `${fmtTime(s.time)}  ${fmtDay(s.time, anchor).padEnd(10, ' ')}  ${stripTags(s.title)}\n            ${s.duration}`
     ).join('\n\n');
     const header = `Sourdough schedule\n${recipe.flour}g flour · ${recipe.hydration}% hydration · ${recipe.inoc}% levain · ${Math.round(tempFromC(timing.tempC))}${tempLabel()}\n\n`;
-    navigator.clipboard.writeText(header + lines).then(() => showToast('Copied to clipboard'));
+    copyText(header + lines, 'Schedule copied to clipboard');
   }
 
   function exportICS(schedule) {
-    const fmt = (d) => d.toISOString().replace(/[-:]|\.\d{3}/g, '');
+    const pad = (n) => String(n).padStart(2, '0');
+    // Floating local time (no trailing Z, no TZID): the event fires at the wall-clock
+    // time shown in the schedule regardless of the device timezone — and stays correct
+    // across a daylight-saving shift mid-bake (a 12–24h schedule often crosses one).
+    // The old toISOString() serialised local times to UTC, freezing the offset at
+    // generation time and shifting every post-DST step by an hour.
+    const fmtLocal = (d) => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
+    // DTSTAMP must be UTC per RFC 5545.
+    const fmtUTC = (d) => d.toISOString().replace(/[-:]|\.\d{3}/g, '');
     const events = schedule.steps.map((s, i) => {
       const summary = stripTags(s.title);
       const desc = stripTags(s.desc).replace(/\n/g, '\\n');
       return [
         'BEGIN:VEVENT',
         `UID:sourdough-${i}-${Date.now()}@loaflevain`,
-        `DTSTAMP:${fmt(new Date())}`,
-        `DTSTART:${fmt(s.time)}`,
-        `DTEND:${fmt(new Date(s.time.getTime() + 15 * 60000))}`,
+        `DTSTAMP:${fmtUTC(new Date())}`,
+        `DTSTART:${fmtLocal(s.time)}`,
+        `DTEND:${fmtLocal(new Date(s.time.getTime() + 15 * 60000))}`,
         `SUMMARY:Sourdough · ${summary}`,
         `DESCRIPTION:${desc}`,
         'END:VEVENT'
@@ -3800,6 +3949,7 @@
     e.preventDefault();
     const inputs = {
       flour: parseFloat($('flour').value),
+      loaves: Math.max(1, parseInt($('loaves').value, 10) || 1),
       hydration: parseFloat($('hydration').value),
       salt: parseFloat($('salt').value),
       inoc: parseFloat($('inoculation').value),
@@ -3974,8 +4124,7 @@
       const txt = feeds.map((f, i) =>
         `Feed ${i+1} (${f.ratio}) at ${fmtTime(f.time)}\n  Starter ${f.starter}g + Flour ${f.flour}g + Water ${f.water}g`
       ).join('\n\n');
-      navigator.clipboard.writeText(`Starter feeding plan\nReady by ${fmtTime(readyTime)}\n\n${txt}`)
-        .then(() => showToast('Copied to clipboard'));
+      copyText(`Starter feeding plan\nReady by ${fmtTime(readyTime)}\n\n${txt}`, 'Feeding plan copied');
     });
   }
 
@@ -4013,7 +4162,7 @@
     if (blend.spelt > 0) flours.push({ name: 'Spelt', pct: blend.spelt, grams: Math.round(flour * blend.spelt / blendTotal) });
 
     const totalDough = flour + water + saltG + levainG + inclusionG;
-    const ddtWaterC = ddt.target * 4 - ddt.flour - ddt.room - ddt.friction;
+    const ddtWaterC = ddt.target * 3 - ddt.flour - ddt.room - ddt.friction;
 
     // Hydration recommendation
     let hydrationNote = '';
@@ -4022,11 +4171,17 @@
     else if (wholePct >= 50 && hydration < 82) hydrationNote = `Tip: heavy whole grain blends absorb more — 82–88% hydration works well.`;
     else if (wholePct === 0 && hydration > 85) hydrationNote = `High hydration with all white flour requires strong gluten technique.`;
 
-    return { flour, water, saltG, levainG, inclusionG, inclusion, flours, totalDough, hydration, salt, levain, ddtWaterC, hydrationNote, blendTotal };
+    // True totals including the levain's own flour & water (assumes a 100%-hydration
+    // starter): levain = half flour, half water. The hydration/salt inputs are baker's %
+    // on the ADDED flour only, so the real dough is a little wetter and less salty.
+    const totalFlour = flour + levainG / 2;
+    const totalHydration = totalFlour > 0 ? Math.round((water + levainG / 2) / totalFlour * 1000) / 10 : hydration;
+    const totalSaltPct = totalFlour > 0 ? Math.round(saltG / totalFlour * 1000) / 10 : salt;
+    return { flour, water, saltG, levainG, inclusionG, inclusion, flours, totalDough, hydration, salt, levain, ddtWaterC, hydrationNote, blendTotal, totalHydration, totalSaltPct };
   }
 
   function renderRecipe(recipe) {
-    const { water, saltG, levainG, inclusionG, inclusion, flours, totalDough, hydration, salt, levain, ddtWaterC, hydrationNote, blendTotal } = recipe;
+    const { water, saltG, levainG, inclusionG, inclusion, flours, totalDough, hydration, salt, levain, ddtWaterC, hydrationNote, blendTotal, totalHydration, totalSaltPct } = recipe;
 
     let n = 1;
     const flourRows = flours.map(f =>
@@ -4067,6 +4222,10 @@
         </div>
       </div>
 
+      ${levain > 0 ? `<p style="font-size:13px;color:var(--ink-mute);margin:-6px 0 22px;line-height:1.5;">
+        Including the levain's flour and water (100% starter hydration), the <strong>true total hydration is ${totalHydration}%</strong> and salt is <strong>${totalSaltPct}%</strong> of total flour. The weights below are the water and salt you actually add.
+      </p>` : ''}
+
       <div class="recipe-card">
         <div class="recipe-card-head">
           <h3>Mise en place</h3>
@@ -4097,7 +4256,7 @@
             ${ddtTempDisplay}<span style="font-family:var(--mono);font-size:18px;color:var(--ink-mute);margin-left:4px;">${tempLabel()}</span>
           </div>
           <p style="font-size:13px;color:var(--ink-mute);font-family:var(--mono);">
-            target × 4 − flour − room − friction = water${ddtNote}
+            target × 3 − flour − room − friction = water${ddtNote}
           </p>
           ${hydrationNote ? `<p style="margin-top:16px;font-size:13px;color:var(--crust);">${hydrationNote}</p>` : ''}
         </div>
@@ -4403,7 +4562,7 @@
         </svg>
         <div class="copy">
           <strong>Get notified at every step</strong>
-          <span>Desktop alerts when bulk is done, when to fold, when to bake. Even if this tab is in the background.</span>
+          <span>Desktop alerts when bulk is done, when to fold, when to bake — while this tab stays open. For overnight steps, also add the schedule to your calendar (the Calendar button) so a reminder fires even if the tab is closed.</span>
         </div>
         <button id="enable-notif">Enable</button>
         <button class="dismiss" id="dismiss-notif" aria-label="Dismiss">×</button>
