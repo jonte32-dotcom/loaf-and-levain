@@ -33,6 +33,12 @@ const ARTICLES_DIR = 'articles';
 const BUILD_DIR = 'articles-build';
 const KB_DIR = path.join(BUILD_DIR, 'sourdough');
 const SITE_BASE = (process.env.SITE_BASE || 'https://loafandlevain.com').replace(/\/$/, '');
+// E-E-A-T: set AUTHOR_NAME (and optionally AUTHOR_BIO) to attach a real, named human author to
+// every article — a byline + Person JSON-LD instead of an anonymous Organization. This is the
+// single highest-impact AdSense "low value content" fix. Leave AUTHOR_NAME empty and it safely
+// falls back to the old anonymous author (so nothing ships half-broken until you fill it in).
+const AUTHOR_NAME = process.env.AUTHOR_NAME || '';
+const AUTHOR_BIO = process.env.AUTHOR_BIO || '';
 const ADSENSE_CLIENT = 'ca-pub-8093269710555728';
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'loafandlevain.bake@gmail.com';
 const START = '<!-- ARTICLES_AUTO_INJECT_START -->';
@@ -86,11 +92,14 @@ function readArticles() {
     // Sort numerically on the NN- prefix so 100- doesn't sort before 11- past 99 articles.
     .sort((a, b) => (parseInt(a, 10) || 0) - (parseInt(b, 10) || 0))
     .map(f => {
-      const raw = fs.readFileSync(path.join(ARTICLES_DIR, f), 'utf8').trim();
+      const fp = path.join(ARTICLES_DIR, f);
+      const raw = fs.readFileSync(fp, 'utf8').trim();
       const titleMatch = raw.match(/^#\s+(.+)$/m);
       const title = titleMatch ? titleMatch[1] : f.replace(/^\d+-/, '').replace(/\.md$/, '');
       const body = raw.replace(/^#\s+.+$/m, '').trim();
-      return { file: f, title, body, slug: fileSlug(f), summary: excerpt(body) };
+      let modified = '';
+      try { modified = fs.statSync(fp).mtime.toISOString().slice(0, 10); } catch (e) { /* ignore */ }
+      return { file: f, title, body, slug: fileSlug(f), summary: excerpt(body), modified };
     });
 }
 
@@ -147,6 +156,13 @@ const SITE_CSS = `
   .article-body blockquote{border-left:3px solid var(--gold);padding-left:18px;margin:0 0 18px;
     color:var(--ink-mute);font-style:italic}
   .article-body a{color:var(--crust-deep);text-decoration:underline;text-underline-offset:2px}
+  .article-body img{max-width:100%;height:auto;border-radius:10px;margin:22px 0;display:block;box-shadow:0 8px 24px -12px rgba(31,22,17,.18)}
+  .article-body figure{margin:22px 0}
+  .article-body figcaption{font-size:13px;color:var(--ink-mute);margin-top:6px;text-align:center;font-style:italic}
+  .byline{font-size:14px;color:var(--ink-mute);margin:-4px 0 24px}
+  .byline a{color:var(--crust-deep)}
+  .author-box{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:30px 0;font-size:14px;color:var(--ink-soft)}
+  .author-box strong{color:var(--ink)}
   /* cards / related */
   .cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));margin:8px 0 0}
   .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;
@@ -238,8 +254,31 @@ function calculatorCTA() {
 </div>`;
 }
 
+// Topical relevance so each article's "related" list is DIFFERENT and on-topic — instead of the
+// same first 4 articles on every page (the #1 "scaled AI content" signal AdSense flags).
+const REL_STOP = new Set(('the a an and or but for to of in on at is are be it your you this that with from as ' +
+  'if when how what why which not no into out up down over under our their than then can could should would ' +
+  'will just like get make made use used dough bread sourdough bake baking baker bakers loaf loaves recipe ' +
+  'time most more less very also even still here there about').split(/\s+/));
+function relTerms(s) {
+  return (String(s).toLowerCase().match(/[a-z]{4,}/g) || []).filter(w => !REL_STOP.has(w));
+}
+function relevance(a, b) {
+  const A = new Set(relTerms(a.title + ' ' + a.summary + ' ' + a.body));
+  const B = new Set(relTerms(b.title + ' ' + b.summary + ' ' + b.body));
+  if (!A.size || !B.size) return 0;
+  let inter = 0;
+  for (const w of A) if (B.has(w)) inter++;
+  // Jaccard: normalises for length so the long articles don't dominate every "related" list.
+  return inter / (A.size + B.size - inter);
+}
 function relatedList(current, all, n = 4) {
-  const others = all.filter(a => a.slug !== current.slug).slice(0, n);
+  const others = all
+    .filter(a => a.slug !== current.slug)
+    .map(a => ({ a, s: relevance(current, a) }))
+    .sort((x, y) => (y.s - x.s) || ((parseInt(x.a.file, 10) || 0) - (parseInt(y.a.file, 10) || 0)))
+    .slice(0, n)
+    .map(x => x.a);
   const cards = others.map(a => `
     <a class="card" href="/sourdough/${a.slug}/">
       <h3>${escapeHtml(a.title)}</h3>
@@ -247,18 +286,20 @@ function relatedList(current, all, n = 4) {
       <span class="more">Read →</span>
     </a>`).join('');
   return `<section class="related">
-  <h2>More from the knowledge base</h2>
+  <h2>Related guides</h2>
   <div class="cards">${cards}</div>
 </section>`;
 }
 
 function articleJsonLd(a, canonical) {
-  return `<script type="application/ld+json">${JSON.stringify({
+  const obj = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: a.title,
     description: a.summary,
-    author: { '@type': 'Organization', name: 'Loaf & Levain' },
+    author: AUTHOR_NAME
+      ? { '@type': 'Person', name: AUTHOR_NAME, url: `${SITE_BASE}/about` }
+      : { '@type': 'Organization', name: 'Loaf & Levain' },
     publisher: {
       '@type': 'Organization',
       name: 'Loaf & Levain',
@@ -266,7 +307,18 @@ function articleJsonLd(a, canonical) {
     },
     mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
     image: `${SITE_BASE}/og-image.jpg`
-  })}</script>`;
+  };
+  if (a.modified) { obj.datePublished = a.modified; obj.dateModified = a.modified; }
+  return `<script type="application/ld+json">${JSON.stringify(obj)}</script>`;
+}
+
+function byline(a) {
+  if (!AUTHOR_NAME) return '';
+  return `<div class="byline">By <a href="/about">${escapeHtml(AUTHOR_NAME)}</a>${a.modified ? ` · Updated ${escapeHtml(a.modified)}` : ''}</div>`;
+}
+function authorBox() {
+  if (!AUTHOR_NAME) return '';
+  return `<aside class="author-box"><strong>${escapeHtml(AUTHOR_NAME)}</strong>${AUTHOR_BIO ? ` — ${escapeHtml(AUTHOR_BIO)}` : ''}</aside>`;
 }
 
 // ---------- standalone article page ----------
@@ -289,9 +341,11 @@ ${siteHeader()}
   <div class="eyebrow">Sourdough knowledge base</div>
   <article>
     <h1>${escapeHtml(a.title)}</h1>
+    ${byline(a)}
     <div class="article-body">
 ${bodyHtml}
     </div>
+    ${authorBox()}
   </article>
   ${calculatorCTA()}
   ${relatedList(a, all)}
@@ -373,7 +427,7 @@ function aboutPage() {
   const body = `
 <p>Loaf &amp; Levain is an independent sourdough resource built around one idea: baking gets easier when you measure instead of guess. The free <a href="/">schedule calculator</a> predicts fermentation timing from your kitchen temperature, hydration, and starter strength — and the <a href="/sourdough/">knowledge base</a> explains the why behind every number.</p>
 <h2>Who writes this</h2>
-<p>The guides are written and edited by home bakers who have logged hundreds of bakes across cold winter kitchens and humid summer ones. Every recommendation — bulk percentages, hydration targets, retard windows — is something we have tested in a real oven, not copied from another blog.</p>
+<p>${AUTHOR_NAME ? `Loaf &amp; Levain is written and maintained by <strong>${escapeHtml(AUTHOR_NAME)}</strong>${AUTHOR_BIO ? ', ' + escapeHtml(AUTHOR_BIO) : ', a home baker who has logged hundreds of bakes across cold winter kitchens and humid summer ones'}.` : 'The guides are written and edited by home bakers who have logged hundreds of bakes across cold winter kitchens and humid summer ones.'} Every recommendation — bulk percentages, hydration targets, retard windows — is something tested in a real oven, not copied from another blog.</p>
 <h2>What we cover</h2>
 <p>Fermentation science, starter maintenance and rescue, hydration, shaping and scoring, and the long list of things that go wrong (and how to diagnose them). If a guide gives a number, it also tells you how to know whether that number is right for <em>your</em> dough.</p>
 <h2>How it's funded</h2>
