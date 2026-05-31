@@ -321,11 +321,61 @@ function authorBox() {
   return `<aside class="author-box"><strong>${escapeHtml(AUTHOR_NAME)}</strong>${AUTHOR_BIO ? ` — ${escapeHtml(AUTHOR_BIO)}` : ''}</aside>`;
 }
 
+// Build-time internal linker: weaves the articles into a topical cluster automatically (and
+// links the calculator), instead of hand-editing every markdown file. Conservative: links the
+// FIRST plain-text mention of each target once per article, max 6, skipping headings, code,
+// tables, blockquotes and lines that already contain a link or HTML.
+const CALC_PHRASES = ['schedule calculator', 'calculator on this page', 'Recipe Lab', 'Starter tab'];
+const ARTICLE_LINK_MAP = [
+  ['bulk-fermentation-by-temperature', ['bulk fermentation']],
+  ['why-sourdough-gummy', ['gummy']],
+  ['revive-forgotten-starter', ['forgotten starter']],
+  ['hydration-explained', ['hydration']],
+  ['cold-retard-vs-same-day', ['cold retard']],
+  ['float-test-explained', ['float test']],
+  ['ddt-formula-water-temperature', ['DDT']],
+  ['fix-dense-sourdough', ['dense crumb', 'dense loaf']],
+  ['starter-feeding-ratio', ['feeding ratio']],
+  ['stretch-and-fold', ['stretch and fold']],
+  ['scoring-sourdough', ['scoring']],
+  ['autolyse-vs-fermentolyse', ['autolyse', 'fermentolyse']],
+  ['whole-wheat-sourdough', ['whole wheat']],
+  ['rye-sourdough-rules', ['rye flour', 'rye bread']]
+];
+function autoLinkBody(md, currentSlug) {
+  const lines = md.split('\n');
+  const used = new Set();
+  let total = 0;
+  const MAX = 6;
+  const triggers = ARTICLE_LINK_MAP
+    .filter(([slug]) => slug !== currentSlug)
+    .map(([slug, phrases]) => ({ key: slug, url: `/sourdough/${slug}/`, phrases }));
+  triggers.push({ key: '__calc__', url: '/', phrases: CALC_PHRASES });
+  const linkable = (line) => line && !/^\s*(#|```|\||>)/.test(line) && !line.includes('](') && !line.includes('<');
+  for (let i = 0; i < lines.length && total < MAX; i++) {
+    if (!linkable(lines[i])) continue;
+    for (const t of triggers) {
+      if (used.has(t.key)) continue;
+      for (const p of t.phrases) {
+        const re = new RegExp('\\b(' + p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')\\b', 'i');
+        if (re.test(lines[i])) {
+          lines[i] = lines[i].replace(re, `[$1](${t.url})`);
+          used.add(t.key);
+          total++;
+          break;
+        }
+      }
+      if (total >= MAX) break;
+    }
+  }
+  return lines.join('\n');
+}
+
 // ---------- standalone article page ----------
 
 function renderArticlePage(a, all) {
   const canonical = `${SITE_BASE}/sourdough/${a.slug}/`;
-  let bodyHtml = sanitizeHtml(marked.parse(a.body));
+  let bodyHtml = sanitizeHtml(marked.parse(autoLinkBody(a.body, a.slug)));
   // Demote heading levels: H1 in source already stripped; map H2→H2 stays, but
   // ensure no stray H1 in body collides with the page H1.
   bodyHtml = bodyHtml.replace(/<h1\b/g, '<h2').replace(/<\/h1>/g, '</h2>');
