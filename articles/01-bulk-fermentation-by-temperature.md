@@ -4,7 +4,7 @@ Bulk fermentation is the part of a sourdough bake where most outcomes are decide
 
 ## The Q10 rule, in plain words
 
-Yeast and lactic bacteria work faster when it's warm and slower when it's cold. The rate roughly doubles for every 8°C (about 14°F) rise in dough temperature. Bakers call this Q10 ≈ 2.
+Yeast and lactic bacteria work faster when it's warm and slower when it's cold. The rate increases about 2.2× for every 8°C (about 14°F) rise in dough temperature — a touch more than a doubling. Bakers call this Q10 ≈ 2.2, and it's the exact factor the calculator uses.
 
 What this means in practice:
 

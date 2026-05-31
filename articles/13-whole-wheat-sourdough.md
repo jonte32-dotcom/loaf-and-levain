@@ -106,7 +106,7 @@ Once this works consistently, push the whole wheat to 70%, then 100%. Don't jump
 
 ### Gummy crumb
 
-Almost always underbaked or underproofed. Whole wheat needs to hit 207–210°F internal temperature, not the 200°F that's fine for white sourdough. The extra bran holds moisture and needs more heat to fully set.
+Almost always underbaked or underproofed. Any sourdough should reach 205–210°F (96–99°C) internal temperature; whole wheat wants the top of that range, 207–210°F, because the extra bran holds moisture and needs more heat to fully set.
 
 ### Dense loaf with no oven spring
 
@@ -152,7 +152,7 @@ Start with one change, not five. If you've been baking white sourdough and want 
 
 1. **Bake your usual recipe with 30% whole wheat substitution** at +3% hydration. Note how it differs.
 2. **Shorten your bulk by 30 minutes** next bake, regardless of how the dough looks.
-3. **Push your internal temperature to 208°F** instead of pulling at 200°F.
+3. **Push your internal temperature to 208–210°F** rather than pulling early — and never below 205°F (96°C).
 
 After three bakes at 30%, move to 50%. Track timing and hydration in a notebook — whole wheat varies enough between brands and seasons that you can't memorize a single formula. You're building a feel for how *this* flour, in *your* kitchen, at *this* temperature, wants to behave.
 

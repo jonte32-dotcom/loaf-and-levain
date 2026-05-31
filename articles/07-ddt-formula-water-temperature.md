@@ -6,29 +6,29 @@ Here's the formula, where it comes from, and how to use it without overcomplicat
 
 ## The formula
 
-`Water = (Target × 4) − Flour − Room − Friction`
+`Water = (Target × 3) − Flour − Room − Friction`
 
-Every value is in the same temperature unit (°C is cleaner; °F also works). The "× 4" comes from the four contributors to dough temperature: the water itself, the flour, the room (which heats or cools the dough during mixing), and friction from mixing.
+Every value is in the same temperature unit (°C is cleaner; °F also works). The "× 3" multiplies your target by the number of temperatures you're correcting for — flour, room, and friction — and you solve for the fourth: the water. (For sourdough we treat the levain as roughly room temperature. If your starter comes straight from a warm proofer or the fridge, nudge the water a degree or two the other way to compensate.)
 
 ## Worked examples
 
 **Standard winter day (cold kitchen).** Target dough temp 25 °C, flour 18 °C, room 18 °C, hand mixing (3 °C friction).
 
-`Water = (25 × 4) − 18 − 18 − 3 = 100 − 39 = 61 °C`
+`Water = (25 × 3) − 18 − 18 − 3 = 75 − 39 = 36 °C`
 
-That's hot. Run the tap for ten seconds, mix in a splash of cold water until you hit 61 °C. Don't pour boiling water on flour — the gluten won't form properly.
+That's warm tap water — comfortable on the wrist, not hot. In a cold kitchen you nudge the dough up to target with slightly warm water. Don't use hot water straight from the tap; you want the dough warm, not the gluten shocked.
 
 **Standard summer day (hot kitchen).** Target 25 °C, flour 27 °C, room 27 °C, hand mixing.
 
-`Water = 100 − 27 − 27 − 3 = 43 °C`
+`Water = 75 − 27 − 27 − 3 = 18 °C`
 
-Still warm but not aggressive. Standard tap water might already be in this range.
+That's cool — in a hot kitchen you pull the dough *down* to target with cold water. Use cold tap water, and chill part of it if your tap runs warm in summer.
 
 **Stand mixer summer.** Same as above but with mixer friction (6 °C).
 
-`Water = 100 − 27 − 27 − 6 = 40 °C`
+`Water = 75 − 27 − 27 − 6 = 15 °C`
 
-The mixer adds heat, so cooler water keeps the dough on target.
+The mixer adds more heat, so even colder water keeps the dough on target — fridge-cold water, or a few ice cubes melted into the mix.
 
 ## Friction values to use
 
@@ -60,7 +60,7 @@ You don't have to calculate DDT for every bake. Most home bakers fall into a pat
 
 The Recipe Lab in the schedule calculator does this math live. Set your target dough temperature, flour temperature, room temperature, and friction estimate. It tells you the water temperature you need. As you change values it updates in real time.
 
-If the calculation tells you to use water below 5 °C or above 60 °C, double-check your inputs. Numbers that extreme usually mean a typo or an unusual kitchen condition worth examining.
+If the calculation tells you to use water below 5 °C or above 50 °C, double-check your inputs. Numbers that extreme usually mean a typo or an unusual kitchen condition worth examining.
 
 ## A note on flour temperature
 

@@ -1,0 +1,15 @@
+# Cloudflare Pages security headers, applied to every response.
+#
+# The Content-Security-Policy is intentionally Report-Only for now: it CANNOT block
+# anything, so it is safe to ship while AdSense is under review. Watch the browser
+# console for "Report Only" violations, tighten the allowlist, then rename the header
+# to "Content-Security-Policy" to enforce it. 'unsafe-inline' is required because the
+# calculator is a single-file app with inline <script>/<style> and a couple of inline
+# handlers; moving to nonces is future work.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+  X-Frame-Options: SAMEORIGIN
+  Content-Security-Policy-Report-Only: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.doubleclick.net https://adservice.google.com https://*.google.com https://fundingchoicesmessages.google.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://googleads.g.doubleclick.net https://*.googlesyndication.com https://www.google.com https://fundingchoicesmessages.google.com; connect-src 'self' https://plausible.io https://*.google.com https://*.googlesyndication.com https://*.doubleclick.net

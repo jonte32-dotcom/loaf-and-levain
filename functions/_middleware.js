@@ -19,7 +19,17 @@ const BLOCKED_EXACT = [
   '/package-lock.json',
   '/.gitignore',
   '/.deploy-trigger',
-  '/config.local.json'
+  '/config.local.json',
+  // Paid / source assets that must NOT be free to download. They live in the repo
+  // root, so under a root deploy (output dir '.') they would otherwise be public.
+  '/Sourdough Schedule Pro.pdf',
+  '/Sourdough-Cheat-Sheet.pdf',
+  '/sourdough-pro-cover.jpg',
+  // Gitignored data files — defence-in-depth in case gitignore ever fails under a root deploy.
+  '/forms.json',
+  '/form-detail.json',
+  '/camp-detail.json',
+  '/automation-detail.json'
 ];
 
 const BLOCKED_SUFFIXES = ['.md'];
@@ -38,7 +48,10 @@ function isBlocked(pathname) {
 
 export async function onRequest(context) {
   const url = new URL(context.request.url);
-  if (isBlocked(url.pathname)) {
+  // Decode so paths with spaces (e.g. "/Sourdough%20Schedule%20Pro.pdf") match BLOCKED_EXACT.
+  let pathname = url.pathname;
+  try { pathname = decodeURIComponent(pathname); } catch (e) { /* malformed escape — fall back to raw */ }
+  if (isBlocked(pathname)) {
     return new Response('Not Found', {
       status: 404,
       headers: {

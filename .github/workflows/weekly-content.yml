@@ -2,8 +2,10 @@ name: Weekly content
 
 on:
   schedule:
-    # Mondays at 08:00 UTC (set whenever — once per week is enough)
-    - cron: '0 8 * * 1'
+    # Mondays ~08:23 UTC. Off-the-hour minute on purpose: cron jobs at minute 0
+    # hit GitHub's busiest queue and get delayed by hours; an odd minute runs far
+    # more punctually. (Was '0 8 * * 1' — fired but consistently ~9h late.)
+    - cron: '23 8 * * 1'
   workflow_dispatch:  # allows manual trigger from GitHub UI
 
 jobs:
@@ -12,9 +14,9 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
           cache: 'npm'
@@ -23,19 +25,28 @@ jobs:
         run: npm ci || npm install
 
       - name: Generate next article
+        id: gen
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/gen-article.js
 
+      # Only inject + commit when a NEW article was actually written. When the roadmap is
+      # exhausted gen-article sets created=false, so we don't churn sitemap lastmod or push
+      # empty commits — and a silent "roadmap empty" state is visible in the run summary.
       - name: Inject into HTML
+        if: steps.gen.outputs.created == 'true'
         run: node scripts/inject-articles.js
         env:
           SITE_BASE: ${{ vars.SITE_BASE || 'https://loafandlevain.com' }}
 
       - name: Commit and push
+        if: steps.gen.outputs.created == 'true'
         run: |
           git config user.name "Content Bot"
           git config user.email "bot@users.noreply.github.com"
           git add articles sourdough-schedule.html sitemap.xml
-          git diff --staged --quiet || git commit -m "auto: weekly article + injection"
-          git push
+          # Secret-guard: never let the bot push an accidentally-injected key.
+          if git diff --staged | grep -qE 'sk-ant-[A-Za-z0-9_-]{20}|eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}|Bearer [A-Za-z0-9._-]{20,}'; then
+            echo "::error::Possible secret in staged diff — refusing to commit."; exit 1;
+          fi
+          git diff --staged --quiet || { git commit -m "auto: weekly article + injection"; git pull --rebase origin main; git push; }

@@ -4,7 +4,7 @@ The cold retard — that 12 to 36-hour rest in the fridge between final shaping 
 
 ## What cold retard actually does
 
-When dough goes from 22°C to 4°C, fermentation slows by about 10× — but it doesn't stop. Yeast produces less CO2; lactic and acetic acid bacteria keep working at slightly different rates than they did at room temperature, shifting the flavour balance. Meanwhile, the gluten relaxes, the dough firms up, and the surface dries slightly.
+When dough goes from 22°C to 4°C, fermentation slows dramatically — roughly 6–10×, since yeast activity drops off sharply below about 10°C — but it doesn't stop. Yeast produces less CO2; lactic and acetic acid bacteria keep working at slightly different rates than they did at room temperature, shifting the flavour balance. Meanwhile, the gluten relaxes, the dough firms up, and the surface dries slightly.
 
 The four practical effects:
 
