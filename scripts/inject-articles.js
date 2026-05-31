@@ -37,8 +37,8 @@ const SITE_BASE = (process.env.SITE_BASE || 'https://loafandlevain.com').replace
 // every article — a byline + Person JSON-LD instead of an anonymous Organization. This is the
 // single highest-impact AdSense "low value content" fix. Leave AUTHOR_NAME empty and it safely
 // falls back to the old anonymous author (so nothing ships half-broken until you fill it in).
-const AUTHOR_NAME = process.env.AUTHOR_NAME || '';
-const AUTHOR_BIO = process.env.AUTHOR_BIO || '';
+const AUTHOR_NAME = process.env.AUTHOR_NAME || 'John';
+const AUTHOR_BIO = process.env.AUTHOR_BIO || 'a home baker and the maker of Loaf & Levain who tests every number in a real kitchen';
 const ADSENSE_CLIENT = 'ca-pub-8093269710555728';
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'loafandlevain.bake@gmail.com';
 const START = '<!-- ARTICLES_AUTO_INJECT_START -->';
