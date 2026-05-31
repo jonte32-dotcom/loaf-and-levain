@@ -48,11 +48,12 @@ Style:
 - Open with the problem or question. No throat-clearing.
 - Specific numbers, temperatures, ratios, times — not vague advice.
 - Acknowledge tradeoffs and edge cases. Don't oversimplify.
+- Show real, first-hand experience: include at least one specific first-person observation or short anecdote (a bake that went wrong and exactly what fixed it, or a number you measured yourself). This demonstrates Experience — the first E in Google's E-E-A-T — and is what separates a real baker's guide from generic AI text.
 - Mention the on-page calculator naturally where it actually helps. Don't shoehorn.
 - Use H2 (##) and H3 (###) generously to break up long sections — improves both readability and featured-snippet eligibility.
 - Include a comparison table (markdown table) where the topic naturally has 3+ variants to compare.
 - Include an FAQ section with 4–6 likely reader questions toward the end (## Common questions, then ### each question).
-- End with concrete next steps the reader can take today.
+- End with a specific, article-unique takeaway for THIS topic — not a generic "What to do today" checklist, and never reuse the same closing sentences or structure across articles.
 
 Length: 1500–2000 words. Long enough to rank against established sourdough sites in 2026, short enough that every paragraph earns its place. No filler, no padding, no recap section.
 

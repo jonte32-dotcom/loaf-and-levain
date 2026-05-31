@@ -93,8 +93,14 @@ If your bread is dense, work this list top to bottom:
 7. Was the Dutch oven preheated 60 min?
 8. Did you score and bake covered for 20 min?
 
-Most dense loaves are explained by causes 1, 2, or 4. Fix those before chasing exotic explanations.
+If your loaf is dense, the cause is almost always #1, #2, or #4 — underproofed bulk, cold dough temperature, or weak gluten development. Rule those three out before you suspect anything more exotic.
 
-## What to change between bakes
+## Run it as an experiment
 
-Change one variable at a time. If you raise hydration AND extend bulk AND switch flour all at once, you won't know which fix worked. Pick the most likely cause from the list above, change only that, bake again, observe the result. You'll have a stable open-crumb recipe in 3–4 bakes instead of 15 frustrated attempts.
+The fastest way to an open crumb is to treat the next few bakes as a controlled test — one variable each, crumb photographed and noted every time:
+
+- **Bake A:** raise hydration from 65% to 72%, change nothing else. Did the crumb open up at all?
+- **Bake B:** keep the hydration, but extend bulk by an hour — or hold the dough 2 °C warmer and watch for a 65–75% rise before you shape.
+- **Bake C:** add a fourth set of stretch-and-folds in the first 90 minutes to build more structure.
+
+Change three things at once and you learn nothing; isolate one and you learn exactly what your dough needed. In my own kitchen a stubbornly tight 65% loaf only opened once I stopped blaming hydration and measured the *dough* temperature — it was landing at 18 °C, hours short of done. A dense crumb almost always gives way within two or three deliberate bakes like this.
