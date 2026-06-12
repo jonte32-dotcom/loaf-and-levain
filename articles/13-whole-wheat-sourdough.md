@@ -10,11 +10,11 @@ When you mill the whole wheat berry, you get three things: endosperm (the starch
 
 Bran particles are sharp. As you mix and stretch the dough, they slice through gluten sheets like little razors. This is why whole wheat doughs feel strong at first, then go slack, then never quite recover the elasticity you'd expect from the protein content on the label.
 
-The germ adds enzyme activity — particularly amylase and protease — that speeds fermentation and weakens gluten over time. Whole wheat ferments faster *and* the gluten gets weaker the longer it sits. Both clocks are ticking against you.
+The germ adds enzyme activity — particularly amylase and protease — that speeds fermentation and weakens gluten over time. Whole wheat ferments faster *and* the gluten gets weaker the longer it sits. Both clocks are ticking against you, which is why timing matters more here than in any other bread.
 
 ## Hydration: the numbers that actually work
 
-A standard white sourdough at 75% hydration will absorb similar water in a whole wheat blend, but the dough will *feel* very different over time. Bran keeps drinking water for hours after mixing. A dough that feels stiff at mixing can feel slack at shaping.
+A standard white sourdough at 75% hydration will absorb similar water in a whole wheat blend, but the dough will *feel* very different over time. Bran keeps drinking water for hours after mixing. A dough that feels stiff at mixing can feel slack at shaping. If you want the underlying logic of baker's percentages, the [hydration explainer](/sourdough/hydration-explained/) lays it out — this section is just the whole-wheat-specific numbers.
 
 Here are working hydration ranges by whole wheat percentage:
 
@@ -29,9 +29,7 @@ These are starting points, not gospel. Stone-ground flour absorbs more than comm
 
 ### Autolyse, or fermentolyse?
 
-For whole wheat, skip the long autolyse. A 30–60 minute autolyse with white flour builds gluten beautifully. With whole wheat, the bran enzymes start breaking down protein during a long rest, leaving you with a slacker, stickier dough.
-
-Two better options:
+For whole wheat, skip the long autolyse. A 30–60 minute autolyse with white flour builds gluten beautifully. With whole wheat, the bran enzymes start breaking down protein during a long rest, leaving you with a slacker, stickier dough. The full trade-off is in [autolyse vs fermentolyse](/sourdough/autolyse-vs-fermentolyse/); the short version for whole wheat:
 
 1. **Short autolyse (20–30 minutes)** with just flour and water, then add salt and levain.
 2. **Fermentolyse** — mix everything (flour, water, levain, salt) at once and start bulk immediately.
@@ -40,7 +38,7 @@ The fermentolyse approach gives you more control because fermentation acidifies 
 
 ## Timing: shorter bulk, longer cold proof
 
-The single biggest mistake with whole wheat is treating the bulk fermentation timeline like white sourdough. A bulk that takes 5 hours with white flour at 76°F might be done in 3.5 hours with a 50% whole wheat dough at the same temperature.
+The single biggest mistake with whole wheat is treating the bulk fermentation timeline like white sourdough. A bulk that takes about 5 hours with white flour at 24°C (75°F) and 20% starter might be done in 3.5 hours with a 50% whole wheat dough at the same temperature. The temperature math behind those numbers — the Q10 ≈ 2.2 curve — is covered in [bulk fermentation by temperature](/sourdough/bulk-fermentation-by-temperature/); whole wheat just runs that same curve faster.
 
 Watch the dough, not the clock. You're looking for:
 
@@ -52,7 +50,7 @@ If you wait for the same volume increase you get with white flour, you're alread
 
 ### The cold retard is your friend
 
-A 12–16 hour cold retard at 38–40°F does more for whole wheat sourdough than for any other bread. Cold slows the enzymes, lets flavors develop, and firms the dough up enough that you can actually score it without it deflating.
+A 12–16 hour cold retard at 3–4°C (38–40°F) does more for whole wheat sourdough than for any other bread. Cold slows the enzymes, lets flavors develop, and firms the dough up enough that you can actually score it without it deflating. If you're weighing it against a same-day finish, [cold retard vs same-day](/sourdough/cold-retard-vs-same-day/) compares the two schedules directly.
 
 If you have any doubt about bulk timing, err on the early side and let the cold proof finish the job. A loaf shaped slightly underproofed and retarded 14 hours will outperform a perfectly bulk-proofed loaf retarded 6 hours nine times out of ten.
 
@@ -73,7 +71,7 @@ Avoid soft white wheat (sometimes called pastry wheat) for sourdough — it has 
 
 ### Fresh-milled vs. commercial
 
-Fresh-milled whole wheat has more enzyme activity, more flavor, and weaker gluten than commercial whole wheat that's been sitting for months. The germ oils oxidize and stabilize over time, which dulls flavor but improves baking performance.
+Fresh-milled whole wheat has more enzyme activity, more flavor, and weaker gluten than commercial whole wheat that's been sitting for months. The reason is simple: the germ is full of oils, and once the kernel is broken open those oils slowly react with air. That reaction dulls the bright, grassy flavor of fresh flour, but it also calms down some of the enzyme activity, so older commercial flour is a little more predictable and easier to handle — flatter in taste, steadier on the bench.
 
 If you mill your own:
 - Sift out 10–15% of the coarsest bran for better volume
@@ -82,7 +80,7 @@ If you mill your own:
 
 ## A working formula for 50% whole wheat
 
-This is the formula I recommend to bakers transitioning from white sourdough. Use the calculator on this page to scale it to your loaf size.
+This is the formula I recommend to bakers transitioning from white sourdough. Use the [calculator](/) to scale it to your loaf size and to set your water temperature from your kitchen and flour temps.
 
 - 250g whole wheat flour (50%)
 - 250g bread flour (50%)
@@ -94,11 +92,11 @@ This is the formula I recommend to bakers transitioning from white sourdough. Us
 
 1. Mix everything except salt. Rest 30 minutes.
 2. Add salt with 15g additional water. Mix until incorporated.
-3. Bulk ferment at 76–78°F for 3.5–4.5 hours.
-4. Stretch and fold 3 times in the first 90 minutes, then leave alone.
+3. Bulk ferment at 24–26°C (75–79°F) for 3.5–4.5 hours.
+4. Stretch and fold 3 times in the first 90 minutes, then leave alone. (If your folds feel weak, the [stretch and fold guide](/sourdough/stretch-and-fold/) has the mechanics.)
 5. Shape when dough is jiggly and risen 30%.
-6. Cold retard 12–16 hours at 38°F.
-7. Bake at 500°F covered for 20 minutes, then 450°F uncovered for 22–25 minutes.
+6. Cold retard 12–16 hours at 3°C (38°F).
+7. Bake at 245–260°C (475–500°F) covered for 20 minutes, then 230°C (450°F) uncovered for 22–25 minutes.
 
 Once this works consistently, push the whole wheat to 70%, then 100%. Don't jump.
 
@@ -106,11 +104,11 @@ Once this works consistently, push the whole wheat to 70%, then 100%. Don't jump
 
 ### Gummy crumb
 
-Almost always underbaked or underproofed. Any sourdough should reach 205–210°F (96–99°C) internal temperature; whole wheat wants the top of that range, 207–210°F, because the extra bran holds moisture and needs more heat to fully set.
+Almost always underbaked or underproofed. Any sourdough should reach an internal temperature of 96–99°C (205–210°F); whole wheat wants the top of that range, 97–99°C (207–210°F), because the extra bran holds moisture and needs more heat to fully set. If yours is gummy even when fully baked, work through [why sourdough turns out gummy](/sourdough/why-sourdough-gummy/) — the causes there apply doubly to whole wheat.
 
 ### Dense loaf with no oven spring
 
-Usually overproofed bulk, occasionally weak starter. If your starter doubles in 4+ hours at 78°F, it's not strong enough for whole wheat. Feed twice daily for 3–4 days before baking.
+Usually overproofed bulk, occasionally weak starter. If your starter doubles in 4+ hours at 26°C (79°F), it's not strong enough for whole wheat. Feed twice daily for 3–4 days before baking. For the broader checklist, see [fixing dense sourdough](/sourdough/fix-dense-sourdough/).
 
 ### Sticky, unworkable dough at shaping
 
@@ -118,7 +116,7 @@ Either too much water for your specific flour, too long an autolyse, or overproo
 
 ### Pale crust
 
-Whole wheat browns differently than white. The sugars from amylase activity get consumed during the longer effective fermentation. Push your bake temperature higher (500°F start) and consider a longer cold retard, which preserves more residual sugars for crust color.
+Whole wheat browns differently than white. The sugars from amylase activity get consumed during the longer effective fermentation. Push your bake temperature higher (260°C / 500°F start) and consider a longer cold retard, which preserves more residual sugars for crust color.
 
 ## Common questions
 
@@ -128,7 +126,7 @@ Yes. The flour you feed your starter affects flavor but not function. A whole wh
 
 ### Should I use a 100% whole wheat starter for whole wheat bread?
 
-It helps but isn't essential. A more active starter handles the faster fermentation of whole wheat dough better. If your starter is sluggish, switch to whole wheat or rye feedings for a week before baking a whole wheat loaf.
+It helps but isn't essential. A more active starter handles the faster fermentation of whole wheat dough better. If your starter is sluggish, switch to whole wheat or rye feedings for a week before baking a whole wheat loaf — the [starter feeding ratio guide](/sourdough/starter-feeding-ratio/) covers how to keep it peaking on schedule.
 
 ### Why does my 100% whole wheat loaf have a tight crumb no matter what?
 
@@ -146,14 +144,8 @@ Much easier. Sifting out 10–20% of the coarse bran gives you most of the flavo
 
 No. It's a workaround that produces a slightly rubbery crumb. Better starter, better timing, and a hard red wheat variety will do more than added gluten ever does.
 
-## What to do this week
+## The flour decides; you adjust
 
-Start with one change, not five. If you've been baking white sourdough and want to move toward whole wheat:
+Whole wheat is the one flour where the same recipe genuinely won't repeat from bag to bag. A stone-ground hard red from one mill drinks 5% more water and ferments faster than a roller-milled bag from the supermarket, and a sack you milled this morning behaves differently from the same berries milled three weeks ago. I keep a strip of tape on each flour bin with the date it was opened, because the flour I bought in March is not the flour I'm baking with in May — and pretending otherwise is how good bakers get a mystery dense loaf.
 
-1. **Bake your usual recipe with 30% whole wheat substitution** at +3% hydration. Note how it differs.
-2. **Shorten your bulk by 30 minutes** next bake, regardless of how the dough looks.
-3. **Push your internal temperature to 208–210°F** rather than pulling early — and never below 205°F (96°C).
-
-After three bakes at 30%, move to 50%. Track timing and hydration in a notebook — whole wheat varies enough between brands and seasons that you can't memorize a single formula. You're building a feel for how *this* flour, in *your* kitchen, at *this* temperature, wants to behave.
-
-That feel is the whole game.
+So don't chase a single perfect formula. Chase three readings every bake: the hydration that gave you a workable dough, the rise percentage you shaped at, and the internal temperature you pulled at (aim for 97–99°C / 207–210°F, never below 96°C / 205°F). Write those three down. Within four or five loaves you'll stop reading the dough like a stranger and start steering it — adding water when the bran is thirsty, shaping early when the kitchen is warm, pulling at the right colour instead of the right minute. The flour sets the terms; your job is just to keep noticing what it's telling you.

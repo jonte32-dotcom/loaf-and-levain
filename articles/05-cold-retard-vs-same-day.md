@@ -1,70 +1,96 @@
 # Cold retard vs same-day bake: when to use each
 
-The cold retard — that 12 to 36-hour rest in the fridge between final shaping and baking — is one of the most-asked-about steps in sourdough. Some bakers swear it's essential. Others skip it entirely. Both groups make great bread. The truth is that retard is a tool, not a rule, and knowing when to use it is more useful than knowing how long it should be.
+The cold retard — that 12 to 36-hour rest in the fridge between final shaping and baking — is one of the most-asked-about steps in sourdough. Some bakers swear it's essential. Others skip it entirely. Both groups make great bread. The truth is that retard is a tool, not a rule, and knowing when to reach for it matters more than knowing how long it "should" be.
 
 ## What cold retard actually does
 
-When dough goes from 22°C to 4°C, fermentation slows dramatically — roughly 6–10×, since yeast activity drops off sharply below about 10°C — but it doesn't stop. Yeast produces less CO2; lactic and acetic acid bacteria keep working at slightly different rates than they did at room temperature, shifting the flavour balance. Meanwhile, the gluten relaxes, the dough firms up, and the surface dries slightly.
+When shaped dough goes from a 22°C kitchen into a 4°C fridge, fermentation slows down hard — but it doesn't stop. The same Q10 ≈ 2.2 rule that governs [bulk fermentation by temperature](/sourdough/bulk-fermentation-by-temperature/) applies here: roughly a 2.2× change in rate for every 8°C. Drop from 22°C to 4°C — an 18°C fall — and you slow fermentation by about 2.2^(18/8), which works out to roughly 6× (5.9×, to be exact). You'll see claims as high as 10× elsewhere, and yeast does fall off its own cliff below about 10°C, but for planning a home bake, "about six times slower" is the honest number to schedule around.
 
-The four practical effects:
+What changes in the dough during those hours:
 
-1. **Flavour develops.** Longer fermentation, especially the bacterial side of it, produces more acid and more flavour compounds. A 24-hour retard tastes more sour and more complex than a 12-hour retard.
-2. **Scoring gets clean.** Cold dough holds blade marks crisply where warm dough drags and tears.
-3. **Schedules shift.** You can mix Saturday morning and bake Sunday morning instead of baking at midnight Saturday.
-4. **The crust browns better.** More acid means the crust caramelises faster in the oven, giving deeper colour and more flavour.
+1. **Flavour shifts toward sour.** Yeast produces less CO2 in the cold, but the lactic and acetic acid bacteria keep ticking over, so the acid-to-gas ratio rises. A 24-hour retard tastes more sour and more layered than a 12-hour one — and the balance leans acetic (sharper, vinegary) the colder and longer you go.
+2. **Scoring gets clean.** Cold dough holds a blade mark crisply where warm, slack dough drags and tears. This alone converts a lot of bakers. See [scoring sourdough](/sourdough/scoring-sourdough/) for why a firm, cold surface cuts so much better.
+3. **The crust browns deeper.** More acid and more residual sugar in the cold dough means faster caramelisation, so retarded loaves take on a darker, redder crust in the same oven time.
+4. **Your schedule uncouples from the dough.** You can mix Saturday afternoon and bake Sunday morning instead of standing at the oven near midnight.
+
+One honest correction worth making, because it gets repeated as gospel: people often say the fridge "lets enzymes break down the flour for flavour." Enzyme activity at 4°C is sluggish — those reactions also slow with temperature. What genuinely softens a long-retarded dough is the combination of continued slow acidification and the simple fact that the gluten network sits fully hydrated under its own weight for a day or more. Cold hydration plus time weakens the dough more than enzymes do at fridge temperature.
+
+## Retard duration at a glance
+
+The same recipe behaves quite differently depending on how long it sits cold. Here's what to expect across the common windows, assuming the loaf was properly proofed before it went in:
+
+| Retard time | Flavour | Oven spring | Scoring ease | Best use |
+|---|---|---|---|---|
+| 0h (same-day) | Mild, bright, wheaty | Good, but spreads if slack | Hardest — warm dough drags | Bread today; very wet doughs; ciabatta/focaccia |
+| 12h | Lightly sour, balanced | Strong — cold dough, sharp spring | Easy — firm and cold | The home-baker default; mix one day, bake the next |
+| 24h | Clearly sour, complex | Strong, tall rather than wide | Easiest — cuts like clay | Maximum flavour without much risk |
+| 36h | Sharp, acetic-leaning | Starts to fade; can spread | Easy but edges may tear | Specific sour breads; buying schedule flexibility |
+
+Past 36 hours you're into specialist territory — the flavour tips from "complex" to "sharp," and the structure slowly gives. For most kitchens, 12–24 hours is the whole useful range.
 
 ## When same-day bake is the right call
 
 Skip the retard when:
 
-- **You want the bread today.** Same-day means 6–9 hours total instead of 24–36.
-- **It's a high-hydration dough you're worried about.** Some very wet doughs flatten during long retards. A 1–2 hour final proof at room temp before baking gives them less time to spread.
-- **You're baking ciabatta, focaccia, or pan de cristal.** These styles benefit from an active fermentation right up to the oven. Cold retard works for them but isn't traditional.
-- **You're using a very ripe levain in summer.** A short, hot bulk and a brief proof give a bright, mildly sour bread that some people prefer to the deeper sour of long retard.
+- **You want the bread today.** Same-day is roughly 8–10 hours from feeding the starter to slicing, against 24–36 for a retard.
+- **It's a very high-hydration dough you're worried about.** Some slack, wet doughs flatten over a long cold rest. A short room-temperature final proof before baking gives them less time to spread sideways. If yours keeps coming out flat or wet inside, the cause is usually upstream — see [why sourdough turns gummy](/sourdough/why-sourdough-gummy/) and [fixing dense sourdough](/sourdough/fix-dense-sourdough/).
+- **You're baking ciabatta, focaccia, or pan de cristal.** These styles want active fermentation right up to the oven. A retard works, but it isn't traditional and it isn't an improvement.
+- **You're chasing a bright, mild loaf in summer.** A short bulk and a brief proof give a fresh, gently sour bread that a lot of people prefer to the deep tang of a long retard.
 
-The same-day bake schedule generated by the calculator (set retard to 0) plans a final proof of 1–2 hours at room temperature after final shaping, then straight to the oven. Total elapsed time from feeding the starter to slicing the bread is around 8–10 hours.
+To plan one, set retard to 0 in the [schedule calculator](/) — it lays out a 1–2 hour room-temperature final proof after shaping, then straight into the hot oven.
 
 ## When retard is worth the wait
 
-Use a 12–24 hour retard when:
+Reach for a 12–24 hour retard when:
 
-- **You want to bake in the morning instead of late at night.** This is the original reason home bakers retard.
-- **You want a more sour, more complex flavour profile.** 24+ hours develops noticeable sourness even in mild starters.
-- **You want the easiest scoring of your life.** Cold dough scores like clay. There's no comparison.
-- **You're baking on a deadline.** A retarded loaf can sit in the fridge for 12–36 hours, giving you a window to bake when convenient instead of when the dough demands.
-- **You want maximum oven spring.** Cold dough hits the hot Dutch oven and the temperature differential drives a massive expansion. Same-day loaves are bigger; retarded loaves are taller.
+- **You want to bake in the morning, not at midnight.** This is the original reason home bakers started retarding at all.
+- **You want more sour, more complex flavour.** Twenty-four-plus hours develops noticeable tang even from a mild starter.
+- **You want the easiest scoring of your baking life.** Cold dough is the single biggest scoring upgrade available to a home baker.
+- **You're baking around a busy life.** A shaped loaf can sit at 4°C for 12–36 hours, so you bake when it suits you rather than when the dough demands.
+- **You want maximum height.** Cold dough meeting a hot Dutch oven creates a steep temperature differential that drives a tall, dramatic spring. Same-day loaves often spread wider; retarded loaves climb.
 
-A 12-hour retard is the home-baker default for a reason: it's the minimum time that delivers all the benefits without the dough deteriorating.
+A 12-hour retard is the sensible default: it's the shortest cold rest that delivers every one of these benefits before the dough starts to deteriorate.
 
-## Beyond 24 hours: diminishing returns and risks
+## How to tell a retarded dough is ready
 
-Retards longer than 24 hours give incrementally more flavour, but you start to face two risks:
+You don't need to "warm the dough up" before baking, despite common advice. Take it straight from the fridge, score it cold, and drop it into the preheated Dutch oven with the lid on — the temperature shock is part of what drives oven spring.
 
-**Over-acidification.** The dough becomes so sour the flavour goes from "complex" to "sharp". Some bakers love this; others find it dominates the bread.
+The check that matters happens *before* the fridge. As you put the shaped loaf away, do a [poke test](/sourdough/float-test-explained/) on the shaped dough: press a floured finger about 5 mm in. The dent should spring back slowly and leave a slight depression. Spring back fully and fast, and it needs more room-temperature proof before it goes cold. Don't spring back at all, and it's already over-proofed — bake it now, same-day, and skip the retard entirely.
 
-**Structural breakdown.** After 36 hours at 4°C, gluten starts to weaken from prolonged enzyme activity. The dough becomes harder to score (it tears) and flattens during baking. 
+## Seasonal retard, by climate
 
-For most home bakers, 12–24 hours is the useful range. 36–48 hours is for specific results — very sour breads, specific climate-driven schedules — not as a default.
+Your kitchen makes the same retard behave differently across the year, because the dough's starting point changes. In a cold-house winter the dough often goes into the fridge under-fermented, so a 12-hour retard can act partly as a slow finish to bulk rather than a pure flavour rest — see [winter sourdough](/sourdough/winter-sourdough/) for handling cold-kitchen schedules. In summer the opposite risk applies: dough that's run warm and fast can over-ferment quickly even before it cools, so it pays to retard earlier and watch it more closely — [summer sourdough](/sourdough/summer-sourdough/) covers taming a fast, hot ferment. The retard length on a recipe card assumes a roughly 22–24°C kitchen; adjust your *pre-fridge* proof, not just the cold time, when your season is far from that.
 
-## How to tell when a retarded dough is ready
+## Letting the calculator do the timing
 
-A retarded dough doesn't need to "warm up" before baking, contrary to common advice. Take it straight from the fridge, score it, drop it in the hot Dutch oven, lid on. The temperature shock is what drives oven spring.
+This is where a retard earns its keep: the [schedule calculator](/) works backwards from your bake-out time. Set the finish (say Sunday 09:00), set retard to 12, 16, 24, or 36 hours, and it tells you when to mix, when to fold, when to pre-shape, and when the loaf goes cold. A 09:00 bake with a 24-hour retard means starting the previous afternoon — but the hands-on labour across that whole window is maybe 30 minutes. The fridge does the rest. If you also need the dough to land at the right temperature when you mix, the [DDT water-temperature formula](/sourdough/ddt-formula-water-temperature/) gets you there.
 
-To check that it's actually proofed enough before retard, do the poke test on the shaped loaf as you put it in the fridge: press a floured finger 5 mm into the dough. The indent should spring back slowly, leaving a slight depression. If it springs back fully, it needs more proof at room temp before retard. If it doesn't spring back at all, you've over-proofed and should bake now without retard.
+## Common questions
 
-## Mixing schedules around retard length
+### Does cold retard make bread more sour?
 
-The schedule calculator handles all of this. Set bake-out time to your target (e.g., Sunday 09:00), set retard to 12, 16, 24, or 36 hours, and the calculator works backwards: it tells you when to mix, when to do each fold, when to pre-shape, when to put the dough in the fridge.
+Yes, and predictably so. In the cold, yeast slows more than the acid-producing bacteria, so the dough keeps accumulating acid while producing little gas. Longer and colder both push it more sour, with the balance tilting toward sharp, vinegary acetic acid the longer it sits. Twelve hours reads as "balanced," 24 as "clearly sour," 36-plus as "sharp."
 
-This is the difference between cooking and timing. A bake that ends at 09:00 with a 24-hour retard requires you to start mixing the previous day around 14:00 — but the actual labour is maybe 30 minutes spread across that window. The retard does the rest.
+### Do I need to bring retarded dough to room temperature before baking?
 
-## A simple decision framework
+No. Bake it straight from the fridge. Cold dough scores more cleanly and the temperature shock against a hot Dutch oven improves spring. Warming it up first mainly costs you both advantages and risks over-proofing on the counter.
 
-- **First sourdough bake?** 12-hour retard. It's forgiving and the schedule is reasonable.
-- **Want bread tonight?** Skip retard.
-- **Want bread in the morning?** 12-hour retard.
-- **Want maximum flavour and you have time?** 24-hour retard.
-- **Working around a busy schedule?** Long retard buys you flexibility.
-- **Trying to compete with a bakery loaf?** 18–24 hour retard. The flavour difference is real.
+### How long can dough stay in the fridge before it's too far gone?
 
-The retard isn't a step to memorise — it's a planning tool. Use it when it serves the bake. Skip it when it doesn't.
+For most home doughs, 12–24 hours is the comfortable range and 36 hours is the practical ceiling. Beyond that the flavour turns sharply acetic and the gluten — fully hydrated and sitting under its own weight — slackens, so the loaf tears at the score and spreads in the oven. If you need a longer window, retard colder (closer to 2–3°C) and use a slightly stiffer dough.
+
+### Can I retard the bulk instead of the shaped loaf?
+
+You can, and some bakers prefer it. Retarding during bulk slows the whole ferment and gives flavour without firming up a shaped loaf, but you then proof and shape from cold the next day. Retarding the *shaped* loaf is more popular at home because it bundles the flavour gain with bake-ready, easy-to-score dough. If you go the bulk-retard route, lean on your [bulk timing](/sourdough/bulk-fermentation-by-temperature/) to judge how far the cold ferment has actually travelled before you shape.
+
+### My retarded loaf came out flat — what went wrong?
+
+Usually one of three things: the dough was already over-proofed before it went cold (the poke test springs back not at all), the hydration was too high for a long cold rest, or it sat past 36 hours and the structure gave out. Shorten the pre-fridge proof, drop hydration a few points, or pull it earlier.
+
+### Is same-day bread worse than retarded bread?
+
+No — just different. Same-day loaves are milder, brighter, and wheatier, and they can have a beautifully open crumb. Retarded loaves are more sour, more complex, taller, and easier to score. Plenty of bakeries sell both. Match the method to the loaf you actually want to eat.
+
+## Pick the retard by the loaf you want, not the calendar
+
+Decide backwards from the bread on your table. If you want a bright, mild crumb to eat the same evening, mix in the morning and skip the fridge. If you want a tall, tangy, dark-crusted loaf with a crisp ear and the easiest scoring you'll ever do, shape it, give it 12 to 24 hours cold, and bake it straight from the chill. The retard isn't a rite of passage — it's a dial, and the right setting is whichever one produces the loaf you were hungry for when you started.

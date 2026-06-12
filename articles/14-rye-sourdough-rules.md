@@ -15,23 +15,31 @@ Two consequences follow:
 
 The enzyme problem is the big one. Rye is high in **alpha-amylase**, which breaks starch into sugars. If amylase runs wild during baking, it liquefies the crumb before the starch can set, and you get a gummy, dense, unsliceable loaf. The fix is acidity: a low pH (around 4.3 or below) deactivates amylase. That's why traditional rye is *always* sourdough. Yeast-only rye breads exist, but they rely on commercial acidifiers or scalds to compensate.
 
+This amylase-driven gumminess is specific to rye, but the broader family of gummy-crumb causes — underproofing, underbaking, slicing warm — applies to every loaf. If you want the full diagnostic, see [why sourdough turns out gummy](/sourdough/why-sourdough-gummy/). For rye, just remember: enough acid, enough bake, enough cooling.
+
 ## The four core rules
 
 ### 1. Use more starter than you would with wheat
 
 A 100% rye dough typically uses **30–40% prefermented flour**, compared to 15–20% for a wheat loaf. You need that extra acidity to control the amylase. A rye sourdough with only 10% starter will almost certainly come out gummy.
 
-If you're calculating prefermented flour percentage for your recipe, the calculator on this page will save you the arithmetic — plug in your total flour weight and target PFF and it gives you starter quantity directly.
+If you're calculating prefermented flour percentage for your recipe, the [calculator on this site](/) will save you the arithmetic — plug in your total flour weight and target PFF and it gives you starter quantity directly.
 
 ### 2. Hydration runs high — 80% to 95%
 
 Because pentosans absorb so much water, rye dough needs more hydration than wheat to be workable. A "stiff" rye dough is around 75% hydration and feels like modeling clay. An 85% rye dough is the standard working consistency: tacky, paste-like, scoopable but not pourable.
 
-Don't try to handle it like wheat. You won't shape it; you'll pat it into a pan or scrape it into a banneton with wet hands or a wet bench scraper.
+Don't try to handle it like wheat. You won't shape it; you'll pat it into a pan or scrape it into a banneton with wet hands or a wet bench scraper. If you want to understand how the water-to-flour ratio drives feel, [hydration explained](/sourdough/hydration-explained/) covers the underlying math.
 
 ### 3. Ferment warm and watch the dough, not the clock
 
-Rye ferments faster than wheat. The optimal temperature for a rye starter is **28–30°C (82–86°F)** — warmer than wheat. Bulk fermentation is shorter too: often 1.5–3 hours for 100% rye versus 4–6 for wheat.
+Rye ferments faster than wheat, and you have two valid temperature philosophies to choose from.
+
+For **speed**, run the rye starter and dough warm — **28–30°C (82–86°F)**. This is what most German bakery schedules assume, and it pushes a 100% rye bulk down to 1.5–3 hours versus 4–6 for wheat. The trade-off is flavor: warm and fast favors lactic acid and a rounder, milder sour.
+
+The **Scandinavian convention runs cooler — 20–24°C (68–75°F)**. It trades speed for nuance. A cooler ferment leans more acetic, develops a sharper, more complex tang, and gives the pentosan gel longer to set, which many bakers find produces a cleaner slice in dense ryes. Bulk simply takes longer at this temperature. Neither is wrong; pick the flavor you want and let the clock follow the temperature, not the other way around.
+
+The canonical bulk math used by [the bulk-fermentation-by-temperature guide](/sourdough/bulk-fermentation-by-temperature/) still applies — time roughly doubles for every 8°C you drop — but rye reaches its (lower) target rise sooner than wheat at any given temperature, so read the dough, not a wheat timetable.
 
 Signs your rye dough is ready:
 - Volume increase of roughly 30–50% (not double — rye can't hold that much gas)
@@ -44,10 +52,13 @@ Overproofed rye collapses without warning and bakes into a flat, gummy brick. Un
 
 Rye needs a hard initial blast to set the crust, then a long, slower bake to dry the crumb. A typical schedule for a 1 kg loaf:
 
-- **10 minutes at 250°C (480°F)** with steam
-- **50–60 minutes at 200°C (390°F)** without steam
+| Stage | Temperature | Time | Steam |
+|---|---|---|---|
+| Initial blast | 250°C (480°F) | 10 minutes | Yes |
+| Main bake | 200°C (390°F) | 50–60 minutes | No |
+| Pull at internal temp | 98–99°C (208–210°F) | — | — |
 
-Internal temperature should hit **98°C (208°F)** minimum. Then — and this is non-negotiable — **wait at least 24 hours before slicing**. Rye crumb is still setting after it comes out of the oven. Cut it warm and it'll smear into a gummy mess that has nothing to do with your technique.
+Pull the loaf only once the centre reads **98–99°C (208–210°F)** on an instant-read thermometer; rye holds more moisture than wheat and wants the top of that range. Then — and this is non-negotiable — **wait at least 24 hours before slicing**. Rye crumb is still setting after it comes out of the oven. Cut it warm and it'll smear into a gummy mess that has nothing to do with your technique.
 
 ## Rye types and how they behave
 
@@ -73,9 +84,9 @@ A healthy rye starter:
 - Smells fruity-sour, sometimes faintly like apples or vinegar
 - Has small, uniform bubbles rather than the big web you see in a wheat starter
 
-Feed it at **1:2:2 or 1:3:3** ratios (starter:flour:water) at 100% hydration. Some bakers keep stiffer rye starters at 60–80% hydration for milder flavor, but 100% is the easy default.
+Feed it at **1:2:2 or 1:3:3** ratios (starter:flour:water) at 100% hydration; the mechanics of choosing a ratio are covered in [starter feeding ratios](/sourdough/starter-feeding-ratio/). Some bakers keep stiffer rye starters at 60–80% hydration for milder flavor, but 100% is the easy default. I keep a small rye build going in a separate jar through the colder months because it stays reliably active when my wheat starter gets sluggish.
 
-If you bake rye occasionally and wheat usually, you don't need two starters. Take a spoonful of your wheat starter, feed it with rye flour for two consecutive feeds, and use it. After baking, top up the jar with wheat flour and you're back where you started.
+If you bake rye occasionally and wheat usually, you don't need two permanent starters. Take a spoonful of your wheat starter, feed it with rye flour for two consecutive feeds, and use it. After baking, top up the jar with wheat flour and you're back where you started.
 
 ## Mixed rye-wheat doughs
 
@@ -92,9 +103,9 @@ A few guidelines:
 
 **Treating it like wheat.** Trying to stretch and fold a 90% rye dough. Trying to shape it on a floured counter. Expecting an open, airy crumb. Stop. Rye is dense by nature, and that's the point.
 
-**Slicing too early.** This produces 80% of "my rye is gummy" complaints. Wait a full day.
+**Slicing too early.** This produces most "my rye is gummy" complaints. Wait a full day.
 
-**Underfeeding the starter.** A sluggish starter can't acidify the dough enough to control amylase. If your starter isn't doubling reliably in 6 hours, fix that before you bake.
+**A weak or underfed starter.** A sluggish starter can't acidify the dough enough to control amylase, and weak fermentation is one of the most common roots of dense crumb generally — see [how to fix dense sourdough](/sourdough/fix-dense-sourdough/) for the full ranking of causes. For rye specifically: if your starter isn't doubling reliably within about 6 hours, fix that before you bake.
 
 **Skipping the scald (for dense rye styles).** Scandinavian and German-style ryes often use a *Brühstück* — flour or cracked grain mixed with boiling water and left overnight. This pregelatinizes starch, adds sweetness, and dramatically improves keeping quality. Worth learning if you like dark, dense ryes.
 
@@ -108,7 +119,7 @@ Yes, and you often shouldn't use one. Most rye loaves are baked in tin pans beca
 
 ### Why is my rye bread gummy in the middle?
 
-Three usual suspects, in order: (1) you cut it before it fully cooled — wait 24 hours; (2) underbaked — check internal temperature, aim for 98°C/208°F; (3) insufficient acidity, meaning your starter was weak or your prefermented flour percentage was too low.
+Three usual suspects, in order: (1) you cut it before it fully cooled — wait 24 hours; (2) underbaked — check internal temperature, aim for 98–99°C (208–210°F); (3) insufficient acidity, meaning your starter was weak or your prefermented flour percentage was too low. The general gummy-crumb causes are covered in [why sourdough is gummy](/sourdough/why-sourdough-gummy/).
 
 ### How long does rye sourdough keep?
 
@@ -124,12 +135,10 @@ Pumpernickel is a specific style: coarse whole-rye flour, often with soakers and
 
 ### Why does my rye dough smell like vinegar or solvent?
 
-Vinegar is normal — rye starters produce more acetic acid than wheat starters, especially when kept cool or fed stiffly. Solvent or nail-polish smells (acetone) indicate severe overfermentation. Feed your starter more often or at higher ratios.
+Vinegar is normal — rye starters produce more acetic acid than wheat starters, especially when kept cool (the Scandinavian 20–24°C range above) or fed stiffly. Solvent or nail-polish smells (acetone) indicate severe overfermentation. Feed your starter more often or at higher ratios.
 
-## What to do today
+## Bake the cooling time into the plan, not just the dough
 
-If you've never baked rye before, start with a **70% wheat, 30% medium-rye sourdough** in your normal recipe. You'll get familiar flavor and structure with a rye accent, and you won't have to relearn shaping.
+The thing that turns rye from frustrating to dependable isn't a better recipe — it's accepting that the loaf isn't finished when it leaves the oven. Wheat rewards you the same afternoon. Rye makes you wait a day while the pentosan gel and gelatinized starch finish setting into a sliceable crumb.
 
-If you're ready for a real rye, try a **100% medium rye in a loaf pan** at 85% hydration with 35% prefermented flour. Mix until uniform, ferment 2 hours at 28°C, proof in the pan 45–90 minutes until the surface cracks slightly, bake 10 minutes hot then 55 minutes moderate. Wait a day. Slice thin.
-
-That's the baseline. Once you know what a properly fermented, properly cooled rye loaf tastes like, every other rye recipe makes sense.
+So plan backwards from the slice. If you want rye bread for Sunday breakfast, mix Friday and bake Friday evening: the loaf rests overnight and through Saturday, and by Sunday morning it cuts clean, tastes deeper, and keeps for the rest of the week. Build that 24-hour pause into your schedule from the start and rye stops surprising you — the patience is the recipe.

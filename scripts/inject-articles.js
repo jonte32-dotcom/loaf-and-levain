@@ -27,6 +27,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { marked } from 'marked';
+import { DIAGRAMS, ARTICLE_DIAGRAM } from './diagrams.mjs';
 
 const HTML_FILE = 'sourdough-schedule.html';
 const ARTICLES_DIR = 'articles';
@@ -246,12 +247,49 @@ function siteFooter() {
 </footer>`;
 }
 
-function calculatorCTA() {
+// Per-article CTA. Identical CTAs on every page are a top "scaled AI content" signal, so the
+// headline + copy + destination vary by the article's topic while always pointing somewhere useful.
+const CTA_VARIANTS = {
+  calc: { h: 'Plan your next bake', p: 'Free schedule calculator — calibrated to your kitchen temperature, hydration and starter.', a: '/', label: 'Open the calculator →' },
+  starter: { h: 'Get your starter on schedule', p: 'The calculator works backwards from when you want to bake to when you should feed.', a: '/', label: 'Time your starter →' },
+  troubleshoot: { h: 'Find out what went wrong', p: 'Dial in dough temperature and bulk timing for your kitchen, and stop guessing at the cause.', a: '/', label: 'Run your numbers →' },
+  explore: { h: 'Keep reading', p: 'Tested, in-depth guides on fermentation, hydration, starters, scoring and troubleshooting.', a: '/sourdough/', label: 'Browse the knowledge base →' },
+};
+const CTA_BY_SLUG = {
+  'bulk-fermentation-by-temperature': 'calc', 'ddt-formula-water-temperature': 'calc',
+  'cold-retard-vs-same-day': 'calc', 'winter-sourdough': 'calc', 'summer-sourdough': 'calc',
+  'stretch-and-fold': 'calc', 'autolyse-vs-fermentolyse': 'calc',
+  'revive-forgotten-starter': 'starter', 'float-test-explained': 'starter', 'starter-feeding-ratio': 'starter',
+  'why-sourdough-gummy': 'troubleshoot', 'fix-dense-sourdough': 'troubleshoot',
+  'hydration-explained': 'explore', 'scoring-sourdough': 'explore',
+  'whole-wheat-sourdough': 'explore', 'rye-sourdough-rules': 'explore',
+};
+function calculatorCTA(slug) {
+  const v = CTA_VARIANTS[CTA_BY_SLUG[slug] || 'calc'] || CTA_VARIANTS.calc;
   return `<div class="cta">
-  <h2>Plan your next bake</h2>
-  <p>Free schedule calculator — calibrated to your kitchen temperature, hydration, and starter.</p>
-  <a href="/">Open the calculator →</a>
+  <h2>${escapeHtml(v.h)}</h2>
+  <p>${escapeHtml(v.p)}</p>
+  <a href="${v.a}">${escapeHtml(v.label)}</a>
 </div>`;
+}
+
+// Original, build-time SVG figure embedded near the top of each article. Zero original images was
+// the single heaviest "low value content" signal; these are data-accurate, branded diagrams.
+function diagramFigure(slug) {
+  const d = ARTICLE_DIAGRAM[slug];
+  if (!d || !DIAGRAMS[d.name]) return '';
+  return `<figure>
+  <img src="/diagrams/${d.name}.svg" width="820" height="480" loading="lazy" decoding="async" alt="${escapeAttr(d.alt)}" />
+  <figcaption>${escapeHtml(d.caption)}</figcaption>
+</figure>`;
+}
+// Insert the figure after the first closing </p> so it sits under the article's opening paragraph.
+function insertDiagram(bodyHtml, slug) {
+  const fig = diagramFigure(slug);
+  if (!fig) return bodyHtml;
+  const idx = bodyHtml.indexOf('</p>');
+  if (idx < 0) return fig + bodyHtml;
+  return bodyHtml.slice(0, idx + 4) + '\n' + fig + bodyHtml.slice(idx + 4);
 }
 
 // Topical relevance so each article's "related" list is DIFFERENT and on-topic — instead of the
@@ -272,13 +310,17 @@ function relevance(a, b) {
   // Jaccard: normalises for length so the long articles don't dominate every "related" list.
   return inter / (A.size + B.size - inter);
 }
+const RELATED_HEADINGS = ['Related guides', 'Keep reading', 'More from the knowledge base', 'Related reading', 'Where to go next'];
 function relatedList(current, all, n = 4) {
-  const others = all
+  const scored = all
     .filter(a => a.slug !== current.slug)
     .map(a => ({ a, s: relevance(current, a) }))
-    .sort((x, y) => (y.s - x.s) || ((parseInt(x.a.file, 10) || 0) - (parseInt(y.a.file, 10) || 0)))
-    .slice(0, n)
-    .map(x => x.a);
+    .sort((x, y) => (y.s - x.s) || ((parseInt(x.a.file, 10) || 0) - (parseInt(y.a.file, 10) || 0)));
+  // Vary card count 3–5 (deterministically by article number) to break the fixed-4 visual template.
+  const num = parseInt(current.file, 10) || 0;
+  const count = 3 + (num % 3);
+  const others = scored.slice(0, Math.min(count, n + 1)).map(x => x.a);
+  const heading = RELATED_HEADINGS[num % RELATED_HEADINGS.length];
   const cards = others.map(a => `
     <a class="card" href="/sourdough/${a.slug}/">
       <h3>${escapeHtml(a.title)}</h3>
@@ -286,7 +328,7 @@ function relatedList(current, all, n = 4) {
       <span class="more">Read →</span>
     </a>`).join('');
   return `<section class="related">
-  <h2>Related guides</h2>
+  <h2>${escapeHtml(heading)}</h2>
   <div class="cards">${cards}</div>
 </section>`;
 }
@@ -298,7 +340,7 @@ function articleJsonLd(a, canonical) {
     headline: a.title,
     description: a.summary,
     author: AUTHOR_NAME
-      ? { '@type': 'Person', name: AUTHOR_NAME, url: `${SITE_BASE}/about` }
+      ? { '@type': 'Person', '@id': `${SITE_BASE}/about#author`, name: AUTHOR_NAME, url: `${SITE_BASE}/about` }
       : { '@type': 'Organization', name: 'Loaf & Levain' },
     publisher: {
       '@type': 'Organization',
@@ -379,6 +421,7 @@ function renderArticlePage(a, all) {
   // Demote heading levels: H1 in source already stripped; map H2→H2 stays, but
   // ensure no stray H1 in body collides with the page H1.
   bodyHtml = bodyHtml.replace(/<h1\b/g, '<h2').replace(/<\/h1>/g, '</h2>');
+  bodyHtml = insertDiagram(bodyHtml, a.slug);
 
   return `${pageHead({ title: `${a.title} — Loaf & Levain`, description: a.summary, canonical, ogType: 'article' })}
 ${articleJsonLd(a, canonical)}
@@ -397,7 +440,7 @@ ${bodyHtml}
     </div>
     ${authorBox()}
   </article>
-  ${calculatorCTA()}
+  ${calculatorCTA(a.slug)}
   ${relatedList(a, all)}
 </main>
 ${siteFooter()}
@@ -452,10 +495,10 @@ ${siteFooter()}
 
 // ---------- static editorial pages: About + Contact ----------
 
-function renderStaticPage({ slug, title, lede, bodyHtml }) {
+function renderStaticPage({ slug, title, lede, bodyHtml, jsonLd }) {
   const canonical = `${SITE_BASE}/${slug}`;
   return `${pageHead({ title: `${title} — Loaf & Levain`, description: lede, canonical, ogType: 'website' })}
-</head>
+${jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>\n` : ''}</head>
 <body>
 <div class="wrap">
 ${siteHeader()}
@@ -484,11 +527,32 @@ function aboutPage() {
 <p>The calculator and all knowledge-base articles are free. The site is supported by display advertising and an optional one-time Pro upgrade. We don't gate the core content behind a paywall, and we don't publish recipes we haven't baked.</p>
 <h2>Get in touch</h2>
 <p>Questions, corrections, or a bake that's misbehaving? Reach us on the <a href="/contact">contact page</a>.</p>`;
+  const org = {
+    '@type': 'Organization',
+    '@id': `${SITE_BASE}/#org`,
+    name: 'Loaf & Levain',
+    url: `${SITE_BASE}/`,
+    email: CONTACT_EMAIL,
+    logo: { '@type': 'ImageObject', url: `${SITE_BASE}/og-image.jpg` },
+    description: 'An independent sourdough resource: a free bake-schedule calculator and a tested knowledge base.'
+  };
+  const graph = [org];
+  if (AUTHOR_NAME) {
+    graph.push({
+      '@type': 'Person',
+      '@id': `${SITE_BASE}/about#author`,
+      name: AUTHOR_NAME,
+      url: `${SITE_BASE}/about`,
+      description: AUTHOR_BIO || undefined,
+      worksFor: { '@id': `${SITE_BASE}/#org` }
+    });
+  }
   return renderStaticPage({
     slug: 'about',
     title: 'About',
     lede: 'An independent sourdough resource for bakers who measure, not guess — the free schedule calculator and a tested knowledge base.',
-    bodyHtml: body
+    bodyHtml: body,
+    jsonLd: { '@context': 'https://schema.org', '@graph': graph }
   });
 }
 
@@ -582,6 +646,19 @@ function main() {
   // 1. Fresh staging dir with standalone pages + KB index.
   rmrf(BUILD_DIR);
   fs.mkdirSync(KB_DIR, { recursive: true });
+
+  // 1a. Render original SVG diagrams referenced by the articles into /diagrams/.
+  const DIAG_DIR = path.join(BUILD_DIR, 'diagrams');
+  fs.mkdirSync(DIAG_DIR, { recursive: true });
+  const usedDiagrams = new Set(Object.values(ARTICLE_DIAGRAM).map(d => d.name));
+  let diagCount = 0;
+  for (const name of usedDiagrams) {
+    if (!DIAGRAMS[name]) { console.warn(`  (warn) diagram "${name}" referenced but not defined`); continue; }
+    fs.writeFileSync(path.join(DIAG_DIR, `${name}.svg`), DIAGRAMS[name]());
+    diagCount++;
+  }
+  console.log(`✓ Wrote ${diagCount} original SVG diagrams to /${path.relative(BUILD_DIR, DIAG_DIR)}`);
+
   fs.writeFileSync(path.join(KB_DIR, 'index.html'), renderIndexPage(articles));
   for (const a of articles) {
     const dir = path.join(KB_DIR, a.slug);
