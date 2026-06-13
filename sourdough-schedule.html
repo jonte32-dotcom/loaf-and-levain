@@ -95,7 +95,12 @@
     {"@type":"Question","name":"Can I skip the cold retard?","acceptedAnswer":{"@type":"Answer","text":"Yes. Set retard to zero and the calculator plans a same-day bake with final proof at room temperature, typically 1–2 hours after final shaping. You lose some flavour complexity but gain flexibility on baking day."}},
     {"@type":"Question","name":"What is the difference between feed counts?","acceptedAnswer":{"@type":"Answer","text":"One feed works when your starter is already active or recently fed. Two feeds is standard for a starter taken from the fridge — a refresh feed wakes it, then a build feed makes the volume you need. Three feeds is for starters stored more than a week that need extra revival cycles."}},
     {"@type":"Question","name":"What hydration should I start with?","acceptedAnswer":{"@type":"Answer","text":"For your first ten loaves stay around 70–75% with bread flour. Higher hydration (80%+) demands stronger flour and better technique. Whole wheat absorbs more — bump hydration 5–8% if you add 20%+ whole grain."}},
-    {"@type":"Question","name":"How does Live Bake mode work?","acceptedAnswer":{"@type":"Answer","text":"Generate a schedule, then click Start Bake. The Live tab tracks elapsed time, shows your current step with a countdown, and previews what is next. The browser tab title flashes when a step is due. Everything is saved locally — no account, no server."}}
+    {"@type":"Question","name":"How does Live Bake mode work?","acceptedAnswer":{"@type":"Answer","text":"Generate a schedule, then click Start Bake. The Live tab tracks elapsed time, shows your current step with a countdown, and previews what is next. The browser tab title flashes when a step is due. Everything is saved locally — no account, no server."}},
+    {"@type":"Question","name":"How do I know when bulk fermentation is done?","acceptedAnswer":{"@type":"Answer","text":"Watch the dough, not the clock: a 50–75% rise, a domed top, a few surface bubbles, and a slow jiggle. The calculator's time is there to plan around — these visual cues are the real signal. Pull it when it's puffy but still holds its shape; underproofed dough bakes dense and gummy."}},
+    {"@type":"Question","name":"Why does my bread overproof?","acceptedAnswer":{"@type":"Answer","text":"Usually because the dough was warmer than you assumed. Mixing friction leaves dough 1–3°C above room temperature, so a 6-hour bulk in a 24°C kitchen can be done in four. Measure dough temperature, not air, and treat the bulk estimate as a ceiling, not a target."}},
+    {"@type":"Question","name":"Can I pause or shift the schedule partway through?","acceptedAnswer":{"@type":"Answer","text":"Yes — the easiest pause is a cold retard: once shaped, the loaf can sit in the fridge (~4°C) for 12–36 hours and bake when it suits you. To slow bulk, move the dough somewhere cooler; to speed it up, somewhere warmer, then re-run the calculator with the new temperature."}},
+    {"@type":"Question","name":"What flour should I use?","acceptedAnswer":{"@type":"Answer","text":"For your first loaves a strong bread flour (12–13% protein) is the most forgiving. All-purpose works but holds less gas. Whole wheat and rye ferment faster and absorb more water — add 5–8% hydration and expect a denser crumb. The Recipe Lab handles blends and shows true total hydration."}},
+    {"@type":"Question","name":"How do whole wheat and rye change the timing?","acceptedAnswer":{"@type":"Answer","text":"Both ferment noticeably faster than white flour — more enzymes and wild yeast in the bran and germ — so shorten the bulk and watch the dough closely; whole-grain doughs overproof in a blink. Start by cutting 20–30 minutes off the suggested bulk and adjust from what you see."}}
   ]
 }
 </script>
@@ -2121,6 +2126,32 @@
   </svg>
 </header>
 
+<section class="intro" style="max-width:760px;margin:8px auto 4px;">
+  <p style="font-size:18px;line-height:1.65;color:var(--ink-soft);margin:0 0 16px;">
+    Sourdough timing isn't fixed — it's arithmetic. The same dough that finishes bulk in five hours at 24&nbsp;°C
+    takes about eleven at 16&nbsp;°C, and a starter at 20% inoculation ferments roughly twice as fast as one at 10%.
+    Most "why did my loaf fail" problems are really timing problems: a schedule written for a warm kitchen, run in a
+    cold one. This planner does that arithmetic for <em>your</em> kitchen so you can stop guessing.
+  </p>
+  <p style="font-size:16px;line-height:1.65;color:var(--ink-soft);margin:0 0 16px;">
+    Enter your flour, hydration, room temperature, starter strength and whether you're cold-retarding, and it builds a
+    step-by-step timeline from levain feed to bake — with realistic bulk and proof windows for your conditions, not a
+    generic "4–6 hours." The model is a Q10&nbsp;≈&nbsp;2.2 fermentation curve (rate about 2.2× per 8&nbsp;°C), the
+    same rule experienced bakers carry in their heads.
+  </p>
+  <p style="font-size:16px;line-height:1.6;color:var(--ink-soft);margin:0 0 8px;"><strong>Four tools, one workflow:</strong></p>
+  <ul style="font-size:16px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px;padding-left:22px;">
+    <li><strong>Schedule</strong> — your full timeline, forwards from a start time or backwards from "out of the oven at 18:00 on Saturday."</li>
+    <li><strong>Starter</strong> — when to feed so your levain peaks exactly when you mix.</li>
+    <li><strong>Recipe Lab</strong> — baker's percentages, true total hydration (including the levain), and desired-dough-temperature water.</li>
+    <li><strong>Live Bake</strong> — follow the current bake step by step, with reminders for each stage.</li>
+  </ul>
+  <p style="font-size:16px;line-height:1.65;color:var(--ink-soft);margin:0;">
+    New to sourdough? Start at 70–75% hydration with bread flour and a 20% starter, and read the
+    <a href="/sourdough/" style="color:var(--crust-deep);">knowledge base</a> for the reasoning behind every number.
+  </p>
+</section>
+
 <noscript>
   <div style="max-width:680px;margin:24px auto;padding:18px 22px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink-soft);font-size:15px;line-height:1.6;">
     <strong>This calculator needs JavaScript</strong> to build your bake schedule. You can still read our
@@ -2632,7 +2663,7 @@
     </a>
     <a class="kb-card" href="/sourdough/float-test-explained/">
       <span class="kb-card-title">The float test: when is your starter actually ready?</span>
-      <span class="kb-card-sum">Drop a teaspoon of starter into a glass of water. If it floats, your starter is ready to bake. If it sinks, wait. That's the float test in one sentence —…</span>
+      <span class="kb-card-sum">Drop a teaspoon of starter into a glass of water. If it floats, it has enough trapped gas to leaven bread. If it sinks, it doesn't — or it's been knocked…</span>
       <span class="kb-card-more">Read →</span>
     </a></div>
   <p style="margin-top:24px;font-size:15px;"><a href="/sourdough/" style="color:var(--crust-deep);font-weight:600;">Browse the full knowledge base →</a></p>
@@ -2727,6 +2758,51 @@
           step with a countdown, and previews what's next. The browser tab title flashes when a step is due so
           you don't miss a fold while doing something else. Everything is saved locally — no account, no
           server.
+        </p>
+      </details>
+
+      <details>
+        <summary>How do I know when bulk fermentation is done?</summary>
+        <p>
+          Watch the dough, not the clock: a 50–75% rise, a domed top, a few surface bubbles, and a slow
+          jiggle. The calculator's time is there to plan around — these visual cues are the real signal.
+          Pull it when it's puffy but still holds its shape; underproofed dough bakes dense and gummy.
+        </p>
+      </details>
+
+      <details>
+        <summary>Why does my bread overproof?</summary>
+        <p>
+          Usually because the dough was warmer than you assumed. Mixing friction leaves dough 1–3°C above room
+          temperature, so a "6-hour" bulk in a 24°C kitchen can be done in four. Measure dough temperature, not
+          air, and treat the bulk estimate as a ceiling, not a target.
+        </p>
+      </details>
+
+      <details>
+        <summary>Can I pause or shift the schedule partway through?</summary>
+        <p>
+          Yes — the easiest pause is a cold retard: once shaped, the loaf can sit in the fridge (~4°C) for
+          12–36 hours and bake when it suits you. To slow bulk, move the dough somewhere cooler; to speed it
+          up, somewhere warmer, then re-run the calculator with the new temperature.
+        </p>
+      </details>
+
+      <details>
+        <summary>What flour should I use?</summary>
+        <p>
+          For your first loaves a strong bread flour (12–13% protein) is the most forgiving. All-purpose works
+          but holds less gas. Whole wheat and rye ferment faster and absorb more water — add 5–8% hydration and
+          expect a denser crumb. The Recipe Lab handles blends and shows true total hydration.
+        </p>
+      </details>
+
+      <details>
+        <summary>How do whole wheat and rye change the timing?</summary>
+        <p>
+          Both ferment noticeably faster than white flour — more enzymes and wild yeast in the bran and germ —
+          so shorten the bulk and watch the dough closely; whole-grain doughs overproof in a blink. Start by
+          cutting 20–30 minutes off the suggested bulk and adjust from what you see.
         </p>
       </details>
     </div>

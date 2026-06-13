@@ -1,6 +1,8 @@
 node_modules/
 dist/
 articles-build/
+dist-pins/
+.diag-preview/
 config.local.json
 form-detail.json
 forms.json

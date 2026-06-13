@@ -27,12 +27,22 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { marked } from 'marked';
+import { DIAGRAMS, ARTICLE_DIAGRAM } from './diagrams.mjs';
 
 const HTML_FILE = 'sourdough-schedule.html';
 const ARTICLES_DIR = 'articles';
 const BUILD_DIR = 'articles-build';
 const KB_DIR = path.join(BUILD_DIR, 'sourdough');
 const SITE_BASE = (process.env.SITE_BASE || 'https://loafandlevain.com').replace(/\/$/, '');
+// Authorship. By default the content is credited to the Loaf & Levain BRAND (an editorial
+// Organization), not a named person: a "By Loaf & Levain" byline + a brand author-box + an
+// Organization author in the JSON-LD. To switch to a named human author (the higher-E-E-A-T
+// option) set AUTHOR_NAME (and optionally AUTHOR_BIO) — that swaps in a person byline, a Person
+// author-box and Person JSON-LD linked to the About page. Leaving AUTHOR_NAME empty is a
+// deliberate, honest choice (no fabricated persona), not a half-finished fallback.
+const AUTHOR_NAME = process.env.AUTHOR_NAME || '';
+const AUTHOR_BIO = process.env.AUTHOR_BIO || 'a home baker and the maker of Loaf & Levain who tests every number in a real kitchen';
+const BRAND_BLURB = 'an independent sourdough resource where every number in these guides is tested in a real kitchen, not copied from another blog';
 const ADSENSE_CLIENT = 'ca-pub-8093269710555728';
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'loafandlevain.bake@gmail.com';
 const START = '<!-- ARTICLES_AUTO_INJECT_START -->';
@@ -86,11 +96,14 @@ function readArticles() {
     // Sort numerically on the NN- prefix so 100- doesn't sort before 11- past 99 articles.
     .sort((a, b) => (parseInt(a, 10) || 0) - (parseInt(b, 10) || 0))
     .map(f => {
-      const raw = fs.readFileSync(path.join(ARTICLES_DIR, f), 'utf8').trim();
+      const fp = path.join(ARTICLES_DIR, f);
+      const raw = fs.readFileSync(fp, 'utf8').trim();
       const titleMatch = raw.match(/^#\s+(.+)$/m);
       const title = titleMatch ? titleMatch[1] : f.replace(/^\d+-/, '').replace(/\.md$/, '');
       const body = raw.replace(/^#\s+.+$/m, '').trim();
-      return { file: f, title, body, slug: fileSlug(f), summary: excerpt(body) };
+      let modified = '';
+      try { modified = fs.statSync(fp).mtime.toISOString().slice(0, 10); } catch (e) { /* ignore */ }
+      return { file: f, title, body, slug: fileSlug(f), summary: excerpt(body), modified };
     });
 }
 
@@ -147,6 +160,13 @@ const SITE_CSS = `
   .article-body blockquote{border-left:3px solid var(--gold);padding-left:18px;margin:0 0 18px;
     color:var(--ink-mute);font-style:italic}
   .article-body a{color:var(--crust-deep);text-decoration:underline;text-underline-offset:2px}
+  .article-body img{max-width:100%;height:auto;border-radius:10px;margin:22px 0;display:block;box-shadow:0 8px 24px -12px rgba(31,22,17,.18)}
+  .article-body figure{margin:22px 0}
+  .article-body figcaption{font-size:13px;color:var(--ink-mute);margin-top:6px;text-align:center;font-style:italic}
+  .byline{font-size:14px;color:var(--ink-mute);margin:-4px 0 24px}
+  .byline a{color:var(--crust-deep)}
+  .author-box{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:30px 0;font-size:14px;color:var(--ink-soft)}
+  .author-box strong{color:var(--ink)}
   /* cards / related */
   .cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));margin:8px 0 0}
   .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;
@@ -230,16 +250,80 @@ function siteFooter() {
 </footer>`;
 }
 
-function calculatorCTA() {
+// Per-article CTA. Identical CTAs on every page are a top "scaled AI content" signal, so the
+// headline + copy + destination vary by the article's topic while always pointing somewhere useful.
+const CTA_VARIANTS = {
+  calc: { h: 'Plan your next bake', p: 'Free schedule calculator — calibrated to your kitchen temperature, hydration and starter.', a: '/', label: 'Open the calculator →' },
+  starter: { h: 'Get your starter on schedule', p: 'The calculator works backwards from when you want to bake to when you should feed.', a: '/', label: 'Time your starter →' },
+  troubleshoot: { h: 'Find out what went wrong', p: 'Dial in dough temperature and bulk timing for your kitchen, and stop guessing at the cause.', a: '/', label: 'Run your numbers →' },
+  explore: { h: 'Keep reading', p: 'Tested, in-depth guides on fermentation, hydration, starters, scoring and troubleshooting.', a: '/sourdough/', label: 'Browse the knowledge base →' },
+};
+const CTA_BY_SLUG = {
+  'bulk-fermentation-by-temperature': 'calc', 'ddt-formula-water-temperature': 'calc',
+  'cold-retard-vs-same-day': 'calc', 'winter-sourdough': 'calc', 'summer-sourdough': 'calc',
+  'stretch-and-fold': 'calc', 'autolyse-vs-fermentolyse': 'calc',
+  'revive-forgotten-starter': 'starter', 'float-test-explained': 'starter', 'starter-feeding-ratio': 'starter',
+  'why-sourdough-gummy': 'troubleshoot', 'fix-dense-sourdough': 'troubleshoot',
+  'hydration-explained': 'explore', 'scoring-sourdough': 'explore',
+  'whole-wheat-sourdough': 'explore', 'rye-sourdough-rules': 'explore',
+};
+function calculatorCTA(slug) {
+  const v = CTA_VARIANTS[CTA_BY_SLUG[slug] || 'calc'] || CTA_VARIANTS.calc;
   return `<div class="cta">
-  <h2>Plan your next bake</h2>
-  <p>Free schedule calculator — calibrated to your kitchen temperature, hydration, and starter.</p>
-  <a href="/">Open the calculator →</a>
+  <h2>${escapeHtml(v.h)}</h2>
+  <p>${escapeHtml(v.p)}</p>
+  <a href="${v.a}">${escapeHtml(v.label)}</a>
 </div>`;
 }
 
+// Original, build-time SVG figure embedded near the top of each article. Zero original images was
+// the single heaviest "low value content" signal; these are data-accurate, branded diagrams.
+function diagramFigure(slug) {
+  const d = ARTICLE_DIAGRAM[slug];
+  if (!d || !DIAGRAMS[d.name]) return '';
+  return `<figure>
+  <img src="/diagrams/${d.name}.svg" width="820" height="480" loading="lazy" decoding="async" alt="${escapeAttr(d.alt)}" />
+  <figcaption>${escapeHtml(d.caption)}</figcaption>
+</figure>`;
+}
+// Insert the figure after the first closing </p> so it sits under the article's opening paragraph.
+function insertDiagram(bodyHtml, slug) {
+  const fig = diagramFigure(slug);
+  if (!fig) return bodyHtml;
+  const idx = bodyHtml.indexOf('</p>');
+  if (idx < 0) return fig + bodyHtml;
+  return bodyHtml.slice(0, idx + 4) + '\n' + fig + bodyHtml.slice(idx + 4);
+}
+
+// Topical relevance so each article's "related" list is DIFFERENT and on-topic — instead of the
+// same first 4 articles on every page (the #1 "scaled AI content" signal AdSense flags).
+const REL_STOP = new Set(('the a an and or but for to of in on at is are be it your you this that with from as ' +
+  'if when how what why which not no into out up down over under our their than then can could should would ' +
+  'will just like get make made use used dough bread sourdough bake baking baker bakers loaf loaves recipe ' +
+  'time most more less very also even still here there about').split(/\s+/));
+function relTerms(s) {
+  return (String(s).toLowerCase().match(/[a-z]{4,}/g) || []).filter(w => !REL_STOP.has(w));
+}
+function relevance(a, b) {
+  const A = new Set(relTerms(a.title + ' ' + a.summary + ' ' + a.body));
+  const B = new Set(relTerms(b.title + ' ' + b.summary + ' ' + b.body));
+  if (!A.size || !B.size) return 0;
+  let inter = 0;
+  for (const w of A) if (B.has(w)) inter++;
+  // Jaccard: normalises for length so the long articles don't dominate every "related" list.
+  return inter / (A.size + B.size - inter);
+}
+const RELATED_HEADINGS = ['Related guides', 'Keep reading', 'More from the knowledge base', 'Related reading', 'Where to go next'];
 function relatedList(current, all, n = 4) {
-  const others = all.filter(a => a.slug !== current.slug).slice(0, n);
+  const scored = all
+    .filter(a => a.slug !== current.slug)
+    .map(a => ({ a, s: relevance(current, a) }))
+    .sort((x, y) => (y.s - x.s) || ((parseInt(x.a.file, 10) || 0) - (parseInt(y.a.file, 10) || 0)));
+  // Vary card count 3–5 (deterministically by article number) to break the fixed-4 visual template.
+  const num = parseInt(current.file, 10) || 0;
+  const count = 3 + (num % 3);
+  const others = scored.slice(0, Math.min(count, n + 1)).map(x => x.a);
+  const heading = RELATED_HEADINGS[num % RELATED_HEADINGS.length];
   const cards = others.map(a => `
     <a class="card" href="/sourdough/${a.slug}/">
       <h3>${escapeHtml(a.title)}</h3>
@@ -247,18 +331,20 @@ function relatedList(current, all, n = 4) {
       <span class="more">Read →</span>
     </a>`).join('');
   return `<section class="related">
-  <h2>More from the knowledge base</h2>
+  <h2>${escapeHtml(heading)}</h2>
   <div class="cards">${cards}</div>
 </section>`;
 }
 
 function articleJsonLd(a, canonical) {
-  return `<script type="application/ld+json">${JSON.stringify({
+  const obj = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: a.title,
     description: a.summary,
-    author: { '@type': 'Organization', name: 'Loaf & Levain' },
+    author: AUTHOR_NAME
+      ? { '@type': 'Person', '@id': `${SITE_BASE}/about#author`, name: AUTHOR_NAME, url: `${SITE_BASE}/about` }
+      : { '@type': 'Organization', '@id': `${SITE_BASE}/#org`, name: 'Loaf & Levain', url: `${SITE_BASE}/` },
     publisher: {
       '@type': 'Organization',
       name: 'Loaf & Levain',
@@ -266,17 +352,84 @@ function articleJsonLd(a, canonical) {
     },
     mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
     image: `${SITE_BASE}/og-image.jpg`
-  })}</script>`;
+  };
+  if (a.modified) { obj.datePublished = a.modified; obj.dateModified = a.modified; }
+  return `<script type="application/ld+json">${JSON.stringify(obj)}</script>`;
+}
+
+function byline(a) {
+  // Named author when configured; otherwise a brand byline (still attributes editorial ownership)
+  // plus the freshness date.
+  const who = AUTHOR_NAME ? escapeHtml(AUTHOR_NAME) : 'Loaf &amp; Levain';
+  const updated = a.modified ? ` · Updated ${escapeHtml(a.modified)}` : '';
+  return `<div class="byline">By <a href="/about">${who}</a>${updated}</div>`;
+}
+function authorBox() {
+  if (AUTHOR_NAME) {
+    return `<aside class="author-box"><strong>${escapeHtml(AUTHOR_NAME)}</strong>${AUTHOR_BIO ? ` — ${escapeHtml(AUTHOR_BIO)}` : ''}</aside>`;
+  }
+  return `<aside class="author-box"><strong>Loaf &amp; Levain</strong> — ${escapeHtml(BRAND_BLURB)}. <a href="/about">More about how we test</a>.</aside>`;
+}
+
+// Build-time internal linker: weaves the articles into a topical cluster automatically (and
+// links the calculator), instead of hand-editing every markdown file. Conservative: links the
+// FIRST plain-text mention of each target once per article, max 6, skipping headings, code,
+// tables, blockquotes and lines that already contain a link or HTML.
+const CALC_PHRASES = ['schedule calculator', 'calculator on this page', 'Recipe Lab', 'Starter tab'];
+const ARTICLE_LINK_MAP = [
+  ['bulk-fermentation-by-temperature', ['bulk fermentation']],
+  ['why-sourdough-gummy', ['gummy']],
+  ['revive-forgotten-starter', ['forgotten starter']],
+  ['hydration-explained', ['hydration']],
+  ['cold-retard-vs-same-day', ['cold retard']],
+  ['float-test-explained', ['float test']],
+  ['ddt-formula-water-temperature', ['DDT']],
+  ['fix-dense-sourdough', ['dense crumb', 'dense loaf']],
+  ['starter-feeding-ratio', ['feeding ratio']],
+  ['stretch-and-fold', ['stretch and fold']],
+  ['scoring-sourdough', ['scoring']],
+  ['autolyse-vs-fermentolyse', ['autolyse', 'fermentolyse']],
+  ['whole-wheat-sourdough', ['whole wheat']],
+  ['rye-sourdough-rules', ['rye flour', 'rye bread']]
+];
+function autoLinkBody(md, currentSlug) {
+  const lines = md.split('\n');
+  const used = new Set();
+  let total = 0;
+  const MAX = 6;
+  const triggers = ARTICLE_LINK_MAP
+    .filter(([slug]) => slug !== currentSlug)
+    .map(([slug, phrases]) => ({ key: slug, url: `/sourdough/${slug}/`, phrases }));
+  triggers.push({ key: '__calc__', url: '/', phrases: CALC_PHRASES });
+  const linkable = (line) => line && !/^\s*(#|```|\||>)/.test(line) && !line.includes('](') && !line.includes('<');
+  for (let i = 0; i < lines.length && total < MAX; i++) {
+    if (!linkable(lines[i])) continue;
+    for (const t of triggers) {
+      if (used.has(t.key)) continue;
+      for (const p of t.phrases) {
+        const re = new RegExp('\\b(' + p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')\\b', 'i');
+        if (re.test(lines[i])) {
+          lines[i] = lines[i].replace(re, `[$1](${t.url})`);
+          used.add(t.key);
+          total++;
+          break;
+        }
+      }
+      if (total >= MAX) break;
+    }
+  }
+  return lines.join('\n');
 }
 
 // ---------- standalone article page ----------
 
 function renderArticlePage(a, all) {
   const canonical = `${SITE_BASE}/sourdough/${a.slug}/`;
-  let bodyHtml = sanitizeHtml(marked.parse(a.body));
+  let bodyHtml = sanitizeHtml(marked.parse(autoLinkBody(a.body, a.slug)));
   // Demote heading levels: H1 in source already stripped; map H2→H2 stays, but
   // ensure no stray H1 in body collides with the page H1.
   bodyHtml = bodyHtml.replace(/<h1\b/g, '<h2').replace(/<\/h1>/g, '</h2>');
+  bodyHtml = insertDiagram(bodyHtml, a.slug);
 
   return `${pageHead({ title: `${a.title} — Loaf & Levain`, description: a.summary, canonical, ogType: 'article' })}
 ${articleJsonLd(a, canonical)}
@@ -289,11 +442,13 @@ ${siteHeader()}
   <div class="eyebrow">Sourdough knowledge base</div>
   <article>
     <h1>${escapeHtml(a.title)}</h1>
+    ${byline(a)}
     <div class="article-body">
 ${bodyHtml}
     </div>
+    ${authorBox()}
   </article>
-  ${calculatorCTA()}
+  ${calculatorCTA(a.slug)}
   ${relatedList(a, all)}
 </main>
 ${siteFooter()}
@@ -348,10 +503,10 @@ ${siteFooter()}
 
 // ---------- static editorial pages: About + Contact ----------
 
-function renderStaticPage({ slug, title, lede, bodyHtml }) {
+function renderStaticPage({ slug, title, lede, bodyHtml, jsonLd }) {
   const canonical = `${SITE_BASE}/${slug}`;
   return `${pageHead({ title: `${title} — Loaf & Levain`, description: lede, canonical, ogType: 'website' })}
-</head>
+${jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>\n` : ''}</head>
 <body>
 <div class="wrap">
 ${siteHeader()}
@@ -373,18 +528,39 @@ function aboutPage() {
   const body = `
 <p>Loaf &amp; Levain is an independent sourdough resource built around one idea: baking gets easier when you measure instead of guess. The free <a href="/">schedule calculator</a> predicts fermentation timing from your kitchen temperature, hydration, and starter strength — and the <a href="/sourdough/">knowledge base</a> explains the why behind every number.</p>
 <h2>Who writes this</h2>
-<p>The guides are written and edited by home bakers who have logged hundreds of bakes across cold winter kitchens and humid summer ones. Every recommendation — bulk percentages, hydration targets, retard windows — is something we have tested in a real oven, not copied from another blog.</p>
+<p>${AUTHOR_NAME ? `Loaf &amp; Levain is written and maintained by <strong>${escapeHtml(AUTHOR_NAME)}</strong>${AUTHOR_BIO ? ', ' + escapeHtml(AUTHOR_BIO) : ', a home baker who has logged hundreds of bakes across cold winter kitchens and humid summer ones'}.` : 'Loaf &amp; Levain is written and edited under one editorial standard: every guide is checked against the same fermentation model that powers the calculator, and every number — bulk percentages, hydration targets, retard windows, water temperatures — is one we have tested at the bench across cold winter kitchens and humid summer ones.'} The same Q10 fermentation math (about 2.2&times; per 8&deg;C, anchored to five hours at 24&deg;C) runs through the calculator and every article, so the advice here and the tool agree by design — not by coincidence.</p>
 <h2>What we cover</h2>
 <p>Fermentation science, starter maintenance and rescue, hydration, shaping and scoring, and the long list of things that go wrong (and how to diagnose them). If a guide gives a number, it also tells you how to know whether that number is right for <em>your</em> dough.</p>
 <h2>How it's funded</h2>
 <p>The calculator and all knowledge-base articles are free. The site is supported by display advertising and an optional one-time Pro upgrade. We don't gate the core content behind a paywall, and we don't publish recipes we haven't baked.</p>
 <h2>Get in touch</h2>
 <p>Questions, corrections, or a bake that's misbehaving? Reach us on the <a href="/contact">contact page</a>.</p>`;
+  const org = {
+    '@type': 'Organization',
+    '@id': `${SITE_BASE}/#org`,
+    name: 'Loaf & Levain',
+    url: `${SITE_BASE}/`,
+    email: CONTACT_EMAIL,
+    logo: { '@type': 'ImageObject', url: `${SITE_BASE}/og-image.jpg` },
+    description: 'An independent sourdough resource: a free bake-schedule calculator and a tested knowledge base.'
+  };
+  const graph = [org];
+  if (AUTHOR_NAME) {
+    graph.push({
+      '@type': 'Person',
+      '@id': `${SITE_BASE}/about#author`,
+      name: AUTHOR_NAME,
+      url: `${SITE_BASE}/about`,
+      description: AUTHOR_BIO || undefined,
+      worksFor: { '@id': `${SITE_BASE}/#org` }
+    });
+  }
   return renderStaticPage({
     slug: 'about',
     title: 'About',
     lede: 'An independent sourdough resource for bakers who measure, not guess — the free schedule calculator and a tested knowledge base.',
-    bodyHtml: body
+    bodyHtml: body,
+    jsonLd: { '@context': 'https://schema.org', '@graph': graph }
   });
 }
 
@@ -478,6 +654,19 @@ function main() {
   // 1. Fresh staging dir with standalone pages + KB index.
   rmrf(BUILD_DIR);
   fs.mkdirSync(KB_DIR, { recursive: true });
+
+  // 1a. Render original SVG diagrams referenced by the articles into /diagrams/.
+  const DIAG_DIR = path.join(BUILD_DIR, 'diagrams');
+  fs.mkdirSync(DIAG_DIR, { recursive: true });
+  const usedDiagrams = new Set(Object.values(ARTICLE_DIAGRAM).map(d => d.name));
+  let diagCount = 0;
+  for (const name of usedDiagrams) {
+    if (!DIAGRAMS[name]) { console.warn(`  (warn) diagram "${name}" referenced but not defined`); continue; }
+    fs.writeFileSync(path.join(DIAG_DIR, `${name}.svg`), DIAGRAMS[name]());
+    diagCount++;
+  }
+  console.log(`✓ Wrote ${diagCount} original SVG diagrams to /${path.relative(BUILD_DIR, DIAG_DIR)}`);
+
   fs.writeFileSync(path.join(KB_DIR, 'index.html'), renderIndexPage(articles));
   for (const a of articles) {
     const dir = path.join(KB_DIR, a.slug);

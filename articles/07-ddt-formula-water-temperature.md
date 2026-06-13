@@ -1,79 +1,107 @@
 # The DDT formula: water temperature for perfect dough
 
-Professional bakers do something most home bakers skip: they pre-calculate water temperature so the dough lands at a known temperature after mixing. The math takes ten seconds. The payoff is that bulk fermentation runs on schedule instead of guessing whether the kitchen was warm enough today.
+Professional bakers do something most home bakers skip: they pre-calculate the water temperature so the dough lands at a known temperature after mixing. The math takes ten seconds, and the payoff is that bulk fermentation runs on schedule instead of you guessing whether the kitchen was warm enough today. DDT stands for desired dough temperature — the number you pick first, then work backwards to find the only variable you fully control: the water.
 
-Here's the formula, where it comes from, and how to use it without overcomplicating your bake.
+Here is the formula, where it comes from, and how to use it without turning every bake into a spreadsheet.
 
 ## The formula
 
 `Water = (Target × 3) − Flour − Room − Friction`
 
-Every value is in the same temperature unit (°C is cleaner; °F also works). The "× 3" multiplies your target by the number of temperatures you're correcting for — flour, room, and friction — and you solve for the fourth: the water. (For sourdough we treat the levain as roughly room temperature. If your starter comes straight from a warm proofer or the fridge, nudge the water a degree or two the other way to compensate.)
+Every value is in the same unit, and Celsius is cleaner to reason about than Fahrenheit. The "× 3" is not magic: it is the count of temperatures you are correcting for — flour, room, and friction — and you solve for the fourth, the water. If you ever add a fourth factor (say, a separately tracked levain temperature), the multiplier becomes × 4. For ordinary sourdough you treat the levain as roughly room temperature and leave it at three.
+
+Worked the other way, the logic is just an average. Your dough temperature ends up near the average of everything that goes into it. With three known inputs and one target average, the water has to make up the difference — so it swings further than you might expect.
 
 ## Worked examples
 
-**Standard winter day (cold kitchen).** Target dough temp 25 °C, flour 18 °C, room 18 °C, hand mixing (3 °C friction).
+**Cold winter kitchen.** Target dough temperature 25°C (77°F), flour 18°C, room 18°C, hand mixing at 3°C friction.
 
-`Water = (25 × 3) − 18 − 18 − 3 = 75 − 39 = 36 °C`
+`Water = (25 × 3) − 18 − 18 − 3 = 75 − 39 = 36°C (97°F)`
 
-That's warm tap water — comfortable on the wrist, not hot. In a cold kitchen you nudge the dough up to target with slightly warm water. Don't use hot water straight from the tap; you want the dough warm, not the gluten shocked.
+That is warm tap water — comfortable on the inside of your wrist, not hot. In a cold kitchen you nudge the dough up to target with slightly warm water. Do not reach for hot water straight off the tap; you want the dough warmed evenly, not the surface gluten and the yeast on the water's edge getting scalded.
 
-**Standard summer day (hot kitchen).** Target 25 °C, flour 27 °C, room 27 °C, hand mixing.
+**Hot summer kitchen.** Target 25°C, flour 27°C, room 27°C, hand mixing at 3°C.
 
-`Water = 75 − 27 − 27 − 3 = 18 °C`
+`Water = 75 − 27 − 27 − 3 = 18°C (64°F)`
 
-That's cool — in a hot kitchen you pull the dough *down* to target with cold water. Use cold tap water, and chill part of it if your tap runs warm in summer.
+Now the water has to pull the dough *down* to target. Use cold tap water, and if your tap runs warm in high summer, chill part of it or swap in a few ice cubes (counted by weight as water).
 
-**Stand mixer summer.** Same as above but with mixer friction (6 °C).
+**Stand mixer, same hot kitchen.** Identical inputs but mixer friction of 6°C instead of 3°C.
 
-`Water = 75 − 27 − 27 − 6 = 15 °C`
+`Water = 75 − 27 − 27 − 6 = 15°C (59°F)`
 
-The mixer adds more heat, so even colder water keeps the dough on target — fridge-cold water, or a few ice cubes melted into the mix.
+The mixer dumps more mechanical heat into the dough, so the water has to be colder still to land on the same 25°C. This is exactly the case where guessing fails: two bakers in the same kitchen, same recipe, will finish at different dough temperatures purely because one kneaded by hand and one ran a machine.
 
-## Friction values to use
+## Friction by mixing method
 
-The friction value depends on how much energy goes into mixing:
+Friction is the only input people consistently get wrong, because it is invisible — you cannot read it off a thermometer before you mix. It is the heat your mixing adds, and it scales with how much energy goes in and for how long.
 
-- **Pinch-and-fold by hand**, 2–3 minutes: 1–2 °C
-- **Standard hand mix**, slap-and-fold for 5 minutes: 3–4 °C
-- **Stand mixer**, low to medium speed, 8–10 minutes: 5–7 °C
-- **Spiral mixer or high-speed dough mixer**: 8–12 °C
+| Mixing method | Typical friction |
+|---|---|
+| Pinch-and-fold by hand, 2–3 minutes | ~1°C |
+| Standard hand mix / slap-and-fold, 5 minutes | 2–3°C |
+| Stand mixer, low–medium speed, 8–10 minutes | 5–7°C |
+| Spiral or high-speed dough mixer | 7–8°C |
 
-These are typical values. Measure once after a bake (probe the dough right after mixing, compare to your target) and adjust your friction estimate based on what you actually see.
+Treat these as starting points, then calibrate against your own kitchen. Probe the dough's centre right after mixing, compare it to the target, and the gap tells you how far off your friction estimate was. Two or three bakes and you will know your own number for each method to within a degree. I run a stand mixer on low and have settled on 6°C for my own dough; a friend with a stiffer, faster machine sits closer to 8°C for the same time.
 
 ## Why dough temperature matters
 
-Yeast activity scales with temperature. A dough that finishes mixing at 26 °C ferments roughly 25% faster than one at 24 °C, and 50% faster than one at 22 °C. If your recipe's bulk time was written for 25 °C dough and you accidentally landed at 28 °C, the bulk you planned for 6 hours is done in about 4. By the time you check, the dough is overproofed.
+Yeast and bacteria speed up with warmth, following the same Q10 ≈ 2.2-per-8°C rule the [schedule calculator](/) and the [bulk fermentation guide](/sourdough/bulk-fermentation-by-temperature/) use. Run the numbers and a couple of degrees is more than a rounding error. A dough finishing at 26°C ferments roughly 20% faster than one at 24°C, and around 35% faster than one at 23°C.
 
-The DDT formula prevents this. Land the dough at a known temperature and the schedule from the calculator predicts bulk to within ±20 minutes.
+Put that in clock terms. A bulk written for 6 hours at 24°C dough is not "done in 4 hours" if you accidentally land at 26°C — it is closer to **4.9 hours**, about an hour early. That hour is the difference between a domed, jiggly bulk and a slack, over-gassed one that tears at shaping. The DDT formula is what keeps the dough on the temperature your schedule was written for, so a planned bulk lands within roughly ±20 minutes instead of surprising you.
 
-## Practical use without overdoing it
+## When DDT actually earns its keep
 
-You don't have to calculate DDT for every bake. Most home bakers fall into a pattern: tap water plus a known kitchen temperature gives consistent results day after day. The DDT formula matters most when:
+You do not need to calculate DDT for every bake. Most home bakers settle into a pattern — known tap water, a familiar kitchen — and get consistent results for weeks. The formula matters most when that pattern breaks:
 
-- **The season changes.** Spring or fall transitions wreck schedules unless you adjust water temperature.
-- **You're trying a new recipe.** Especially enriched doughs (brioche, panettone, croissant) where temperature precision matters more.
-- **Your kitchen is much colder or warmer than usual.** A house with under-floor heating or one that gets aggressive sun exposure both throw normal assumptions off.
-- **You want competition-quality consistency.** Bakery bakers calculate DDT every batch.
+- **The season turns.** Spring and autumn transitions quietly wreck schedules. Your tap, your flour, and your room all drift at once, and a fixed-water habit lands you off-target. This is the same swing the [winter](/sourdough/winter-sourdough/) and [summer sourdough](/sourdough/summer-sourdough/) guides exist to manage.
+- **You try a new recipe**, especially enriched dough (brioche, panettone, croissant) where temperature precision drives the whole lamination and proof.
+- **Your kitchen runs unusually hot or cold** — underfloor heating, a sun-blasted countertop, a draughty winter pantry.
+- **You want batch-to-batch repeatability.** Bakery bakers calculate DDT every single mix, and that is most of why their loaves look identical.
 
-## Use the calculator's Recipe Lab
+## Cold flour throws the whole sum off
 
-The Recipe Lab in the schedule calculator does this math live. Set your target dough temperature, flour temperature, room temperature, and friction estimate. It tells you the water temperature you need. As you change values it updates in real time.
+Most bakers assume flour temperature equals room temperature, and on a shelf-stored bag that is true. It is wrong for flour kept in the fridge or freezer — a habit some bakers adopt to slow rancidity in whole-grain flours.
 
-If the calculation tells you to use water below 5 °C or above 50 °C, double-check your inputs. Numbers that extreme usually mean a typo or an unusual kitchen condition worth examining.
+Cold flour can shift the calculation by 5–10°C and you will undershoot dough temperature badly without ever knowing why. Either pull the flour out an hour ahead so it equilibrates, or measure its actual temperature and plug *that* into the formula. The sum is only as honest as its inputs.
 
-## A note on flour temperature
+## The water itself
 
-Most home bakers assume flour temperature equals room temperature. That's correct for flour stored on a kitchen shelf. It's wrong for flour stored in the fridge or freezer — a habit some bakers adopt to slow rancidity in whole-grain flours.
+The water you mix into dough does not need filtering — chlorinated tap water works fine for the dough. Starter health is more sensitive to chlorine than dough is, so if your tap runs heavily chlorinated, dechlorinate the water you feed the [starter](/sourdough/starter-feeding-ratio/) and use plain tap for the dough. Leaving water out overnight to off-gas chlorine is a fine ritual, but it is not what makes or breaks a loaf.
 
-If you store flour cold, take it out an hour before mixing or measure its actual temperature. Cold flour shifts your DDT calculation by 5–10 °C and you'll undershoot dough temperature significantly.
-
-## A note on the water itself
-
-The water you mix into dough doesn't need to be filtered for sourdough — chlorinated tap water mostly works fine. Some bakers swear by leaving water out overnight to dechlorinate; others bake straight from the tap with no problem. Starter health is more sensitive to chlorine than dough is, so if your tap water is heavily chlorinated, dechlorinate the water you feed your starter and use tap water for dough.
+One sanity check: if the formula tells you to use water below about 5°C or above 50°C, stop and re-read your inputs. Numbers that extreme almost always mean a typo or a genuinely unusual kitchen condition worth investigating before you mix.
 
 ## The shortcut for cooks who don't like math
 
-If you bake the same recipe every week and your kitchen is consistently in the 21–24 °C range, you don't need DDT. Use lukewarm tap water (35–40 °C) and you'll land in the right ballpark. Keep a notebook with your dough temperature observations and you'll calibrate your tap by feel after 5–6 bakes.
+If you bake the same recipe weekly and your kitchen sits steadily in the 21–24°C range, you can skip the arithmetic. Lukewarm tap water around 35–40°C lands you in the right ballpark, and a notebook of dough-temperature readings will calibrate your tap by feel within five or six bakes. The formula is there for the times the shortcut fails — a shifted season, a new recipe, or a string of off loaves you can't explain. Plug in the numbers and temperature stops being the mystery variable.
 
-The formula is for the times when you can't trust the shortcut — when the season has shifted, or you're trying a new recipe, or your bread has been off and you don't know why. Plug in the numbers and the temperature variable stops being a mystery.
+## Common questions
+
+### What's the ideal desired dough temperature for sourdough?
+
+For most white and lightly whole-grain sourdough, aim for 24–26°C. It gives a brisk but controllable bulk and clean acidity. Go warmer (26–28°C) for a faster same-day bake or for rye, and cooler (22–24°C) if you want a longer, more flavour-forward bulk. Pick the target first; the formula finds the water.
+
+### Why is my dough always colder than the target I calculated?
+
+Almost always an underestimated cold input — fridge-cold flour, a colder-than-you-think winter room, or friction set too high for a gentle hand mix. Probe the dough right after mixing, find the gap, and correct the input that was furthest from reality. The formula is rarely wrong; the guesses fed into it usually are.
+
+### Do I count the levain in the formula?
+
+Not as a separate term for ordinary sourdough. The standard three-factor version treats the levain as roughly room temperature, which is true if your starter lives on the counter. If it comes straight from the fridge or a warm proofer, nudge the water a degree or two the opposite way to compensate, rather than rewriting the formula.
+
+### Does hydration change the water temperature I need?
+
+The formula doesn't change, but consequences do. A high-hydration dough is mostly water, so the water temperature has more leverage over the final dough temperature — your correction lands harder. At low hydration the flour dominates and the water matters less. If you bake across a wide hydration range, see [hydration explained](/sourdough/hydration-explained/) for how the water-to-flour balance shifts handling.
+
+### Can I just use ice instead of measuring cold water?
+
+Yes, and in a hot kitchen it is often the only way to hit a low target. Weigh the ice as part of your water total and let it melt into the mix. Just remember melting ice also chills the dough as it absorbs heat, so you may land a touch cooler than the arithmetic predicts — start with slightly less ice than the formula's full swing suggests.
+
+### My calculated water is over 50°C. Is that safe?
+
+No — back off. Water hotter than about 50°C starts to damage yeast and denature gluten on contact. If the formula demands that, your room or flour is genuinely cold and you are better off warming the *environment* (a turned-off oven with the light on, a proofing box) than scalding the dough into the right number.
+
+## On your next bake
+
+Before you mix, take three readings you usually ignore: flour temperature, room temperature, and — the honest one — the dough temperature right after your last mix, so you know your real friction number. Feed those into `Water = (Target × 3) − Flour − Room − Friction`, hit your target within a degree, and watch how much tighter your bulk timing becomes. Once your friction value is dialled in for the way *you* mix, in *your* kitchen, the water stops being something you test with a wrist and becomes a number you simply set.
