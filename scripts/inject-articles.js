@@ -34,12 +34,15 @@ const ARTICLES_DIR = 'articles';
 const BUILD_DIR = 'articles-build';
 const KB_DIR = path.join(BUILD_DIR, 'sourdough');
 const SITE_BASE = (process.env.SITE_BASE || 'https://loafandlevain.com').replace(/\/$/, '');
-// E-E-A-T: set AUTHOR_NAME (and optionally AUTHOR_BIO) to attach a real, named human author to
-// every article — a byline + Person JSON-LD instead of an anonymous Organization. This is the
-// single highest-impact AdSense "low value content" fix. Leave AUTHOR_NAME empty and it safely
-// falls back to the old anonymous author (so nothing ships half-broken until you fill it in).
-const AUTHOR_NAME = process.env.AUTHOR_NAME || 'John';
+// Authorship. By default the content is credited to the Loaf & Levain BRAND (an editorial
+// Organization), not a named person: a "By Loaf & Levain" byline + a brand author-box + an
+// Organization author in the JSON-LD. To switch to a named human author (the higher-E-E-A-T
+// option) set AUTHOR_NAME (and optionally AUTHOR_BIO) — that swaps in a person byline, a Person
+// author-box and Person JSON-LD linked to the About page. Leaving AUTHOR_NAME empty is a
+// deliberate, honest choice (no fabricated persona), not a half-finished fallback.
+const AUTHOR_NAME = process.env.AUTHOR_NAME || '';
 const AUTHOR_BIO = process.env.AUTHOR_BIO || 'a home baker and the maker of Loaf & Levain who tests every number in a real kitchen';
+const BRAND_BLURB = 'an independent sourdough resource where every number in these guides is tested in a real kitchen, not copied from another blog';
 const ADSENSE_CLIENT = 'ca-pub-8093269710555728';
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'loafandlevain.bake@gmail.com';
 const START = '<!-- ARTICLES_AUTO_INJECT_START -->';
@@ -341,7 +344,7 @@ function articleJsonLd(a, canonical) {
     description: a.summary,
     author: AUTHOR_NAME
       ? { '@type': 'Person', '@id': `${SITE_BASE}/about#author`, name: AUTHOR_NAME, url: `${SITE_BASE}/about` }
-      : { '@type': 'Organization', name: 'Loaf & Levain' },
+      : { '@type': 'Organization', '@id': `${SITE_BASE}/#org`, name: 'Loaf & Levain', url: `${SITE_BASE}/` },
     publisher: {
       '@type': 'Organization',
       name: 'Loaf & Levain',
@@ -355,12 +358,17 @@ function articleJsonLd(a, canonical) {
 }
 
 function byline(a) {
-  if (!AUTHOR_NAME) return '';
-  return `<div class="byline">By <a href="/about">${escapeHtml(AUTHOR_NAME)}</a>${a.modified ? ` · Updated ${escapeHtml(a.modified)}` : ''}</div>`;
+  // Named author when configured; otherwise a brand byline (still attributes editorial ownership)
+  // plus the freshness date.
+  const who = AUTHOR_NAME ? escapeHtml(AUTHOR_NAME) : 'Loaf &amp; Levain';
+  const updated = a.modified ? ` · Updated ${escapeHtml(a.modified)}` : '';
+  return `<div class="byline">By <a href="/about">${who}</a>${updated}</div>`;
 }
 function authorBox() {
-  if (!AUTHOR_NAME) return '';
-  return `<aside class="author-box"><strong>${escapeHtml(AUTHOR_NAME)}</strong>${AUTHOR_BIO ? ` — ${escapeHtml(AUTHOR_BIO)}` : ''}</aside>`;
+  if (AUTHOR_NAME) {
+    return `<aside class="author-box"><strong>${escapeHtml(AUTHOR_NAME)}</strong>${AUTHOR_BIO ? ` — ${escapeHtml(AUTHOR_BIO)}` : ''}</aside>`;
+  }
+  return `<aside class="author-box"><strong>Loaf &amp; Levain</strong> — ${escapeHtml(BRAND_BLURB)}. <a href="/about">More about how we test</a>.</aside>`;
 }
 
 // Build-time internal linker: weaves the articles into a topical cluster automatically (and
@@ -520,7 +528,7 @@ function aboutPage() {
   const body = `
 <p>Loaf &amp; Levain is an independent sourdough resource built around one idea: baking gets easier when you measure instead of guess. The free <a href="/">schedule calculator</a> predicts fermentation timing from your kitchen temperature, hydration, and starter strength — and the <a href="/sourdough/">knowledge base</a> explains the why behind every number.</p>
 <h2>Who writes this</h2>
-<p>${AUTHOR_NAME ? `Loaf &amp; Levain is written and maintained by <strong>${escapeHtml(AUTHOR_NAME)}</strong>${AUTHOR_BIO ? ', ' + escapeHtml(AUTHOR_BIO) : ', a home baker who has logged hundreds of bakes across cold winter kitchens and humid summer ones'}.` : 'The guides are written and edited by home bakers who have logged hundreds of bakes across cold winter kitchens and humid summer ones.'} Every recommendation — bulk percentages, hydration targets, retard windows — is something tested in a real oven, not copied from another blog.</p>
+<p>${AUTHOR_NAME ? `Loaf &amp; Levain is written and maintained by <strong>${escapeHtml(AUTHOR_NAME)}</strong>${AUTHOR_BIO ? ', ' + escapeHtml(AUTHOR_BIO) : ', a home baker who has logged hundreds of bakes across cold winter kitchens and humid summer ones'}.` : 'Loaf &amp; Levain is written and edited under one editorial standard: every guide is checked against the same fermentation model that powers the calculator, and every number — bulk percentages, hydration targets, retard windows, water temperatures — is one we have tested at the bench across cold winter kitchens and humid summer ones.'} The same Q10 fermentation math (about 2.2&times; per 8&deg;C, anchored to five hours at 24&deg;C) runs through the calculator and every article, so the advice here and the tool agree by design — not by coincidence.</p>
 <h2>What we cover</h2>
 <p>Fermentation science, starter maintenance and rescue, hydration, shaping and scoring, and the long list of things that go wrong (and how to diagnose them). If a guide gives a number, it also tells you how to know whether that number is right for <em>your</em> dough.</p>
 <h2>How it's funded</h2>
