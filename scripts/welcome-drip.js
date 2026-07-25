@@ -89,7 +89,7 @@ const STEPS = [
 <p>I used a free recipe I found online. It worked at the author's kitchen, which she described as "comfortable room temperature." Mine wasn't comfortable &mdash; it was a January kitchen at 17&deg;C.</p>
 <p>I followed the schedule exactly. The bake was a brick. Three days of work, a kilo of imported flour, candied citrus that costs more than it should, all of it for a dense doorstop.</p>
 <p>The recipe wasn't wrong. The schedule was wrong <strong>for my kitchen.</strong> Every step needed 1.5&ndash;2&times; the time the author had given it.</p>
-<p>That's why I built <a href="${PRO_URL}" style="color:#B85C38;">Sourdough Schedule Pro</a>. Every recipe in it has three timing tables: cold kitchen, standard kitchen, hot kitchen. No more guessing. No more $30 paperweights.</p>
+<p>That's why I built <a href="${PRO_URL}" style="color:#B85C38;">Sourdough Schedule Pro</a>. It opens with the country loaf timed three ways &mdash; a 16&deg;C kitchen, a 22&deg;C kitchen, a 28&deg;C kitchen &mdash; and every recipe comes with a tested schedule plus the temperature tables to shift it to <em>your</em> kitchen. No more guessing. No more $30 paperweights.</p>
 <p>It's $19. One ruined panettone pays for it 1.5 times over.</p>
 <p>Details on what's inside in a couple days.</p>
 <p>&mdash; Loaf &amp; Levain</p>`
@@ -98,22 +98,21 @@ const STEPS = [
     n: 4,
     delayDays: 9,
     subject: 'What is actually inside Sourdough Schedule Pro',
-    preheader: '30 recipes, 12 troubleshooting flowcharts, climate-tuned timing.',
+    preheader: '10 tested recipes, 12 troubleshooting flowcharts, climate-adjusted timing.',
     body: () => `
 <p>Hi {$name|default:"there"},</p>
 <p>Following up on the panettone story &mdash; here's exactly what's in <a href="${PRO_URL}" style="color:#B85C38;">Sourdough Schedule Pro</a>.</p>
-<p><strong>30 recipes</strong>, each with three timing tables (cold, standard, hot kitchen):</p>
+<p><strong>10 tested recipes with schedules:</strong></p>
 <ul>
-<li>5 white &amp; lean breads (country, pan de cristal, sandwich)</li>
-<li>7 whole-grain (50% WW, 100% WW, multigrain, rye, spelt, kamut)</li>
-<li>3 high-hydration showcases (ciabatta, open-crumb country, pain rustique)</li>
-<li>5 enriched (brioche, croissants, milk bread, babka, discard pancakes)</li>
-<li>5 flatbreads &amp; shapes (focaccia, pizza 24/48/72-h, bagels, English muffins, pita)</li>
-<li>5 holiday &amp; specialty (panettone, stollen, hot cross buns, pretzels, beer bread)</li>
+<li>Country loaf 75% &mdash; timed three ways: cold kitchen (16&deg;C), standard (22&deg;C), hot (28&deg;C)</li>
+<li>Country loaf 80%, white sandwich loaf, 50% whole wheat</li>
+<li>Pan de cristal 100%, ciabatta 85%, focaccia, baguettes</li>
+<li>100% rye, and a 48-hour cold-ferment pizza dough</li>
 </ul>
 <p><strong>12 troubleshooting flowcharts</strong> for: gummy crumb, dense crumb, flat loaves, no oven spring, pale crust, too sour, bland flavour, sticky dough, starter that won't peak, crumb wall holes, dough that tears, loaf stuck in banneton.</p>
 <p><strong>Starter rescue protocols.</strong> From-scratch 7-day starter, reviving fridge-forgotten starter, fixing sluggish starters.</p>
-<p>60+ page PDF. Pay once, lifetime updates.</p>
+<p><strong>A reference appendix.</strong> Hydration and temperature conversions, salt percentages, flour protein, the inoculation-to-bulk-time chart, and the DDT formula with worked examples.</p>
+<p>A focused 25-page PDF, built to print. Pay once, lifetime updates &mdash; new recipes are added as the guide grows.</p>
 <p><strong>Price: $19</strong> during launch. <a href="${PRO_URL}" style="color:#B85C38;">Get the PDF &rarr;</a></p>
 <p>&mdash; Loaf &amp; Levain</p>
 <p style="font-size:12px;color:#8A7866;">P.S. Gumroad gives a 30-day refund window &mdash; if it's not what you expected, ask for your money back, no friction.</p>`

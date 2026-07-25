@@ -4,7 +4,7 @@
     "title": "Sourdough bulk fermentation time by kitchen temperature",
     "description": "The single chart every sourdough baker needs. Bulk fermentation time scales with temperature — a 22°C kitchen and an 18°C kitchen are not the same recipe. Use this Q10-based table to plan your bulk for any kitchen between 16°C and 30°C. Plus the free schedule calculator that does the math for any inoculation, hydration, and recipe.",
     "hashtags": "#sourdough #sourdoughbread #sourdoughbaking #breadbaking #bulkfermentation #naturalleaven",
-    "link": "https://loafandlevain.com/#bulk-fermentation-by-temperature",
+    "link": "https://loafandlevain.com/sourdough/bulk-fermentation-by-temperature/",
     "article": "bulk-fermentation-by-temperature"
   },
   {
@@ -12,7 +12,7 @@
     "title": "Sourdough hydration: 65%, 75%, 80%, 85% — which to pick",
     "description": "Higher hydration doesn't always mean better bread. Pick the hydration that matches your skill, your flour, and the bread you want. From sandwich loaves at 65% to ciabatta at 85% to pan de cristal at 100% — the full breakdown of what works at each level, what flour you need, and where most beginners get this wrong.",
     "hashtags": "#sourdough #sourdoughhydration #breadbaking #sourdoughbread #breadhydration #baker",
-    "link": "https://loafandlevain.com/#hydration-explained",
+    "link": "https://loafandlevain.com/sourdough/hydration-explained/",
     "article": "hydration-explained"
   },
   {
@@ -20,7 +20,7 @@
     "title": "Why is my sourdough gummy inside (and how to fix it)",
     "description": "Gummy crumb is the most common sourdough failure mode and the cause is almost never the one bakers expect. Five real diagnoses ranked by how often they actually explain it: cut while warm, underbaked, underproofed, overproofed, no steam. Get the diagnostic order right and you'll fix it in one bake instead of fifteen.",
     "hashtags": "#sourdough #sourdoughtroubleshooting #breadbaking #sourdoughbread #breadbaker #homebaking",
-    "link": "https://loafandlevain.com/#why-sourdough-gummy",
+    "link": "https://loafandlevain.com/sourdough/why-sourdough-gummy/",
     "article": "why-sourdough-gummy"
   },
   {
@@ -28,7 +28,7 @@
     "title": "The DDT formula: water temperature for perfect dough",
     "description": "Professional bakers calculate water temperature so dough lands at a known temperature after mixing. The math takes ten seconds. The payoff is that bulk fermentation runs on schedule instead of guessing whether the kitchen was warm enough today. Worked examples for winter, summer, hand mixing, and stand mixers.",
     "hashtags": "#sourdough #ddtformula #doughtemperature #breadbaking #professionalbaking #sourdoughtips",
-    "link": "https://loafandlevain.com/#ddt-formula-water-temperature",
+    "link": "https://loafandlevain.com/sourdough/ddt-formula-water-temperature/",
     "article": "ddt-formula-water-temperature"
   },
   {
@@ -36,7 +36,7 @@
     "title": "Is your sourdough starter ready? 6-point checklist",
     "description": "The float test isn't the only indicator and sometimes lies in both directions. Use a 6-point readiness check instead: volume, dome, bubbles on sides, smell, consistency, and (optionally) the float. 4 of 6 = ready to mix. Includes timing math for matching peak to your mix time.",
     "hashtags": "#sourdoughstarter #sourdough #breadbaking #starterhealth #naturalleaven #sourdoughbaker",
-    "link": "https://loafandlevain.com/#float-test-explained",
+    "link": "https://loafandlevain.com/sourdough/float-test-explained/",
     "article": "float-test-explained"
   },
   {
@@ -44,7 +44,7 @@
     "title": "Free sourdough schedule calculator — calibrated for your kitchen",
     "description": "Stop guessing when bulk is done. A free, no-signup, no-ads sourdough schedule calculator that knows your kitchen temperature isn't 22°C. Generates full timing schedules from your inputs in real time, with calendar export, live bake tracking, and desktop notifications when each step is due.",
     "hashtags": "#sourdough #sourdoughschedule #breadbaking #freesourdough #sourdoughcalculator #sourdoughtools",
-    "link": "https://loafandlevain.com",
+    "link": "https://loafandlevain.com/",
     "article": "schedule"
   },
   {
@@ -52,7 +52,7 @@
     "title": "A real sourdough schedule with timestamps",
     "description": "Saturday country loaf with 12-hour cold retard, calibrated for a 22°C kitchen. Feed levain 14:00 Saturday, mix 20:00, fold every 30 min, retard overnight, bake Sunday afternoon. The free calculator gives you a schedule like this in 5 seconds, for any recipe, any kitchen temperature, any bake-out time.",
     "hashtags": "#sourdoughschedule #sourdough #breadbakingschedule #sourdoughbread #weekendbaking #countryloaf",
-    "link": "https://loafandlevain.com/#cold-retard-vs-same-day",
+    "link": "https://loafandlevain.com/sourdough/cold-retard-vs-same-day/",
     "article": "cold-retard-vs-same-day"
   },
   {
@@ -60,7 +60,7 @@
     "title": "Your sourdough is dense — the reason isn't what you think",
     "description": "90% of dense sourdough comes from underproofed bulk because the baker measured room temperature instead of dough temperature. The dough is usually 1–4°C warmer than the room from mixing friction. That difference shifts your fermentation timeline by hours. Twelve other causes diagnosed in order of how often they actually explain dense crumb.",
     "hashtags": "#sourdough #densesourdough #sourdoughtroubleshooting #breadbaking #sourdoughfix #sourdoughbread",
-    "link": "https://loafandlevain.com/#fix-dense-sourdough",
+    "link": "https://loafandlevain.com/sourdough/fix-dense-sourdough/",
     "article": "fix-dense-sourdough"
   },
   {
@@ -68,13 +68,13 @@
     "title": "3 sourdough tools and habits you don't actually need",
     "description": "The float test isn't reliable. Filtered water doesn't matter for dough (only starter). Specialty sourdough flour is mostly marketing. Three sourdough beliefs that waste money and time, and what to use instead. Save this for the next baker who tries to gatekeep your kitchen.",
     "hashtags": "#sourdough #sourdoughmyths #breadbaking #sourdoughtips #breadbaker #sourdoughtruth",
-    "link": "https://loafandlevain.com/#float-test-explained",
+    "link": "https://loafandlevain.com/sourdough/float-test-explained/",
     "article": "float-test-explained"
   },
   {
     "file": "pin-10.jpg",
-    "title": "Sourdough Schedule Pro — 30 recipes, climate-tuned schedules",
-    "description": "Three timing tables for every recipe — cold kitchen (15–18°C), standard (20–24°C), hot (26–32°C). 30 recipes from country loaf to panettone. 12 troubleshooting flowcharts. Starter rescue protocols. Reference appendix with every conversion table you'll need. Pay once, lifetime updates. $19 launch pricing.",
+    "title": "Sourdough Schedule Pro — tested recipes, climate-smart schedules",
+    "description": "10 tested recipes with schedules — the flagship country loaf timed for cold (16°C), standard (22°C) and hot (28°C) kitchens, plus temperature tables to re-time any recipe. 12 troubleshooting flowcharts. Starter rescue protocols. Reference appendix with every conversion table you'll need. Pay once, lifetime updates. $19 launch pricing.",
     "hashtags": "#sourdough #sourdoughrecipes #sourdoughpro #breadbaking #sourdoughebook #naturalleaven",
     "link": "https://loaflevain.gumroad.com/l/sourdough-pro",
     "article": "pro"
