@@ -1,12 +1,18 @@
 name: Weekly content
 
 on:
-  schedule:
-    # Mondays ~08:23 UTC. Off-the-hour minute on purpose: cron jobs at minute 0
-    # hit GitHub's busiest queue and get delayed by hours; an odd minute runs far
-    # more punctually. (Was '0 8 * * 1' — fired but consistently ~9h late.)
-    - cron: '23 8 * * 1'
-  workflow_dispatch:  # allows manual trigger from GitHub UI
+  # PAUSED 2026-08-14. The schedule is commented out, not deleted — 21 articles
+  # is already past the point where article N+1 moves anything, and each run
+  # spends Anthropic credits on content that has no measured return yet. The
+  # bottleneck is traffic and a funnel that only went live today, not article
+  # count. Re-enable once Plausible shows the existing 21 pulling traffic.
+  #
+  # schedule:
+  #   # Mondays ~08:23 UTC. Off-the-hour minute on purpose: cron jobs at minute 0
+  #   # hit GitHub's busiest queue and get delayed by hours; an odd minute runs far
+  #   # more punctually. (Was '0 8 * * 1' — fired but consistently ~9h late.)
+  #   - cron: '23 8 * * 1'
+  workflow_dispatch:  # still runnable on demand from the GitHub UI
 
 jobs:
   generate:
