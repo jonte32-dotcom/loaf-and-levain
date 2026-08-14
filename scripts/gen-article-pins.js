@@ -406,7 +406,25 @@ const KEYWORDS = {
   'summer-sourdough': ['sourdough in a warm kitchen', 'process'],
   'starter-from-scratch': ['sourdough starter from scratch', 'process'],
   'sourdough-troubleshooting': ['sourdough problems', 'problem'],
+  'dutch-oven-vs-baking-stone': ['dutch oven vs baking stone', 'spec'],
+  'banneton-care': ['sourdough banneton care', 'process'],
+  'sourdough-without-dutch-oven': ['sourdough without a dutch oven', 'process'],
 };
+
+/**
+ * Name the chart after what the table actually holds. A process article does
+ * not necessarily tabulate time — "banneton care" tabulates fabric against
+ * wicking — and a pin promising a timing chart that isn't one is a pin that
+ * lies to the person who clicked it.
+ */
+function chartLabel(a) {
+  const cols = tableColumns(a.table);
+  if (!cols) return 'comparison chart';
+  const hay = [cols.head[cols.li], cols.head[cols.ri], ...cols.body.map((r) => r[cols.ri] || '')].join(' ');
+  if (/\b\d+\s*[–-]?\s*\d*\s*(h|hr|hrs|hour|min|minute)s?\b|\btim(e|ing)\b|how long/i.test(hay)) return 'timing chart';
+  if (/°\s*[cf]|\btemp/i.test(hay)) return 'temperature chart';
+  return 'comparison chart';
+}
 
 // Phrasing per variant, so the four pins for one article compete on four
 // different searches rather than cannibalising each other.
@@ -414,7 +432,7 @@ const PHRASING = {
   process: {
     hook: (p) => `${p}: the complete guide`,
     steps: (p) => `${p}, step by step`,
-    table: (p) => `${p}: timing chart`,
+    table: (p, a) => `${p}: ${chartLabel(a)}`,
     faq: (p) => `${p}: your questions answered`,
     quote: (p) => `${p}: what actually matters`,
   },
@@ -459,7 +477,7 @@ function keywordTitles(a) {
   const [primary, angle] = KEYWORDS[a.slug] || deriveKeyword(a);
   const tpl = PHRASING[angle] || PHRASING.spec;
   return Object.fromEntries(
-    Object.entries(tpl).map(([key, fn]) => [key, sentenceCase(fn(primary))])
+    Object.entries(tpl).map(([key, fn]) => [key, sentenceCase(fn(primary, a))])
   );
 }
 
@@ -492,11 +510,15 @@ function describe(a, variantKey) {
       // joined with a middot, because several contain commas themselves.
       detail = a.h2.length ? `Covers: ${a.h2.slice(0, 3).join(' · ')}` : '';
       break;
-    case 'table':
-      detail = cols
-        ? `${asNoun(cols.head[cols.li])} against ${asNoun(cols.head[cols.ri])}, ${cols.body.length} rows you can read at a glance`
-        : '';
+    case 'table': {
+      // Side-by-side comparison tables leave the corner cell blank
+      // ("| | Autolyse | Fermentolyse |"), so there is no label to name.
+      const label = cols ? asNoun(cols.head[cols.li]) : '';
+      detail = !cols ? ''
+        : label ? `${label} against ${asNoun(cols.head[cols.ri])}, ${cols.body.length} rows you can read at a glance`
+        : `${cols.body.length} rows on ${asNoun(cols.head[cols.ri])}, side by side and readable at a glance`;
       break;
+    }
     case 'faq':
       detail = a.faq.length ? `Starting with the one everyone asks: ${a.faq[0].q}` : '';
       break;
