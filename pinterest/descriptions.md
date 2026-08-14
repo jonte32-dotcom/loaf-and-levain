@@ -15,7 +15,7 @@ The single chart every sourdough baker needs. Bulk fermentation time scales with
 
 **Hashtags:** #sourdough #sourdoughbread #sourdoughbaking #breadbaking #bulkfermentation #naturalleaven
 
-**Link:** https://loafandlevain.com/#bulk-fermentation-by-temperature
+**Link:** https://loafandlevain.com/sourdough/bulk-fermentation-by-temperature/
 
 ---
 
@@ -28,7 +28,7 @@ Higher hydration doesn't always mean better bread. Pick the hydration that match
 
 **Hashtags:** #sourdough #sourdoughhydration #breadbaking #sourdoughbread #breadhydration #baker
 
-**Link:** https://loafandlevain.com/#hydration-explained
+**Link:** https://loafandlevain.com/sourdough/hydration-explained/
 
 ---
 
@@ -41,7 +41,7 @@ Gummy crumb is the most common sourdough failure mode and the cause is almost ne
 
 **Hashtags:** #sourdough #sourdoughtroubleshooting #breadbaking #sourdoughbread #breadbaker #homebaking
 
-**Link:** https://loafandlevain.com/#why-sourdough-gummy
+**Link:** https://loafandlevain.com/sourdough/why-sourdough-gummy/
 
 ---
 
@@ -54,7 +54,7 @@ Professional bakers calculate water temperature so dough lands at a known temper
 
 **Hashtags:** #sourdough #ddtformula #doughtemperature #breadbaking #professionalbaking #sourdoughtips
 
-**Link:** https://loafandlevain.com/#ddt-formula-water-temperature
+**Link:** https://loafandlevain.com/sourdough/ddt-formula-water-temperature/
 
 ---
 
@@ -67,7 +67,7 @@ The float test isn't the only indicator and sometimes lies in both directions. U
 
 **Hashtags:** #sourdoughstarter #sourdough #breadbaking #starterhealth #naturalleaven #sourdoughbaker
 
-**Link:** https://loafandlevain.com/#float-test-explained
+**Link:** https://loafandlevain.com/sourdough/float-test-explained/
 
 ---
 
@@ -93,7 +93,7 @@ Saturday country loaf with 12-hour cold retard, calibrated for a 22°C kitchen. 
 
 **Hashtags:** #sourdoughschedule #sourdough #breadbakingschedule #sourdoughbread #weekendbaking #countryloaf
 
-**Link:** https://loafandlevain.com/#schedule
+**Link:** https://loafandlevain.com/sourdough/cold-retard-vs-same-day/
 
 ---
 
@@ -106,7 +106,7 @@ Saturday country loaf with 12-hour cold retard, calibrated for a 22°C kitchen. 
 
 **Hashtags:** #sourdough #denseousrdough #sourdoughtroubleshooting #breadbaking #sourdoughfix #sourdoughbread
 
-**Link:** https://loafandlevain.com/#fix-dense-sourdough
+**Link:** https://loafandlevain.com/sourdough/fix-dense-sourdough/
 
 ---
 
@@ -119,16 +119,16 @@ The float test isn't reliable. Filtered water doesn't matter for dough (only sta
 
 **Hashtags:** #sourdough #sourdoughmyths #breadbaking #sourdoughtips #breadbaker #sourdoughtruth
 
-**Link:** https://loafandlevain.com
+**Link:** https://loafandlevain.com/sourdough/float-test-explained/
 
 ---
 
 ## Pin 10 — Sourdough Schedule Pro (cover)
 
-**Title:** Sourdough Schedule Pro — 30 recipes, climate-tuned schedules
+**Title:** Sourdough Schedule Pro — tested recipes, climate-smart schedules
 
 **Description:**
-Three timing tables for every recipe — cold kitchen (15–18°C), standard (20–24°C), hot (26–32°C). 30 recipes from country loaf to panettone. 12 troubleshooting flowcharts. Starter rescue protocols. Reference appendix with every conversion table you'll need. Pay once, lifetime updates. $19 launch pricing.
+10 tested recipes with schedules — the flagship country loaf timed for cold (16°C), standard (22°C) and hot (28°C) kitchens, plus temperature tables to re-time any recipe. 12 troubleshooting flowcharts. Starter rescue protocols. Reference appendix with every conversion table you'll need. Pay once, lifetime updates. $19 launch pricing.
 
 **Hashtags:** #sourdough #sourdoughrecipes #sourdoughpro #breadbaking #sourdoughebook #naturalleaven
 

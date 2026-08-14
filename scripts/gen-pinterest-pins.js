@@ -170,9 +170,9 @@ const PINS = [
     eyebrow: 'PRO',
     title: 'Sourdough Schedule',
     titleEm: 'Pro.',
-    content: `<text x="500" y="830" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="rgba(251,247,238,0.85)">30 recipes. 3 climate-tuned</text>
-    <text x="500" y="870" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="rgba(251,247,238,0.85)">schedules each. 12 troubleshooting</text>
-    <text x="500" y="910" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="rgba(251,247,238,0.85)">flowcharts. Lifetime updates.</text>
+    content: `<text x="500" y="830" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="rgba(251,247,238,0.85)">10 tested recipes with schedules.</text>
+    <text x="500" y="870" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="rgba(251,247,238,0.85)">12 troubleshooting flowcharts.</text>
+    <text x="500" y="910" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="rgba(251,247,238,0.85)">Starter rescue. Lifetime updates.</text>
     <g transform="translate(370, 1010)">
       <rect width="260" height="76" rx="3" fill="rgba(251,247,238,0.12)" stroke="rgba(251,247,238,0.3)" stroke-width="1"/>
       <text x="130" y="50" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="22" letter-spacing="3" fill="#FBF7EE">$19 · LAUNCH</text>
@@ -277,13 +277,27 @@ async function main() {
     console.log(`✓ ${out} (${(fs.statSync(out).size / 1024).toFixed(1)} KB)`);
   }
 
-  // Write metadata for posting
-  const metadata = PINS.map(p => ({
-    file: `pin-${p.id}.jpg`,
-    title: `${p.title} ${p.titleEm}`,
-    description: '',
-    article: p.article
-  }));
+  // Write metadata for posting. Pins link to the standalone article URLs
+  // (/sourdough/<slug>/) — the old /#<slug> fragment anchors no longer exist.
+  // Hand-authored titles/descriptions/hashtags in an existing metadata.json are
+  // preserved; only file/link/article are owned by this script.
+  const pinLink = (article) =>
+    article === 'schedule' ? 'https://loafandlevain.com/'
+    : article === 'pro' ? 'https://loaflevain.gumroad.com/l/sourdough-pro'
+    : `https://loafandlevain.com/sourdough/${article}/`;
+  let existing = [];
+  try { existing = JSON.parse(fs.readFileSync(path.join(OUTDIR, 'metadata.json'), 'utf8')); } catch { /* first run */ }
+  const metadata = PINS.map(p => {
+    const prev = existing.find(m => m.file === `pin-${p.id}.jpg`) || {};
+    return {
+      file: `pin-${p.id}.jpg`,
+      title: prev.title || `${p.title} ${p.titleEm}`,
+      description: prev.description || '',
+      hashtags: prev.hashtags || '',
+      link: pinLink(p.article),
+      article: p.article
+    };
+  });
   fs.writeFileSync(path.join(OUTDIR, 'metadata.json'), JSON.stringify(metadata, null, 2));
   console.log(`\nWrote ${PINS.length} pins to ${OUTDIR}/`);
 }

@@ -45,6 +45,8 @@ const AUTHOR_BIO = process.env.AUTHOR_BIO || 'a home baker and the maker of Loaf
 const BRAND_BLURB = 'an independent sourdough resource where every number in these guides is tested in a real kitchen, not copied from another blog';
 const ADSENSE_CLIENT = 'ca-pub-8093269710555728';
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'loafandlevain.bake@gmail.com';
+const GUMROAD_URL = 'https://loaflevain.gumroad.com/l/sourdough-pro';
+const MAILERLITE_ACTION = 'https://assets.mailerlite.com/jsonp/2328385/forms/186842178657453432/subscribe';
 const START = '<!-- ARTICLES_AUTO_INJECT_START -->';
 const END = '<!-- ARTICLES_AUTO_INJECT_END -->';
 
@@ -178,6 +180,25 @@ const SITE_CSS = `
   .card .more{font-size:13px;font-weight:600;color:var(--crust)}
   section.related{margin-top:56px;padding-top:40px;border-top:1px solid var(--line)}
   section.related>h2{font-family:var(--serif);font-weight:600;font-size:22px;margin-bottom:20px}
+  /* pro box */
+  .pro-box{margin:40px 0 0;background:var(--paper);border:1px solid var(--gold);border-radius:16px;padding:26px 28px;box-shadow:var(--shadow)}
+  .pro-box .pb-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--crust);margin-bottom:8px}
+  .pro-box h2{font-family:var(--serif);font-weight:600;font-size:22px;margin-bottom:8px}
+  .pro-box p{font-size:14px;color:var(--ink-soft);margin:0 0 16px}
+  .pro-box a.pb-buy{display:inline-block;background:var(--crust);color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:11px 22px;border-radius:10px}
+  .pro-box a.pb-buy:hover{background:var(--crust-deep)}
+  .pro-box .pb-trust{font-size:12px;color:var(--ink-mute);margin-top:10px}
+  /* newsletter box */
+  .nl-box{margin-top:48px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:26px 28px;box-shadow:var(--shadow)}
+  .nl-box h2{font-family:var(--serif);font-weight:600;font-size:22px;margin-bottom:8px}
+  .nl-box p{font-size:14px;color:var(--ink-soft);margin:0 0 14px}
+  .nl-form{display:flex;gap:10px;flex-wrap:wrap}
+  .nl-form input{flex:1;min-width:200px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:14px;background:var(--cream)}
+  .nl-form button{background:var(--ink);color:var(--paper);border:0;border-radius:10px;font:inherit;font-size:14px;font-weight:600;padding:11px 20px;cursor:pointer}
+  .nl-form button:hover{background:var(--crust-deep)}
+  .nl-consent{display:flex;align-items:flex-start;gap:8px;margin-top:10px;font-size:12px;color:var(--ink-mute);line-height:1.4;cursor:pointer}
+  .nl-consent input{margin-top:2px;flex:none}
+  .nl-done{font-weight:600;color:var(--sage)}
   /* cta */
   .cta{margin-top:48px;background:var(--ink);color:var(--paper);border-radius:16px;padding:32px;text-align:center}
   .cta h2{font-family:var(--serif);font-weight:600;font-size:24px;margin-bottom:8px;color:var(--paper)}
@@ -246,8 +267,56 @@ function siteHeader() {
 function siteFooter() {
   return `<footer class="site">
   <span>© Loaf &amp; Levain · Sourdough for bakers who measure</span>
-  <span><a href="/sourdough/">Knowledge base</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy.html">Privacy</a></span>
+  <span><a href="/sourdough/">Knowledge base</a><a href="${GUMROAD_URL}" target="_blank" rel="noopener">Pro guide</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy.html">Privacy</a></span>
 </footer>`;
+}
+
+// Honest, compact Pro pitch shown after the article body. One product, real numbers:
+// the PDF has 10 recipes, 12 flowcharts, 3 starter protocols and a reference appendix.
+function proBox() {
+  return `<aside class="pro-box">
+  <div class="pb-eyebrow">The Pro guide · one-time $19</div>
+  <h2>Sourdough Schedule Pro</h2>
+  <p>10 tested recipes with schedules (country loaf timed for cold, standard and hot kitchens), 12 troubleshooting flowcharts, starter rescue protocols, and a reference appendix — a 25-page printable PDF that pairs with the free calculator.</p>
+  <a class="pb-buy" href="${GUMROAD_URL}" target="_blank" rel="noopener">Get the guide →</a>
+  <div class="pb-trust">Secure checkout via Gumroad · 30-day no-questions refund · lifetime updates</div>
+</aside>`;
+}
+
+// Email capture at the end of every article — the site's only capture point used to be a
+// popup on the calculator page. Uses the same MailerLite form endpoint; the form is
+// double-opt-in, so the success copy asks the reader to confirm.
+function newsletterBox() {
+  return `<aside class="nl-box">
+  <h2>The free cheat sheet</h2>
+  <p>One printable page: hydration table, fermentation times by temperature, and a troubleshooting quick guide. Plus one email a month with bake tips — no spam, unsubscribe anytime.</p>
+  <form class="nl-form" id="nl-form" novalidate>
+    <input type="email" id="nl-email" placeholder="your@email.com" required autocomplete="email" aria-label="Email address" />
+    <button type="submit" id="nl-submit">Send it</button>
+  </form>
+  <label class="nl-consent"><input type="checkbox" id="nl-consent" />
+    <span>I agree to receive the cheat sheet and occasional bake tips by email, and accept the <a href="/privacy.html" target="_blank" rel="noopener">privacy policy</a>. Unsubscribe anytime.</span></label>
+  <p class="nl-done" id="nl-done" hidden>One more step: click the link in the confirmation email we just sent, and the cheat sheet follows right after.</p>
+</aside>
+<script>
+(function(){
+  var f=document.getElementById('nl-form');if(!f)return;
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var em=document.getElementById('nl-email').value.trim();
+    if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(em)){alert('Please enter a valid email');return;}
+    if(!document.getElementById('nl-consent').checked){alert('Please accept the privacy policy to continue');return;}
+    var btn=document.getElementById('nl-submit');btn.disabled=true;btn.textContent='Sending…';
+    var fd=new FormData();fd.append('fields[email]',em);fd.append('ml-submit','1');fd.append('anticsrf','true');
+    fetch('${MAILERLITE_ACTION}',{method:'POST',body:fd,mode:'no-cors'}).catch(function(){}).then(function(){
+      f.hidden=true;
+      var c=document.querySelector('.nl-consent');if(c)c.hidden=true;
+      document.getElementById('nl-done').hidden=false;
+      if(window.plausible)plausible('lead_captured',{props:{source:'article'}});
+    });
+  });
+})();
+</script>`;
 }
 
 // Per-article CTA. Identical CTAs on every page are a top "scaled AI content" signal, so the
@@ -448,8 +517,10 @@ ${bodyHtml}
     </div>
     ${authorBox()}
   </article>
+  ${proBox()}
   ${calculatorCTA(a.slug)}
   ${relatedList(a, all)}
+  ${newsletterBox()}
 </main>
 ${siteFooter()}
 </div>
@@ -494,6 +565,7 @@ ${siteHeader()}
   <p class="lede">Tested, in-depth guides on fermentation, hydration, starters, scoring, and the things that actually go wrong. Written by bakers who measure, not guess.</p>
   <div class="cards">${cards}</div>
   ${calculatorCTA()}
+  ${newsletterBox()}
 </main>
 ${siteFooter()}
 </div>

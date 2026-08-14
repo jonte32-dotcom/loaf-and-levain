@@ -2,11 +2,15 @@
 
 Copy-paste these fields into Gumroad when you set up the Sourdough Schedule Pro product.
 
+> **NOTE (2026-07-25):** this copy was rewritten to match the actual PDF contents
+> (10 recipes, 12 flowcharts, 25 pages). If the live Gumroad listing still uses the
+> old "30 recipes / 60+ pages" copy, update it — the mismatch is a refund magnet.
+
 ---
 
 ## Product name
 
-Sourdough Schedule Pro — 30 climate-tuned recipes
+Sourdough Schedule Pro — climate-smart recipes & troubleshooting
 
 ## Tagline (one line)
 
@@ -33,13 +37,13 @@ That's the problem **Sourdough Schedule Pro** solves.
 
 ### What you get
 
-**30 sourdough recipes** with full ingredient tables and technique notes. Country loaves, ciabatta, focaccia, baguettes, brioche, panettone, sourdough pizza, 100% rye, and 22 more.
+**10 tested sourdough recipes** with full ingredient tables, schedules and technique notes: country loaf at 75% and 80% hydration, white sandwich loaf, 50% whole wheat, pan de cristal, ciabatta, focaccia, baguettes, 100% rye, and a 48-hour cold-ferment pizza dough.
 
-**Three timing tables for every recipe.** Cold kitchen (15–18°C). Standard kitchen (20–24°C). Hot kitchen (26–32°C). Same recipe, three calibrated schedules. No more guessing whether your kitchen is "room temperature."
+**Climate-adjusted timing.** The flagship country loaf comes timed three ways — cold kitchen (16°C), standard (22°C), hot (28°C) — and the appendix gives you the temperature-to-bulk-time tables to re-time any recipe for *your* kitchen. No more guessing whether your kitchen is "room temperature."
 
 **12 troubleshooting flowcharts.** Visual decision trees for the failures every home baker hits: gummy crumb, dense crumb, flat loaves, no oven spring, pale crust, too sour, bland flavour, sticky dough, starter that won't peak, crumb tunnels, dough that tears, loaves stuck in banneton.
 
-**Starter rescue protocols.** From-scratch 7-day starter (rye route + wheat route). Reviving fridge-forgotten starter (3-feed protocol). Population concentration for sluggish starters. Hibernation methods for travel.
+**Starter rescue protocols.** From-scratch 7-day starter. Reviving a fridge-forgotten starter. Population concentration for sluggish starters.
 
 **Reference appendix.** Hydration conversion tables, temperature conversions, salt percentage effects, flour protein references, inoculation-to-bulk-time chart, DDT formula with worked examples, equipment recommendations, full glossary.
 
@@ -63,13 +67,13 @@ DRM. The PDF is yours to print, annotate, share with your kitchen partner. I don
 
 ### About this guide
 
-Loaf & Levain is a free schedule calculator (loafandlevain.com) used by home bakers in 40+ countries. Pro is the natural extension — the recipes and reference data those bakers were asking for, in a single PDF you can print and tape to your kitchen wall.
+Loaf & Levain is a free sourdough schedule calculator (loafandlevain.com). Pro is the natural extension — the recipes and reference data in a single PDF you can print and tape to your kitchen wall.
 
-The timing models in this book are calibrated against thousands of bakes from the calculator's anonymous usage data. The recipes are tested across multiple climates, multiple flours, multiple skill levels. They work.
+The timing tables in this book use the same fermentation model as the calculator (a Q10 of ~2.2 per 8°C, anchored to real bakes), so the book and the tool always agree.
 
 ### What's in the file
 
-A 60+ page PDF, 50+ MB. Optimised for both screen reading and printing. Bookmarks for every recipe and every troubleshooting flowchart. Searchable text.
+A focused 25-page PDF, under 1 MB — no filler, no food-blog life stories. Optimised for both screen reading and printing. Searchable text.
 
 ### One last thing
 
